@@ -1,3 +1,5 @@
+net start MySQL80 desde el cmd
+
 .\venv-main\Scripts\activate
 
 pip freeze > requirements.txt

@@ -92,7 +92,7 @@ Consulta el [Documento Técnico del Proyecto](./Documento%20Técnico%20del%20Pro
 
 ## 🧑‍💻 Autor
 
-Desarrollado con pasión por **Yoner Isaza And Dairo Arcia **  
+Desarrollado con pasión por **Yoner Isaza** **And** **Dairo Arcia **  
 💬 _“Elegí MySQL por su sencillez y eficiencia para este tipo de soluciones.”_
 
 ---

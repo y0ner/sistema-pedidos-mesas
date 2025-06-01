@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders', # Para permitir la comunicación con el frontend (Angular)
     'management', # Nuestra aplicación donde irán los modelos
+    'django_extensions',
 ]
 
 MIDDLEWARE = [

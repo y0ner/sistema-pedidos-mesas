@@ -68,6 +68,9 @@ class Order(models.Model):
     total = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     created_at = models.DateTimeField(auto_now_add=True) # Fecha y hora de creación automática
     updated_at = models.DateTimeField(auto_now=True)   # Fecha y hora de última actualización automática
+    #se agrego el tema del nombre del cliente
+    # Nombre del cliente, opcional. Puede ser útil para pedidos a domicilio o reservas.
+    customer_name = models.CharField(max_length=100, blank=True, null=True) # Nombre del cliente, opcional
 
     def __str__(self):
         return f"Pedido {self.id} - Mesa {self.table.number if self.table else 'N/A'} ({self.status})"

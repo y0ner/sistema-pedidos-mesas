@@ -54,9 +54,9 @@ Este proyecto es una aplicación web que optimiza el proceso de pedidos en un lo
 
 ## 🧩 Tecnologías sugeridas (para implementar)
 
-- **Frontend:** Angular, React, o Vue.js
-- **Backend:** Node.js, Python (Flask/Django), o PHP (Laravel)
-- **Base de datos:** PostgreSQL, MySQL o MongoDB
+- **Frontend:** Angular, 
+- **Backend:** Python (Django),
+- **Base de datos:** MySQL 
 - **Comunicación en tiempo real:** WebSockets o Firebase
 - **Autenticación de administrador:** JWT o sesión protegida
 

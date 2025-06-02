@@ -1,109 +1,79 @@
-# 🍽️ MesaFácil — Sistema Web para Pedidos y Gestión de Mesas
+# 🪑 Sistema de Pedidos con Validación de Mesa
 
-**Transforma la experiencia gastronómica con tecnología inteligente.**
+Este proyecto es una aplicación web que optimiza el proceso de pedidos en un local físico, permitiendo a los clientes realizar órdenes desde su mesa mediante un sistema seguro y controlado por el administrador.
 
-MesaFácil es una plataforma web responsiva pensada para locales comerciales como restaurantes y cafeterías que buscan modernizar su atención al cliente sin perder el toque humano. El sistema permite a los comensales realizar pedidos desde su móvil y a los administradores gestionar el negocio con eficiencia.
+## 🚀 ¿Cómo funciona?
 
----
+1. **Ingreso al local**  
+   El cliente se ubica en una mesa disponible (por ejemplo, la mesa 3).
 
-## 🚀 Características Destacadas
+2. **Escaneo del QR**  
+   En el local hay un código QR general visible que redirige al sitio web de pedidos.
 
-### 🧑‍🍳 Para el Cliente
-- Escanea un código QR y accede sin registrarte.
-- Visualiza el menú y promociones en tiempo real.
-- Revisa disponibilidad de mesas y elige con un código dinámico.
-- Realiza y edita pedidos desde tu propio dispositivo.
-- ¡Sin esperar al mesero para comenzar tu experiencia!
+3. **Visualización del catálogo**  
+   Todos los usuarios pueden explorar el catálogo de productos sin iniciar sesión ni registrarse.
 
-### 👨‍💼 Para el Administrador
-- Panel de gestión completo: productos, promociones, pedidos y mesas.
-- Control en tiempo real de pedidos y ocupación de mesas.
-- Modo pantalla/TV para mostrar códigos dinámicos.
-- Seguridad, control y eficiencia en una sola vista.
+4. **Validación de mesa mediante código único**
+   - En una pantalla (TV o monitor) se muestran códigos únicos para cada mesa, generados y controlados solo por el **administrador del sistema**.
+   - El usuario mira la pantalla, identifica el código de su mesa y lo ingresa en la app.
+   - El sistema valida:
+     - Que el código exista.
+     - Que la mesa esté disponible.
+   - Si la validación es correcta:
+     - El sistema marca la mesa como **ocupada**.
+     - El código deja de mostrarse públicamente.
+     - Se notifica al administrador que la mesa ha sido ocupada.
 
----
+5. **Realización del pedido**  
+   El usuario puede ahora seleccionar productos y enviar el pedido.
 
-## 🧠 Flujo General del Sistema
+6. **Confirmación final**  
+   Al confirmar el pedido:
+   - Se registra en el sistema como **pendiente**.
+   - El personal del local recibe la información para preparar y entregar el pedido.
 
-1. El cliente accede a la web escaneando un QR.
-2. Visualiza el menú y selecciona una mesa mediante código.
-3. Realiza un pedido → se crea una **sesión temporal**.
-4. El mesero verifica y valida el pedido.
-5. El administrador gestiona y finaliza el proceso.
-6. La mesa se libera automáticamente o manualmente.
+## 🛡️ Roles del sistema
 
----
+### 👤 Administrador
+- Genera y actualiza los códigos de mesa.
+- Controla el estado de las mesas (disponible/ocupada).
+- Recibe notificaciones en tiempo real cuando un cliente ocupa una mesa o realiza un pedido.
 
-## 🛠️ Tecnologías Utilizadas
+### 🙋‍♂️ Cliente
+- Escanea el QR general.
+- Ingresa el código de mesa desde la pantalla.
+- Realiza y confirma pedidos desde su dispositivo móvil.
 
-| Componente      | Tecnología             |
-|-----------------|------------------------|
-| Frontend        | Angular + Tailwind CSS |
-| Backend         | Django + DRF           |
-| Base de Datos   | MySQL (migrado desde PostgreSQL) |
-| Autenticación   | JWT (JSON Web Tokens)  |
-| Despliegue      | Railway / Docker       |
+## 📦 Características principales
 
----
+- Validación de acceso a mesas por código único.
+- Control en tiempo real del estado de cada mesa.
+- Notificaciones al administrador cuando una mesa se ocupa o se recibe un pedido.
+- Flujo de pedidos sin necesidad de que el cliente cree una cuenta.
+- Prevención de ocupación de mesas por usuarios no autorizados.
 
-## 📦 Estructura de Datos Principal
+## 🧩 Tecnologías sugeridas (para implementar)
 
-- **Usuarios**: Cliente y administrador diferenciados por rol.
-- **Productos & Promociones**: Gestión flexible y visual.
-- **Mesas**: Estado, código dinámico, disponibilidad.
-- **Pedidos**: Relacionados con mesas y detalles de productos.
+- **Frontend:** Angular, React, o Vue.js
+- **Backend:** Node.js, Python (Flask/Django), o PHP (Laravel)
+- **Base de datos:** PostgreSQL, MySQL o MongoDB
+- **Comunicación en tiempo real:** WebSockets o Firebase
+- **Autenticación de administrador:** JWT o sesión protegida
 
----
+## 📌 Estado del proyecto
 
-## 🛡️ Seguridad y Buenas Prácticas
+> 🛠️ En desarrollo
 
-- Accesos y permisos diferenciados (admin/cliente).
-- Protección de rutas y sesiones.
-- Códigos de mesa únicos, dinámicos y de corta duración.
-- Validaciones robustas en el backend.
+### Próximas funcionalidades:
+- Panel del administrador
+- Historial de pedidos
+- Interfaz de usuario mejorada para móviles
+- Soporte multi-local
 
----
+## 🤝 Contribuciones
 
-## ✨ Futuras Mejoras
-
-- 📍 Verificación por geolocalización.
-- 📊 Reportes y estadísticas.
-- 🌍 Multilenguaje.
-- 🏪 Multisucursal.
-- 📱 Aplicación nativa.
-- 🛍️ Pedido para llevar.
-- 💳 Integración con pasarelas de pago.
-
----
-
-## 💡 Conclusión
-
-MesaFácil es más que una app para pedidos: es una solución pensada para locales que quieren crecer con tecnología sin perder su esencia. El sistema mejora la experiencia del cliente y optimiza los procesos internos del negocio.
-
-> "El futuro del servicio en mesa está en tus manos... o mejor dicho, en el móvil del cliente."
+Las contribuciones son bienvenidas. Si tienes ideas para mejorar el sistema, no dudes en abrir un issue o enviar un pull request.
 
 ---
 
-## 📚 Documentación
-
-Consulta el [Documento Técnico del Proyecto](./Documento%20Técnico%20del%20Proyecto.pdf) para más detalles sobre la lógica del sistema, requisitos funcionales y no funcionales.
-
----
-
-## 🧑‍💻 Autor
-
-Desarrollado con pasión por **Yoner Isaza** **And** **Dairo Arcia**  
-💬 _“Elegí MySQL por su sencillez y eficiencia para este tipo de soluciones.”_
-
----
-
-## ⚙️ Instalación y Uso (próximamente)
-_Agrega aquí instrucciones cuando el proyecto esté listo para producción._
-
----
-
-## 📬 Contacto
-
-¿Ideas? ¿Colaboraciones? ¡Estoy abierto a contribuciones!  
-Escríbeme vía GitHub Issues o Pull Requests.
-
+*Proyecto creado por Yoner and Dairo.*

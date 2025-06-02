@@ -130,6 +130,37 @@ class OrderViewSet(viewsets.ModelViewSet):
     serializer_class = OrderSerializer
     permission_classes = [permissions.IsAuthenticated]
 
+    # --- ¡NUEVA ACCIÓN PARA CONFIRMAR PEDIDO! ---
+    @action(detail=True, methods=['post'], url_path='confirm')
+    def confirm_order(self, request, pk=None):
+        """
+        Confirma un pedido que está en estado 'pending'.
+        Esta acción debe ser llamada por un usuario autenticado (personal del restaurante).
+        """
+        order = self.get_object()
+
+        # 1. Verificamos que el pedido esté realmente pendiente
+        if order.status != 'pending':
+            return Response(
+                {'error': f'Este pedido ya está en estado "{order.status}" y no puede ser confirmado de nuevo.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # 2. Opcional: Si en el futuro quieres añadir más lógica, como
+        #    guardar el nombre del cliente o añadir productos, iría aquí.
+        #    Por ejemplo, para guardar el nombre del cliente:
+        #    customer_name = request.data.get('customer_name')
+        #    if customer_name:
+        #        order.customer_name = customer_name  # (Esto requeriría añadir el campo al modelo Order)
+
+        # 3. Cambiamos el estado del pedido
+        order.status = 'confirmed'
+        order.save()
+
+        # 4. Devolvemos los datos del pedido actualizado
+        serializer = self.get_serializer(order)
+        return Response(serializer.data)
+
 # ViewSet para el modelo OrderDetail
 class OrderDetailViewSet(viewsets.ModelViewSet):
     queryset = OrderDetail.objects.all()

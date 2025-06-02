@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'corsheaders', # Para permitir la comunicación con el frontend (Angular)
     'management', # Nuestra aplicación donde irán los modelos
     'django_extensions',
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
@@ -141,3 +142,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Al final de core/settings.py
 
 AUTH_USER_MODEL = 'management.User'
+
+# En core/settings.py, dentro del diccionario REST_FRAMEWORK
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema', # <-- AÑADE ESTA LÍNEA
+}

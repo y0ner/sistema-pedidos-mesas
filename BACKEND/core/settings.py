@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'management', # Nuestra aplicación donde irán los modelos
     'django_extensions',
     'drf_spectacular',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -149,5 +150,8 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ],
-    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema', # <-- AÑADE ESTA LÍNEA
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_FILTER_BACKENDS': [ # <-- AÑADE ESTA CLAVE Y SU LISTA
+        'django_filters.rest_framework.DjangoFilterBackend',
+    ],
 }

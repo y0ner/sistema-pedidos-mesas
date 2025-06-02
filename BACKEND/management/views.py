@@ -1,11 +1,12 @@
 # management/views.py
 
-import random
-from django.utils import timezone
-from rest_framework import viewsets, permissions, status # <--- ¡LA CORRECCIÓN ESTÁ AQUÍ!
+import random # Para las acciones personalizadas en TableViewSet
+from django.utils import timezone # Para las acciones personalizadas en TableViewSet
+from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from django.db import transaction # ¡Importante para transacciones atómicas!
+from rest_framework.filters import SearchFilter # Para la búsqueda en ProductViewSet
+import django_filters # <--- ¡ESTA ES LA IMPORTACIÓN QUE FALTABA!
 
 from .models import User, Product, Promotion, Table, Order, OrderDetail
 from .serializers import (
@@ -16,7 +17,7 @@ from .serializers import (
     OrderSerializer,
     OrderDetailSerializer
 )
-
+from .filters import ProductFilter # Nuestra clase de filtro personalizada
 # ViewSet para el modelo User
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all().order_by('-date_joined')
@@ -24,10 +25,16 @@ class UserViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAdminUser]
 
 # ViewSet para el modelo Product
+
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    
+    filterset_class = ProductFilter
+    # Ahora django_filters.rest_framework.DjangoFilterBackend será reconocido
+    filter_backends = [SearchFilter, django_filters.rest_framework.DjangoFilterBackend] 
+    search_fields = ['name', 'description']
 
 # ViewSet para el modelo Promotion
 class PromotionViewSet(viewsets.ModelViewSet):

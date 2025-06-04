@@ -1,0 +1,75 @@
+<h2>Catálogo de Productos</h2>
+
+<div class="search-controls">
+  <div class="search-container">
+    <input
+      type="text"
+      placeholder="Buscar por nombre o descripción..."
+      [(ngModel)]="searchTerm"
+      (keyup.enter)="performSearch()"
+      class="search-input"
+    />
+    <button (click)="performSearch()" class="search-button">Buscar</button>
+    <button (click)="clearSearch()" class="clear-button" *ngIf="searchTerm || availabilityFilter || minPrice || maxPrice">Limpiar</button>
+  </div>
+
+  <div class="filter-container">
+    <label for="availability">Filtrar por disponibilidad: </label>
+    <select id="availability" [(ngModel)]="availabilityFilter" (ngModelChange)="onAvailabilityChange()" class="filter-select">
+      <option value="">Todos</option>
+      <option value="true">Disponibles</option>
+      <option value="false">No disponibles</option>
+    </select>
+  </div>
+
+  <div class="price-filter-container">
+    <label for="minPrice">Precio Min:</label>
+    <input
+      type="number"
+      id="minPrice"
+      placeholder="Mín."
+      [(ngModel)]="minPrice"
+      (input)="onPriceChange()"
+      class="price-input"
+    />
+    <label for="maxPrice">Precio Max:</label>
+    <input
+      type="number"
+      id="maxPrice"
+      placeholder="Máx."
+      [(ngModel)]="maxPrice"
+      (input)="onPriceChange()"
+      class="price-input"
+    />
+  </div>
+</div>
+
+<div *ngIf="isLoading" class="loading-message">
+  <p>Cargando productos, por favor espera...</p>
+</div>
+
+<div *ngIf="error" class="error-message">
+  <p>{{ error }}</p>
+</div>
+
+<ng-container *ngIf="!isLoading && !error && products.length === 0">
+  <div *ngIf="searchTerm || availabilityFilter || minPrice || maxPrice" class="empty-message">
+    <p>No se encontraron productos con los filtros aplicados.</p>
+  </div>
+  <div *ngIf="!searchTerm && !availabilityFilter && !minPrice && !maxPrice" class="empty-message">
+    <p>No hay productos disponibles en este momento.</p>
+  </div>
+</ng-container>
+
+<div *ngIf="!isLoading && !error && products.length > 0" class="product-grid">
+  <div *ngFor="let product of products" class="product-card">
+    <img *ngIf="product.image" [src]="product.image" alt="{{ product.name }}" class="product-image">
+    <img *ngIf="!product.image" src="https://via.placeholder.com/150?text=Sin+Imagen" alt="Imagen no disponible" class="product-image">
+    <h3>{{ product.name }}</h3>
+    <p class="product-description">{{ product.description || 'Sin descripción.' }}</p>
+    <p class="product-price">Precio: ${{ product.price | number:'1.2-2' }}</p>
+    <p class="product-availability" [ngClass]="{'available': product.availability, 'unavailable': !product.availability}">
+      {{ product.availability ? 'Disponible' : 'No disponible' }}
+    </p>
+  </div>
+</div>

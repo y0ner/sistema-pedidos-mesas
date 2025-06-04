@@ -1,4 +1,4 @@
-net start MySQL80 desde el cmd
+net start MySQL80
 
 .\venv-main\Scripts\activate
 

@@ -155,3 +155,15 @@ REST_FRAMEWORK = {
         'django_filters.rest_framework.DjangoFilterBackend',
     ],
 }
+
+# Al final de core/settings.py
+
+# Configuración para archivos estáticos (CSS, JavaScript, Imágenes de la plantilla)
+STATIC_URL = 'static/'
+# STATIC_ROOT = BASE_DIR / 'staticfiles' # Descomentar y configurar para producción
+
+# Configuración para archivos multimedia (subidos por los usuarios)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media' 
+# Esto creará una carpeta 'media' en la raíz de tu proyecto BACKEND
+# donde se guardarán las subidas (ej. media/products/imagen.jpg)

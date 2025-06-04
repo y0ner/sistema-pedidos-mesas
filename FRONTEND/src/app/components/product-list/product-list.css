@@ -1,0 +1,153 @@
+.loading-message,
+.error-message,
+.empty-message {
+  text-align: center;
+  padding: 20px;
+  font-style: italic;
+}
+
+.error-message {
+  color: red;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.product-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 15px;
+  text-align: center;
+  background-color: #f9f9f9;
+}
+
+.product-image {
+  width: 100%;
+  max-height: 150px;
+  object-fit: cover;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.product-card h3 {
+  margin-top: 0;
+  font-size: 1.2em;
+  color: #333;
+}
+
+.product-description {
+  font-size: 0.9em;
+  color: #666;
+  min-height: 40px; /* Para alinear un poco las tarjetas */
+}
+
+.product-price {
+  font-weight: bold;
+  color: #007bff;
+  margin: 10px 0;
+}
+
+.product-availability.available {
+  color: green;
+}
+
+.product-availability.unavailable {
+  color: #aaa;
+}
+
+/* ... (tus estilos anteriores para product-grid, product-card, etc.) ... */
+
+.search-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  margin-bottom: 20px;
+  gap: 10px; /* Espacio entre input y botones */
+}
+
+.search-input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 300px; /* Ajusta según necesidad */
+  font-size: 1em;
+}
+
+.search-button,
+.clear-button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+  font-size: 1em;
+}
+
+.search-button {
+  background-color: #007bff; /* Azul */
+}
+
+.search-button:hover {
+  background-color: #0056b3;
+}
+
+.clear-button {
+  background-color: #6c757d; /* Gris */
+}
+
+.clear-button:hover {
+  background-color: #545b62;
+}
+
+
+.search-controls {
+  display: flex;
+  flex-direction: column; /* Apila la búsqueda y el filtro verticalmente */
+  align-items: center;   /* Centra los elementos */
+  gap: 15px;             /* Espacio entre la búsqueda y el filtro */
+  margin-bottom: 20px;
+}
+
+.search-container,
+.filter-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.filter-container label {
+  font-weight: bold;
+}
+
+.filter-select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: white;
+}
+
+/* ... (tus estilos anteriores) ... */
+
+.price-filter-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.price-filter-container label {
+  font-weight: bold;
+}
+
+.price-input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 80px; /* Ajusta el ancho según sea necesario */
+  font-size: 1em;
+  text-align: center;
+}

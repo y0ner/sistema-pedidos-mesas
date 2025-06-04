@@ -1,5 +1,10 @@
 <h2>Catálogo de Productos</h2>
 
+<div *ngIf="validatedTableNumber$ | async as tableNumber" class="table-info-banner">
+  <p>Estás realizando un pedido para la <strong>Mesa {{ tableNumber }}</strong>.</p>
+</div>
+<div class="search-controls">
+
 <div class="search-controls">
   <div class="search-container">
     <input
@@ -60,7 +65,6 @@
     <p>No hay productos disponibles en este momento.</p>
   </div>
 </ng-container>
-
 <div *ngIf="!isLoading && !error && products.length > 0" class="product-grid">
   <div *ngFor="let product of products" class="product-card">
     <img *ngIf="product.image" [src]="product.image" alt="{{ product.name }}" class="product-image">
@@ -71,5 +75,12 @@
     <p class="product-availability" [ngClass]="{'available': product.availability, 'unavailable': !product.availability}">
       {{ product.availability ? 'Disponible' : 'No disponible' }}
     </p>
-  </div>
+
+    <button
+      (click)="addProductToCart(product)"
+      [disabled]="!product.availability"
+      class="add-to-cart-button">
+      {{ product.availability ? 'Añadir al Carrito' : 'No Disponible' }}
+    </button>
+    </div>
 </div>

@@ -1,10 +1,20 @@
 <header>
-  <h1>{{ title }}</h1>
-  </header>
+  <div class="header-content">
+    <h1><a routerLink="/" class="logo">{{ title }}</a></h1>
+    <nav>
+      <a routerLink="/tables-status" class="nav-link">Estado de Mesas</a>
+      <a routerLink="/cart" class="nav-link cart-link" *ngIf="(cartItemCount$ | async) !== null">
+        Carrito
+        <span *ngIf="(cartItemCount$ | async)! > 0" class="cart-badge">
+          {{ cartItemCount$ | async }}
+        </span>
+      </a>
+      </nav>
+  </div>
+</header>
 
 <main>
-  <app-product-list></app-product-list>
-  <router-outlet />
+  <router-outlet></router-outlet>
 </main>
 
 <footer>

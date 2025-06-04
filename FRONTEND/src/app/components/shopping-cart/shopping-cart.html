@@ -1,0 +1,57 @@
+<div class="cart-container">
+  <h2>Tu Carrito de Compras</h2>
+
+  <div *ngIf="validatedTableNumber$ | async as tableNum" class="table-info">
+    Pedido para la <strong>Mesa {{ tableNum }}</strong>
+  </div>
+
+  <div *ngIf="(cartItems$ | async) as items; else emptyCart">
+    <div *ngIf="items.length > 0; else emptyCart">
+      <div class="cart-summary">
+        <span>Total de Productos: {{ cartItemCount$ | async }}</span>
+        <span>Monto Total: <strong>{{ cartTotalAmount$ | async | number:'1.2-2' }}</strong></span>
+      </div>
+
+      <ul class="cart-items-list">
+        <li *ngFor="let item of items" class="cart-item">
+          <div class="item-info">
+            <img *ngIf="item.product.image" [src]="item.product.image" alt="{{ item.product.name }}" class="item-image">
+            <img *ngIf="!item.product.image" src="https://via.placeholder.com/50?text=N/A" alt="Sin imagen" class="item-image">
+            <div class="item-details">
+              <span class="item-name">{{ item.product.name }}</span>
+              <span class="item-price">Precio Unitario: ${{ item.product.price | number:'1.2-2' }}</span>
+            </div>
+          </div>
+          <div class="item-actions">
+            <div class="quantity-controls">
+              <button (click)="decrementQuantity(item)" class="quantity-btn">-</button>
+              <input
+                type="number"
+                [ngModel]="item.quantity"
+                (blur)="updateQuantity(item.product.id, $event)"
+                min="0"
+                class="quantity-input"
+                aria-label="Cantidad">
+              <button (click)="incrementQuantity(item)" class="quantity-btn">+</button>
+            </div>
+            <span class="item-subtotal">
+              Subtotal: ${{ (item.product.price * item.quantity) | number:'1.2-2' }}
+            </span>
+            <button (click)="removeItem(item.product.id)" class="remove-item-btn" aria-label="Eliminar item">
+              Eliminar
+            </button>
+          </div>
+        </li>
+      </ul>
+      <div class="cart-actions">
+        <button (click)="clearCart()" class="clear-cart-btn">Vaciar Carrito</button>
+        <button (click)="proceedToOrder()" class="proceed-to-order-btn">Proceder a Realizar Pedido</button>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #emptyCart>
+    <p class="empty-cart-message">Tu carrito está vacío.</p>
+    <p><a routerLink="/products">Vuelve al catálogo</a> para añadir productos.</p>
+  </ng-template>
+</div>

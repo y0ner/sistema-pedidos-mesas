@@ -3,35 +3,38 @@ import { ProductListComponent } from './components/product-list/product-list';
 import { TableCodeValidationComponent } from './components/table-code-validation/table-code-validation';
 import { tableValidatedGuard } from './guards/table-validated-guard';
 import { TableStatusDashboardComponent } from './components/table-status-dashboard/table-status-dashboard';
-// --- NUEVA IMPORTACIÓN ---
 import { ShoppingCartComponent } from './components/shopping-cart/shopping-cart';
+// --- NUEVA IMPORTACIÓN DEL GUARDIA ---
+import { OrderStatusComponent } from './components/order-status/order-status'; // <-- NUEVA IMPORTACIÓN
+import { tableNotValidatedGuard } from './guards/table-not-validated-guard';
 
 export const routes: Routes = [
   {
-    path: '', // Ruta raíz sigue siendo la validación de código
+    path: '',
     component: TableCodeValidationComponent,
+    canActivate: [tableNotValidatedGuard], // <-- APLICAR EL NUEVO GUARDIA AQUÍ
     title: 'Validar Mesa - MesaFácil'
   },
   {
-    path: 'products', // Ruta para el catálogo de productos
+    path: 'products',
     component: ProductListComponent,
-    canActivate: [tableValidatedGuard], // Protegida
+    canActivate: [tableValidatedGuard],
     title: 'Catálogo de Productos - MesaFácil'
   },
   {
-    path: 'tables-status', // Ruta para el dashboard de estado de mesas
+    path: 'tables-status',
     component: TableStatusDashboardComponent,
     title: 'Estado de Mesas - MesaFácil'
-    // Esta es pública
   },
-  // --- NUEVA RUTA ---
   {
-    path: 'cart', // Ruta para el carrito de compras
+    path: 'cart',
     component: ShoppingCartComponent,
-    canActivate: [tableValidatedGuard], // También protegida, necesitas mesa validada
+    canActivate: [tableValidatedGuard],
     title: 'Carrito de Compras - MesaFácil'
   },
-  // --- FIN NUEVA RUTA ---
-  // Considera añadir una redirección para rutas no encontradas al final:
-  // { path: '**', redirectTo: '', pathMatch: 'full' } // O a una página 404 si la creas
+  {
+    path: 'order-status', // <-- CAMBIO: Quitar el /:id
+    component: OrderStatusComponent,
+    title: 'Estado de tu Pedido - MesaFácil'
+  },
 ];

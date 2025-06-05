@@ -2,16 +2,21 @@ import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { OrderContextService } from '../services/order-context'; // Ajusta la ruta si es necesario
 
+// src/app/guards/table-validated.guard.ts
 export const tableValidatedGuard: CanActivateFn = (route, state) => {
   const orderContextService = inject(OrderContextService);
   const router = inject(Router);
+  const path = state.url;
 
-  if (orderContextService.getCurrentValidatedTableId() !== null) {
-    return true; // Hay un ID de mesa validado, permitir el acceso
+  const tableId = orderContextService.getCurrentValidatedTableId();
+  console.log(`TableValidatedGuard (intentando acceder a ${path}) - currentTableId recuperado del servicio:`, tableId);
+
+  if (tableId !== null) {
+    console.log(`TableValidatedGuard (${path}) - Acceso PERMITIDO.`);
+    return true;
   } else {
-    // No hay ID de mesa validado, redirigir a la página de validación de código
-    console.warn('Acceso denegado a la ruta. Se requiere validación de mesa.');
-    router.navigate(['/']); // Redirige a la ruta raíz (donde está TableCodeValidationComponent)
-    return false; // Denegar el acceso
+    console.warn(`TableValidatedGuard (${path}) - NO hay tableId, redirigiendo a /`);
+    router.navigate(['/']);
+    return false;
   }
 };

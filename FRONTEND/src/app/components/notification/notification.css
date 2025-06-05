@@ -1,0 +1,74 @@
+.notification-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 15px 20px;
+  border-radius: 5px;
+  color: #fff;
+  font-family: Arial, sans-serif;
+  z-index: 1050; /* Asegurar que esté por encima de otros elementos */
+  min-width: 250px;
+  max-width: 400px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  opacity: 0.95;
+}
+
+.notification-message {
+  flex-grow: 1;
+  margin-right: 15px;
+}
+
+.notification-close-btn {
+  background: none;
+  border: none;
+  color: inherit; /* Hereda el color del texto de la notificación */
+  font-size: 1.5em;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  opacity: 0.7;
+}
+
+.notification-close-btn:hover {
+  opacity: 1;
+}
+
+/* Estilos por tipo de notificación */
+.notification-success {
+  background-color: #28a745; /* Verde */
+}
+
+.notification-error {
+  background-color: #dc3545; /* Rojo */
+}
+
+.notification-info {
+  background-color: #17a2b8; /* Azul info */
+}
+
+.notification-warning {
+  background-color: #ffc107; /* Amarillo */
+  color: #212529; /* Texto oscuro para mejor contraste con amarillo */
+}
+.notification-warning .notification-close-btn {
+  color: #212529; /* Asegurar que el botón de cierre también sea visible */
+}
+
+/* Opcional: Animación de entrada/salida simple (puedes expandir esto) */
+.notification-container {
+  animation: fadeInDown 0.3s ease-out;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -20px, 0);
+  }
+  to {
+    opacity: 0.95;
+    transform: translate3d(0, 0, 0);
+  }
+}

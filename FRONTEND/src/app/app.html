@@ -2,6 +2,7 @@
   <div class="header-content">
     <h1><a routerLink="/" class="logo">{{ title }}</a></h1>
     <nav>
+      <a routerLink="/products" class="nav-link">Productos</a>
       <a routerLink="/tables-status" class="nav-link">Estado de Mesas</a>
       <a routerLink="/cart" class="nav-link cart-link" *ngIf="(cartItemCount$ | async) !== null">
         Carrito
@@ -9,7 +10,7 @@
           {{ cartItemCount$ | async }}
         </span>
       </a>
-      </nav>
+    </nav>
   </div>
 </header>
 
@@ -20,3 +21,5 @@
 <footer>
   <p>&copy; 2025 MesaFácil. Todos los derechos reservados.</p>
 </footer>
+
+<app-notification></app-notification>

@@ -43,9 +43,32 @@
           </div>
         </li>
       </ul>
+
+      <div class="customer-name-section">
+        <label for="customerName">Tu Nombre (Obligatorio):</label>
+        <input
+          type="text"
+          id="customerName"
+          [(ngModel)]="customerName"
+          name="customerName"
+          class="customer-name-input"
+          placeholder="Ej: Juan Pérez"
+          required  #customerNameInput="ngModel" >
+        <div *ngIf="customerNameInput.invalid && (customerNameInput.dirty || customerNameInput.touched || formSubmittedAttempt && customerNameInput.errors?.['required'])" class="input-error-message">
+          Por favor, ingresa tu nombre.
+        </div>
+      </div>
+      <div *ngIf="orderSubmissionSuccess" class="submission-success-message">
+        {{ orderSubmissionSuccess }}
+      </div>
+      <div *ngIf="orderSubmissionError && !isSubmittingOrder" class="submission-error-message">
+        {{ orderSubmissionError }}
+      </div>
       <div class="cart-actions">
-        <button (click)="clearCart()" class="clear-cart-btn">Vaciar Carrito</button>
-        <button (click)="proceedToOrder()" class="proceed-to-order-btn">Proceder a Realizar Pedido</button>
+        <button (click)="clearCart()" class="clear-cart-btn" [disabled]="isSubmittingOrder">Vaciar Carrito</button>
+        <button (click)="proceedToOrder()" class="proceed-to-order-btn" [disabled]="isSubmittingOrder || items.length === 0">
+          {{ isSubmittingOrder ? 'Enviando Pedido...' : 'Realizar Pedido' }}
+        </button>
       </div>
     </div>
   </div>

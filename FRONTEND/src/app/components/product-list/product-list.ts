@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Product, ProductService } from '../../services/product'; // Ya tienes Product aquí
 import { OrderContextService } from '../../services/order-context'; // Ya lo tenías para validatedTableNumber$
 import { Observable } from 'rxjs';
+import { NotificationService } from '../../services/notification';
 
 @Component({
   selector: 'app-product-list',
@@ -30,7 +31,8 @@ export class ProductListComponent implements OnInit {
   // Solo nos aseguramos de que ProductService también esté.
   constructor(
     private productService: ProductService,
-    private orderContextService: OrderContextService
+    private orderContextService: OrderContextService,
+    private notificationService: NotificationService
   ) {
     this.validatedTableNumber$ = this.orderContextService.validatedTableNumber$;
   }
@@ -94,17 +96,16 @@ export class ProductListComponent implements OnInit {
    * Añade el producto especificado al carrito de compras.
    * @param product El producto a añadir.
    */
-  addProductToCart(product: Product): void {
+   addProductToCart(product: Product): void {
     if (product.availability) {
-      this.orderContextService.addToCart(product, 1); // Añade 1 unidad por defecto
-      // Opcional: Mostrar alguna notificación de que el producto fue añadido
-      // Podríamos usar una librería de "toast" o "snackbar" aquí, o un simple alert/console.log por ahora.
-      console.log(`${product.name} añadido al carrito.`);
-      // Si quieres una confirmación más visual inmediata sin librerías complejas:
-      // alert(`${product.name} ha sido añadido al carrito.`);
+      this.orderContextService.addToCart(product, 1);
+      // --- CAMBIO: Usar el servicio de notificación ---
+      this.notificationService.showSuccess(`'${product.name}' añadido al carrito.`);
+      // --- FIN CAMBIO ---
     } else {
-      console.warn(`El producto ${product.name} no está disponible y no puede ser añadido.`);
-      // alert(`El producto ${product.name} no está disponible.`);
+      // --- CAMBIO: Usar el servicio de notificación para advertencias ---
+      this.notificationService.showWarning(`'${product.name}' no está disponible.`);
+      // --- FIN CAMBIO ---
     }
   }
   // --- FIN NUEVO MÉTODO ---

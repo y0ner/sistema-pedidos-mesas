@@ -1,0 +1,4 @@
+<div *ngIf="currentNotification" [ngClass]="getNotificationClass(currentNotification)" class="notification-container">
+  <span class="notification-message">{{ currentNotification.message }}</span>
+  <button (click)="closeNotification()" class="notification-close-btn" aria-label="Cerrar notificación">&times;</button>
+</div>

@@ -44,20 +44,15 @@ class OrderDetailWriteSerializer(serializers.ModelSerializer):
 class OrderSerializer(serializers.ModelSerializer):
     details = OrderDetailSerializer(many=True, read_only=True)
     details_write = OrderDetailWriteSerializer(many=True, write_only=True, source='details')
-    # Para que al leer un pedido, veamos el número de mesa y no solo el ID
     table_number = serializers.IntegerField(source='table.number', read_only=True, required=False)
-
 
     class Meta:
         model = Order
-        # AÑADIMOS 'customer_name' A LA LISTA DE CAMPOS
-        # Y 'table_number' para la lectura
         fields = [
             'id', 'table', 'table_number', 'status', 'total', 
-            'created_at', 'updated_at', 'customer_name', # <-- customer_name añadido
+            'created_at', 'updated_at', 'customer_name',
+            'view_token', # <-- AÑADIMOS EL NUEVO CAMPO AQUÍ
             'details', 'details_write'
         ]
-        # 'customer_name' será escribible.
-        # 'table' será el campo para escribir (espera un ID de mesa).
-        # 'table_number' es solo para leer y mostrar.
-        read_only_fields = ['total', 'status', 'table_number']
+        # Hacemos que view_token sea de solo lectura, junto con los otros
+        read_only_fields = ['total', 'status', 'table_number', 'view_token']

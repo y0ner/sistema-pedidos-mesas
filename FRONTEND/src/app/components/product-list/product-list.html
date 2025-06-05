@@ -65,6 +65,7 @@
     <p>No hay productos disponibles en este momento.</p>
   </div>
 </ng-container>
+
 <div *ngIf="!isLoading && !error && products.length > 0" class="product-grid">
   <div *ngFor="let product of products" class="product-card">
     <img *ngIf="product.image" [src]="product.image" alt="{{ product.name }}" class="product-image">

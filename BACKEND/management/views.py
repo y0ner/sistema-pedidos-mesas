@@ -184,7 +184,100 @@ class OrderViewSet(viewsets.ModelViewSet):
         read_serializer = self.get_serializer(order)
         return Response(read_serializer.data, status=status.HTTP_200_OK)
 
-    # --- INICIO DE LA SECCIÓN MODIFICADA ---
+    @action(detail=False, methods=['get'], url_path='by-token', permission_classes=[permissions.AllowAny])
+    def get_by_token(self, request):
+        token_from_url = request.query_params.get('token', None)
+        if not token_from_url:
+            return Response(
+                {'error': 'Se requiere el parámetro "token" en la URL.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        try:
+            order = Order.objects.get(view_token=token_from_url)
+        except (Order.DoesNotExist, ValueError):
+            return Response(
+                {'error': 'Pedido no encontrado o token inválido.'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        serializer = self.get_serializer(order)
+        return Response(serializer.data)
+    
+    @action(detail=True, methods=['post'], url_path='prepare', permission_classes=[permissions.IsAuthenticated])
+    def mark_as_preparing(self, request, pk=None):
+        order = self.get_object()
+        if order.status != 'confirmed':
+            return Response(
+                {'error': f'El pedido debe estar en estado "confirmado" para marcarlo como "en preparación". Estado actual: {order.status}.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        order.status = 'preparing'
+        order.save()
+        serializer = self.get_serializer(order)
+        return Response(serializer.data)
+      
+    @action(detail=True, methods=['post'], url_path='annul', permission_classes=[permissions.IsAuthenticated])
+    def annul_order(self, request, pk=None):
+        order = self.get_object()
+        allowed_statuses_to_annul = ['pending', 'confirmed']
+        if order.status not in allowed_statuses_to_annul:
+            return Response(
+                {'error': f'El pedido solo se puede anular si está en estado "pendiente" o "confirmado". Estado actual: {order.status}.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        order.status = 'annulled'
+        order.save()
+        serializer = self.get_serializer(order)
+        return Response(serializer.data)
+    # El resto de las acciones (confirm_order, get_by_token, etc.) no cambian
+    @action(detail=True, methods=['post'], url_path='confirm')
+    def confirm_order(self, request, pk=None):
+        order = self.get_object()
+        if order.status != 'pending':
+            return Response(
+                {'error': f'Este pedido ya está en estado "{order.status}" y no puede ser confirmado de nuevo.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        order.status = 'confirmed'
+        order.save()
+        serializer = self.get_serializer(order)
+        return Response(serializer.data)
+
+# --- ACCIÓN NUEVA ---
+    @action(detail=True, methods=['post'], url_path='ready', permission_classes=[permissions.IsAuthenticated])
+    def mark_as_ready(self, request, pk=None):
+        """
+        Permite al personal de cocina marcar un pedido como 'Listo para Entregar'.
+        El pedido debe estar previamente en estado 'en preparación'.
+        """
+        order = self.get_object()
+        if order.status != 'preparing':
+            return Response(
+                {'error': f'El pedido debe estar "en preparación" para marcarlo como "listo para entregar". Estado actual: {order.status}.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        order.status = 'ready_to_deliver'
+        order.save()
+        serializer = self.get_serializer(order)
+        return Response(serializer.data)
+    
+    # --- ACCIÓN MODIFICADA ---
+    @action(detail=True, methods=['post'], url_path='deliver', permission_classes=[permissions.IsAuthenticated])
+    def mark_as_delivered(self, request, pk=None):
+        """
+        Permite al mesero marcar un pedido como 'Entregado'.
+        El pedido ahora debe estar previamente en estado 'listo para entregar'.
+        """
+        order = self.get_object()
+        # MODIFICACIÓN: Ahora validamos contra 'ready_to_deliver'
+        if order.status != 'ready_to_deliver':
+            return Response(
+                {'error': f'El pedido debe estar "listo para entregar" para marcarlo como "entregado". Estado actual: {order.status}.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        order.status = 'delivered'
+        order.save()
+        serializer = self.get_serializer(order)
+        return Response(serializer.data)
 
     # He unido tu lógica con la mía. Uso tu url_path `pay` y he añadido el decorador @transaction.atomic.
     @action(detail=True, methods=['post'], url_path='pay', permission_classes=[permissions.IsAuthenticated])
@@ -234,81 +327,6 @@ class OrderViewSet(viewsets.ModelViewSet):
             'message': f'Pedido {order.id} marcado como pagado y venta registrada con éxito.',
             'order': serializer.data
         }, status=status.HTTP_200_OK)
-
-    # --- FIN DE LA SECCIÓN MODIFICADA ---
-
-    # El resto de las acciones (confirm_order, get_by_token, etc.) no cambian
-    @action(detail=True, methods=['post'], url_path='confirm')
-    def confirm_order(self, request, pk=None):
-        order = self.get_object()
-        if order.status != 'pending':
-            return Response(
-                {'error': f'Este pedido ya está en estado "{order.status}" y no puede ser confirmado de nuevo.'},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-        order.status = 'confirmed'
-        order.save()
-        serializer = self.get_serializer(order)
-        return Response(serializer.data)
-
-    @action(detail=False, methods=['get'], url_path='by-token', permission_classes=[permissions.AllowAny])
-    def get_by_token(self, request):
-        token_from_url = request.query_params.get('token', None)
-        if not token_from_url:
-            return Response(
-                {'error': 'Se requiere el parámetro "token" en la URL.'},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-        try:
-            order = Order.objects.get(view_token=token_from_url)
-        except (Order.DoesNotExist, ValueError):
-            return Response(
-                {'error': 'Pedido no encontrado o token inválido.'},
-                status=status.HTTP_404_NOT_FOUND
-            )
-        serializer = self.get_serializer(order)
-        return Response(serializer.data)
-
-    @action(detail=True, methods=['post'], url_path='prepare', permission_classes=[permissions.IsAuthenticated])
-    def mark_as_preparing(self, request, pk=None):
-        order = self.get_object()
-        if order.status != 'confirmed':
-            return Response(
-                {'error': f'El pedido debe estar en estado "confirmado" para marcarlo como "en preparación". Estado actual: {order.status}.'},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-        order.status = 'preparing'
-        order.save()
-        serializer = self.get_serializer(order)
-        return Response(serializer.data)
-
-    @action(detail=True, methods=['post'], url_path='deliver', permission_classes=[permissions.IsAuthenticated])
-    def mark_as_delivered(self, request, pk=None):
-        order = self.get_object()
-        if order.status != 'preparing':
-            return Response(
-                {'error': f'El pedido debe estar en estado "en preparación" para marcarlo como "entregado". Estado actual: {order.status}.'},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-        order.status = 'delivered'
-        order.save()
-        serializer = self.get_serializer(order)
-        return Response(serializer.data)
-
-    @action(detail=True, methods=['post'], url_path='annul', permission_classes=[permissions.IsAuthenticated])
-    def annul_order(self, request, pk=None):
-        order = self.get_object()
-        allowed_statuses_to_annul = ['pending', 'confirmed']
-        if order.status not in allowed_statuses_to_annul:
-            return Response(
-                {'error': f'El pedido solo se puede anular si está en estado "pendiente" o "confirmado". Estado actual: {order.status}.'},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-        order.status = 'annulled'
-        order.save()
-        serializer = self.get_serializer(order)
-        return Response(serializer.data)
-
 
 class OrderDetailViewSet(viewsets.ModelViewSet):
     queryset = OrderDetail.objects.all()

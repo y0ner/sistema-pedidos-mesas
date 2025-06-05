@@ -116,3 +116,15 @@
 .updating-indicator {
   font-style: italic;
 }
+
+/* ... (tus estilos existentes .status-pending, .status-confirmed, etc.) ... */
+
+.status-preparing { background-color: #fd7e14; } /* Naranja */
+
+/* --- NUEVA CLASE DE ESTADO --- */
+.status-ready_to_deliver { background-color: #6f42c1; } /* Púrpura/Indigo */
+/* --- FIN NUEVA CLASE --- */
+
+.status-delivered { background-color: #28a745; } /* Verde */
+.status-paid { background-color: #20c997; } /* Verde azulado */
+.status-cancelled { background-color: #6c757d; } /* Gris */

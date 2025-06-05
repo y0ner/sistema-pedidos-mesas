@@ -69,16 +69,18 @@ class Order(models.Model):
     # related_name='orders': Permite acceder a los pedidos desde un objeto Table (ej. my_table.orders.all())
     table = models.ForeignKey(Table, on_delete=models.SET_NULL, null=True, related_name='orders')
     # Opciones de estado para el pedid
+    # ... (otros campos no cambian) ...
     STATUS_CHOICES = [
         ('pending', 'Pendiente'),
         ('confirmed', 'Confirmado'),
         ('preparing', 'En preparación'),
+        ('ready_to_deliver', 'Listo para Entregar'), # <-- NUEVO ESTADO
         ('delivered', 'Entregado'),
         ('paid', 'Pagado'),
         ('annulled', 'Anulado'),
     ]
     status = models.CharField(
-        max_length=20,
+        max_length=20, # Aumentaremos el tamaño por si acaso
         choices=STATUS_CHOICES,
         default='pending'
     )

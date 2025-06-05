@@ -54,16 +54,16 @@
     </div>
 
     <p
-      *ngIf="currentOrder.status.toLowerCase() === 'pending'"
-      class="next-step-message"
-    >
-      Un mesero se acercará a tu mesa en breve para confirmar tu pedido.
-    </p>
-    <p
       *ngIf="currentOrder.status.toLowerCase() === 'confirmed'"
       class="next-step-message"
     >
       ¡Tu pedido ha sido confirmado y se está preparando!
+    </p>
+    <p
+      *ngIf="currentOrder.status.toLowerCase() === 'ready_to_deliver'"
+      class="next-step-message"
+    >
+      ¡Tu pedido está listo! Un mesero lo traerá a tu mesa en cualquier momento.
     </p>
     <p class="last-updated-time" *ngIf="lastUpdated">
       Última actualización: {{ lastUpdated | date:'mediumTime' }}

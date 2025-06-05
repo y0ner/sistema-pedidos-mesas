@@ -1,21 +1,26 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http'; // Importar HttpParams
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Product } from './product';
 
-// --- INTERFACES PARA LA CREACIÓN DEL PEDIDO ---
+// --- INTERFACES DE PAYLOAD (Lo que enviamos al backend) ---
 export interface OrderDetailWritePayload {
   product_id: number;
   quantity: number;
 }
-export interface CreateOrderPayload {
+export interface CreateOrderPayload { // Para que el cliente cree un pedido
   table: number;
   customer_name?: string | null;
   details_write: OrderDetailWritePayload[];
 }
+export interface UpdateOrderPayload { // Para que el personal edite un pedido
+  table: number;
+  customer_name: string | null;
+  details_write: OrderDetailWritePayload[];
+}
 
-// --- INTERFACES PARA LA RESPUESTA DEL PEDIDO ---
+// --- INTERFACES DE RESPUESTA (Lo que recibimos del backend) ---
 export interface OrderDetailResponse {
   id: number;
   product: Product;
@@ -24,15 +29,15 @@ export interface OrderDetailResponse {
 }
 export interface OrderResponse {
   id: number;
-  table: number; // ID de la mesa
-  table_number: number; // Número de la mesa
+  table: number;
+  table_number: number;
   status: string;
   total: string;
   created_at: string;
   updated_at: string;
   customer_name: string | null;
   details: OrderDetailResponse[];
-  view_token: string; // <-- ¡NUEVO CAMPO IMPORTANTE!
+  view_token?: string; // Es opcional porque no vendrá en todos los casos
 }
 export interface ApiError {
   error?: string;
@@ -47,49 +52,76 @@ export class OrderService {
 
   constructor(private http: HttpClient) { }
 
-  /**
-   * Crea un nuevo pedido en el backend.
-   * @param orderPayload El objeto con los datos del pedido.
-   * @returns Un Observable con los datos del pedido creado, incluyendo el view_token.
-   */
+  // --- MÉTODOS EXISTENTES (Para el cliente) ---
   createOrder(orderPayload: CreateOrderPayload): Observable<OrderResponse> {
-    return this.http.post<OrderResponse>(this.baseApiUrl, orderPayload).pipe(
-      catchError(this.handleError)
-    );
+    return this.http.post<OrderResponse>(this.baseApiUrl, orderPayload).pipe(catchError(this.handleError));
   }
 
-  /**
-   * Obtiene los detalles de un pedido específico usando su view_token.
-   * @param token El view_token del pedido.
-   * @returns Un Observable con los datos del pedido.
-   */
   getOrderByToken(token: string): Observable<OrderResponse> {
     const url = `${this.baseApiUrl}by-token/`;
     const params = new HttpParams().set('token', token);
-    return this.http.get<OrderResponse>(url, { params }).pipe(
-      catchError(this.handleError)
-    );
+    return this.http.get<OrderResponse>(url, { params }).pipe(catchError(this.handleError));
   }
 
-  // El método getOrderById(orderId: number) ya no es necesario para el flujo del cliente anónimo
-  // Podríamos comentarlo o eliminarlo si no se prevé su uso por parte del personal en el frontend.
-  /*
-  getOrderById(orderId: number): Observable<OrderResponse> {
+  // --- NUEVOS MÉTODOS (Para el Personal) ---
+
+  /**
+   * Obtiene una lista de todos los pedidos.
+   * El interceptor se encargará de la autenticación.
+   * Podríamos añadir filtros aquí en el futuro (ej. ?status=pending)
+   */
+  getOrders(): Observable<OrderResponse[]> {
+    return this.http.get<OrderResponse[]>(this.baseApiUrl).pipe(catchError(this.handleError));
+  }
+
+  /**
+   * Edita los artículos de un pedido pendiente.
+   * @param orderId ID del pedido a modificar.
+   * @param payload El cuerpo completo del pedido con los nuevos artículos.
+   */
+  updateOrder(orderId: number, payload: UpdateOrderPayload): Observable<OrderResponse> {
     const url = `${this.baseApiUrl}${orderId}/`;
-    return this.http.get<OrderResponse>(url).pipe(
-      catchError(this.handleError)
-    );
+    return this.http.put<OrderResponse>(url, payload).pipe(catchError(this.handleError));
   }
-  */
+  
+  // --- Métodos para cambiar el estado de un pedido ---
 
+  private postAction(orderId: number, action: string): Observable<OrderResponse> {
+    const url = `${this.baseApiUrl}${orderId}/${action}/`;
+    return this.http.post<OrderResponse>(url, {}).pipe(catchError(this.handleError));
+  }
+
+  confirmOrder(orderId: number): Observable<OrderResponse> {
+    return this.postAction(orderId, 'confirm');
+  }
+
+  prepareOrder(orderId: number): Observable<OrderResponse> {
+    return this.postAction(orderId, 'prepare');
+  }
+
+  readyOrder(orderId: number): Observable<OrderResponse> {
+    return this.postAction(orderId, 'ready');
+  }
+
+  deliverOrder(orderId: number): Observable<OrderResponse> {
+    return this.postAction(orderId, 'deliver');
+  }
+
+  payOrder(orderId: number): Observable<OrderResponse> {
+    return this.postAction(orderId, 'pay');
+  }
+
+  annulOrder(orderId: number): Observable<OrderResponse> {
+    return this.postAction(orderId, 'annul');
+  }
+
+  // ... (handleError sin cambios) ...
   private handleError(error: HttpErrorResponse) {
     let errorMessage: string;
     if (error.error instanceof ErrorEvent) {
       errorMessage = `Error: ${error.error.message}`;
     } else {
-      console.error(
-        `Backend devolvió el código ${error.status}, ` +
-        `cuerpo del error: ${JSON.stringify(error.error)}`);
+      console.error(`Backend devolvió el código ${error.status}, cuerpo del error: ${JSON.stringify(error.error)}`);
       const apiError = error.error as ApiError;
       if (apiError && typeof apiError === 'object') {
         if (apiError.detail) {

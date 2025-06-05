@@ -4,17 +4,36 @@ import { TableCodeValidationComponent } from './components/table-code-validation
 import { tableValidatedGuard } from './guards/table-validated-guard';
 import { TableStatusDashboardComponent } from './components/table-status-dashboard/table-status-dashboard';
 import { ShoppingCartComponent } from './components/shopping-cart/shopping-cart';
-// --- NUEVA IMPORTACIÓN DEL GUARDIA ---
-import { OrderStatusComponent } from './components/order-status/order-status'; // <-- NUEVA IMPORTACIÓN
+import { OrderStatusComponent } from './components/order-status/order-status';
 import { tableNotValidatedGuard } from './guards/table-not-validated-guard';
+import { authGuard } from './guards/auth-guard'; // Importar el nuevo AuthGuard
+import { DashboardComponent } from './components/staff/dashboard/dashboard'; // Importar el nuevo Dashboard
+// --- NUEVA IMPORTACIÓN ---
+import { LoginComponent } from './components/login/login';
 
 export const routes: Routes = [
+
+// --- NUEVA RUTA PROTEGIDA PARA EL PERSONAL ---
+  {
+    path: 'staff/dashboard',
+    component: DashboardComponent,
+    canActivate: [authGuard], // <-- ¡AQUÍ SE APLICA EL GUARDIA!
+    title: 'Dashboard - Personal'
+  },
+
   {
     path: '',
     component: TableCodeValidationComponent,
-    canActivate: [tableNotValidatedGuard], // <-- APLICAR EL NUEVO GUARDIA AQUÍ
+    canActivate: [tableNotValidatedGuard],
     title: 'Validar Mesa - MesaFácil'
   },
+  // --- NUEVA RUTA PARA EL LOGIN ---
+  {
+    path: 'login',
+    component: LoginComponent,
+    title: 'Inicio de Sesión - Personal'
+  },
+  // --- FIN NUEVA RUTA ---
   {
     path: 'products',
     component: ProductListComponent,
@@ -33,7 +52,7 @@ export const routes: Routes = [
     title: 'Carrito de Compras - MesaFácil'
   },
   {
-    path: 'order-status', // <-- CAMBIO: Quitar el /:id
+    path: 'order-status',
     component: OrderStatusComponent,
     title: 'Estado de tu Pedido - MesaFácil'
   },

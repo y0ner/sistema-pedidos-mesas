@@ -4,13 +4,16 @@ import { FormsModule } from '@angular/forms'; // Necesario para [(ngModel)]
 import { Router } from '@angular/router'; // Para la navegación
 import { TableService, ValidatedTableResponse } from '../../services/table'; // Importamos el servicio y la interfaz
 import { OrderContextService } from '../../services/order-context'; // Importamos el servicio de contexto
+import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner';
 
 @Component({
   selector: 'app-table-code-validation',
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule // Importamos FormsModule
+    FormsModule,
+    LoadingSpinnerComponent
+
   ],
   templateUrl: './table-code-validation.html',
   styleUrls: ['./table-code-validation.css']

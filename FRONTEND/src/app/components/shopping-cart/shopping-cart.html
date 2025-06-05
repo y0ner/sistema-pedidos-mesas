@@ -9,35 +9,61 @@
     <div *ngIf="items.length > 0; else emptyCart">
       <div class="cart-summary">
         <span>Total de Productos: {{ cartItemCount$ | async }}</span>
-        <span>Monto Total: <strong>{{ cartTotalAmount$ | async | number:'1.2-2' }}</strong></span>
+        <span
+          >Monto Total:
+          <strong>{{ cartTotalAmount$ | async | number:'1.2-2' }}</strong></span
+        >
       </div>
 
       <ul class="cart-items-list">
         <li *ngFor="let item of items" class="cart-item">
           <div class="item-info">
-            <img *ngIf="item.product.image" [src]="item.product.image" alt="{{ item.product.name }}" class="item-image">
-            <img *ngIf="!item.product.image" src="https://via.placeholder.com/50?text=N/A" alt="Sin imagen" class="item-image">
+            <img
+              *ngIf="item.product.image"
+              [src]="item.product.image"
+              alt="{{ item.product.name }}"
+              class="item-image"
+            />
+            <img
+              *ngIf="!item.product.image"
+              src="https://via.placeholder.com/50?text=N/A"
+              alt="Sin imagen"
+              class="item-image"
+            />
             <div class="item-details">
               <span class="item-name">{{ item.product.name }}</span>
-              <span class="item-price">Precio Unitario: ${{ item.product.price | number:'1.2-2' }}</span>
+              <span class="item-price"
+                >Precio Unitario: ${{ item.product.price | number:'1.2-2'
+                }}</span
+              >
             </div>
           </div>
           <div class="item-actions">
             <div class="quantity-controls">
-              <button (click)="decrementQuantity(item)" class="quantity-btn">-</button>
+              <button (click)="decrementQuantity(item)" class="quantity-btn">
+                -
+              </button>
               <input
                 type="number"
                 [ngModel]="item.quantity"
                 (blur)="updateQuantity(item.product.id, $event)"
                 min="0"
                 class="quantity-input"
-                aria-label="Cantidad">
-              <button (click)="incrementQuantity(item)" class="quantity-btn">+</button>
+                aria-label="Cantidad"
+              />
+              <button (click)="incrementQuantity(item)" class="quantity-btn">
+                +
+              </button>
             </div>
             <span class="item-subtotal">
-              Subtotal: ${{ (item.product.price * item.quantity) | number:'1.2-2' }}
+              Subtotal: ${{ (item.product.price * item.quantity) |
+              number:'1.2-2' }}
             </span>
-            <button (click)="removeItem(item.product.id)" class="remove-item-btn" aria-label="Eliminar item">
+            <button
+              (click)="removeItem(item.product.id)"
+              class="remove-item-btn"
+              aria-label="Eliminar item"
+            >
               Eliminar
             </button>
           </div>
@@ -53,20 +79,38 @@
           name="customerName"
           class="customer-name-input"
           placeholder="Ej: Juan Pérez"
-          required  #customerNameInput="ngModel" >
-        <div *ngIf="customerNameInput.invalid && (customerNameInput.dirty || customerNameInput.touched || formSubmittedAttempt && customerNameInput.errors?.['required'])" class="input-error-message">
+          required
+          #customerNameInput="ngModel"
+        />
+        <div
+          *ngIf="customerNameInput.invalid && (customerNameInput.dirty || customerNameInput.touched || formSubmittedAttempt && customerNameInput.errors?.['required'])"
+          class="input-error-message"
+        >
           Por favor, ingresa tu nombre.
         </div>
       </div>
       <div *ngIf="orderSubmissionSuccess" class="submission-success-message">
         {{ orderSubmissionSuccess }}
       </div>
-      <div *ngIf="orderSubmissionError && !isSubmittingOrder" class="submission-error-message">
+      <div
+        *ngIf="orderSubmissionError && !isSubmittingOrder"
+        class="submission-error-message"
+      >
         {{ orderSubmissionError }}
       </div>
       <div class="cart-actions">
-        <button (click)="clearCart()" class="clear-cart-btn" [disabled]="isSubmittingOrder">Vaciar Carrito</button>
-        <button (click)="proceedToOrder()" class="proceed-to-order-btn" [disabled]="isSubmittingOrder || items.length === 0">
+        <button
+          (click)="clearCart()"
+          class="clear-cart-btn"
+          [disabled]="isSubmittingOrder"
+        >
+          Vaciar Carrito
+        </button>
+        <button
+          (click)="proceedToOrder()"
+          class="proceed-to-order-btn"
+          [disabled]="isSubmittingOrder || items.length === 0"
+        >
           {{ isSubmittingOrder ? 'Enviando Pedido...' : 'Realizar Pedido' }}
         </button>
       </div>
@@ -75,6 +119,8 @@
 
   <ng-template #emptyCart>
     <p class="empty-cart-message">Tu carrito está vacío.</p>
-    <p><a routerLink="/products">Vuelve al catálogo</a> para añadir productos.</p>
+    <p>
+      <a routerLink="/products">Vuelve al catálogo</a> para añadir productos.
+    </p>
   </ng-template>
 </div>

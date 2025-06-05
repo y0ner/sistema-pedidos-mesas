@@ -1,7 +1,11 @@
 <div class="dashboard-container">
   <div class="header">
     <h2>Estado de las Mesas</h2>
-    <button (click)="loadTableStatus()" [disabled]="isLoading" class="refresh-button">
+    <button
+      (click)="loadTableStatus()"
+      [disabled]="isLoading"
+      class="refresh-button"
+    >
       {{ isLoading ? 'Actualizando...' : 'Actualizar Ahora' }}
     </button>
   </div>
@@ -10,20 +14,37 @@
   </p>
 
   <div *ngIf="isLoading" class="loading-message">
+    <app-loading-spinner></app-loading-spinner>
     <p>Cargando estado de las mesas...</p>
-    </div>
+  </div>
+  <div *ngIf="errorMessage && !isLoading" class="error-message">
+    <p>{{ errorMessage }}</p>
+  </div>
 
   <div *ngIf="errorMessage && !isLoading" class="error-message">
     <p>{{ errorMessage }}</p>
-    <p>Por favor, asegúrate de que el backend esté funcionando y que el endpoint <code>GET /api/v1/tables/</code> sea accesible.</p>
+    <p>
+      Por favor, asegúrate de que el backend esté funcionando y que el endpoint
+      <code>GET /api/v1/tables/</code> sea accesible.
+    </p>
   </div>
 
-  <div *ngIf="!isLoading && !errorMessage && tables.length === 0" class="empty-message">
+  <div
+    *ngIf="!isLoading && !errorMessage && tables.length === 0"
+    class="empty-message"
+  >
     <p>No hay mesas para mostrar o no se pudieron cargar los datos.</p>
   </div>
 
-  <div *ngIf="!isLoading && !errorMessage && tables.length > 0" class="tables-grid">
-    <div *ngFor="let table of tables" class="table-card" [ngClass]="getTableStatusClass(table.status)">
+  <div
+    *ngIf="!isLoading && !errorMessage && tables.length > 0"
+    class="tables-grid"
+  >
+    <div
+      *ngFor="let table of tables"
+      class="table-card"
+      [ngClass]="getTableStatusClass(table.status)"
+    >
       <div class="table-number">Mesa {{ table.number }}</div>
       <div class="table-status">{{ table.status | titlecase }}</div>
     </div>

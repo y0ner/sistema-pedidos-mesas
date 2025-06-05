@@ -1,29 +1,46 @@
 <div class="order-status-container">
   <h2>Estado de tu Pedido</h2>
 
-  <div *ngIf="isLoading && !currentOrder" class="loading-message">
+  <div *ngIf="isLoading" class="loading-message">
+    <app-loading-spinner></app-loading-spinner>
     <p>Cargando información de tu pedido...</p>
   </div>
-
   <div *ngIf="errorMessage && !isLoading" class="error-message">
     <p>{{ errorMessage }}</p>
   </div>
 
-  <div *ngIf="!isLoading && !currentOrder && !errorMessage" class="no-order-info">
-    <p>No se pudo cargar la información del pedido. Intenta validar una mesa y realizar un pedido.</p>
+  <div
+    *ngIf="!isLoading && !currentOrder && !errorMessage"
+    class="no-order-info"
+  >
+    <p>
+      No se pudo cargar la información del pedido. Intenta validar una mesa y
+      realizar un pedido.
+    </p>
   </div>
 
   <div *ngIf="currentOrder" class="order-details">
     <p class="status-highlight">
-      <strong>Hola {{ currentOrder.customer_name || initialCustomerName || 'Cliente' }}!</strong>
+      <strong
+        >Hola {{ currentOrder.customer_name || initialCustomerName || 'Cliente'
+        }}!</strong
+      >
     </p>
     <p>
       Tu pedido <strong>#{{ currentOrder.id }}</strong> para la
-      <strong>Mesa {{ currentOrder.table_number || initialTableNumber }}</strong>
-      está actualmente: <strong class="status-text status-{{currentOrder.status.toLowerCase()}}">{{ currentOrder.status | titlecase }}</strong>.
+      <strong
+        >Mesa {{ currentOrder.table_number || initialTableNumber }}</strong
+      >
+      está actualmente:
+      <strong class="status-text status-{{currentOrder.status.toLowerCase()}}"
+        >{{ currentOrder.status | titlecase }}</strong
+      >.
     </p>
 
-    <div class="items-summary" *ngIf="currentOrder.details && currentOrder.details.length > 0">
+    <div
+      class="items-summary"
+      *ngIf="currentOrder.details && currentOrder.details.length > 0"
+    >
       <h3>Resumen del Pedido:</h3>
       <ul>
         <li *ngFor="let item of currentOrder.details">
@@ -31,18 +48,28 @@
           <span>(${{ item.subtotal }})</span>
         </li>
       </ul>
-      <p class="total-amount">Total: <strong>${{ currentOrder.total }}</strong></p>
+      <p class="total-amount">
+        Total: <strong>${{ currentOrder.total }}</strong>
+      </p>
     </div>
 
-    <p *ngIf="currentOrder.status.toLowerCase() === 'pending'" class="next-step-message">
+    <p
+      *ngIf="currentOrder.status.toLowerCase() === 'pending'"
+      class="next-step-message"
+    >
       Un mesero se acercará a tu mesa en breve para confirmar tu pedido.
     </p>
-    <p *ngIf="currentOrder.status.toLowerCase() === 'confirmed'" class="next-step-message">
+    <p
+      *ngIf="currentOrder.status.toLowerCase() === 'confirmed'"
+      class="next-step-message"
+    >
       ¡Tu pedido ha sido confirmado y se está preparando!
     </p>
     <p class="last-updated-time" *ngIf="lastUpdated">
       Última actualización: {{ lastUpdated | date:'mediumTime' }}
-      <span *ngIf="isLoading" class="updating-indicator">(Actualizando...)</span>
+      <span *ngIf="isLoading" class="updating-indicator"
+        >(Actualizando...)</span
+      >
     </p>
   </div>
 

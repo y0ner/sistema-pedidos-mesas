@@ -1,8 +1,14 @@
 <div class="validation-container">
   <h2>Validar Código de Mesa</h2>
-  <p>Por favor, ingresa el código de 4 dígitos que ves en la pantalla del local.</p>
+  <p>
+    Por favor, ingresa el código de 4 dígitos que ves en la pantalla del local.
+  </p>
 
-  <form (ngSubmit)="onValidateCode()" #validationForm="ngForm" class="validation-form">
+  <form
+    (ngSubmit)="onValidateCode()"
+    #validationForm="ngForm"
+    class="validation-form"
+  >
     <div class="form-group">
       <label for="tableCode">Código de Mesa:</label>
       <input
@@ -18,22 +24,37 @@
         class="form-control"
         [disabled]="isLoading"
       />
-      <div *ngIf="validationForm.submitted && validationForm.controls['tableCode']?.errors" class="input-error">
-        <span *ngIf="validationForm.controls['tableCode']?.errors?.['required']">El código es requerido.</span>
-        <span *ngIf="validationForm.controls['tableCode']?.errors?.['pattern'] || validationForm.controls['tableCode']?.errors?.['minlength'] || validationForm.controls['tableCode']?.errors?.['maxlength']">
+      <div
+        *ngIf="validationForm.submitted && validationForm.controls['tableCode']?.errors"
+        class="input-error"
+      >
+        <span *ngIf="validationForm.controls['tableCode']?.errors?.['required']"
+          >El código es requerido.</span
+        >
+        <span
+          *ngIf="validationForm.controls['tableCode']?.errors?.['pattern'] || validationForm.controls['tableCode']?.errors?.['minlength'] || validationForm.controls['tableCode']?.errors?.['maxlength']"
+        >
           El código debe ser de 4 dígitos numéricos.
         </span>
       </div>
     </div>
 
-    <button type="submit" [disabled]="isLoading || !validationForm.valid" class="submit-button">
+    <button
+      type="submit"
+      [disabled]="isLoading || !validationForm.valid"
+      class="submit-button"
+    >
       {{ isLoading ? 'Validando...' : 'Validar Mesa' }}
     </button>
   </form>
 
   <div *ngIf="isLoading" class="loading-message">
+    <app-loading-spinner></app-loading-spinner>
     <p>Procesando...</p>
-    </div>
+  </div>
+  <div *ngIf="errorMessage && !isLoading" class="error-message">
+    <p>{{ errorMessage }}</p>
+  </div>
 
   <div *ngIf="successMessage" class="success-message">
     <p>{{ successMessage }}</p>

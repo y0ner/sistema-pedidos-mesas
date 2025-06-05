@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Table, TableService } from '../../services/table'; // Importamos el servicio y la interfaz Table
+import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner';
 
 @Component({
   selector: 'app-table-status-dashboard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, LoadingSpinnerComponent],
   templateUrl: './table-status-dashboard.html',
-  styleUrls: ['./table-status-dashboard.css']
+  styleUrls: ['./table-status-dashboard.css'],
+  
 })
 export class TableStatusDashboardComponent implements OnInit {
   tables: Table[] = [];

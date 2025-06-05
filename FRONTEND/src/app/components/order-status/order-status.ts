@@ -4,11 +4,12 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Subscription, interval, startWith, switchMap, takeWhile } from 'rxjs'; // Para polling y gestión de suscripciones
 import { OrderContextService } from '../../services/order-context';
 import { OrderService, OrderResponse, ApiError } from '../../services/order'; // Importar OrderService y OrderResponse
+import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner';
 
 @Component({
   selector: 'app-order-status',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, LoadingSpinnerComponent],
   templateUrl: './order-status.html',
   styleUrls: ['./order-status.css']
 })

@@ -5,13 +5,15 @@ import { Product, ProductService } from '../../services/product'; // Ya tienes P
 import { OrderContextService } from '../../services/order-context'; // Ya lo tenías para validatedTableNumber$
 import { Observable } from 'rxjs';
 import { NotificationService } from '../../services/notification';
+import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner';
 
 @Component({
   selector: 'app-product-list',
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule
+    FormsModule,
+    LoadingSpinnerComponent
   ],
   templateUrl: './product-list.html',
   styleUrls: ['./product-list.css']

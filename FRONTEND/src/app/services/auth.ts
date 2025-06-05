@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
-
+import { BehaviorSubject, Observable, tap, catchError, throwError, filter, take, switchMap } from 'rxjs'; // Añade filter, take
 // --- INTERFACES ---
 export interface LoginCredentials {
   username?: string;
@@ -25,105 +24,99 @@ export class AuthService {
   private apiTokenUrl = 'http://127.0.0.1:8000/api/token/';
   private apiTokenRefreshUrl = 'http://127.0.0.1:8000/api/token/refresh/';
 
-  // BehaviorSubject para mantener el estado de autenticación en toda la app
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.hasToken());
   public isAuthenticated$: Observable<boolean> = this.isAuthenticatedSubject.asObservable();
+  
+  private isRefreshing = false;
+  private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
   constructor(
     private http: HttpClient,
     private router: Router
   ) {}
 
-  /**
-   * Realiza el login del usuario.
-   * @param credentials Objeto con username y password.
-   * @returns Observable con la respuesta de los tokens.
-   */
+  // ... (método login() sin cambios)
   login(credentials: LoginCredentials): Observable<TokenResponse> {
     return this.http.post<TokenResponse>(this.apiTokenUrl, credentials).pipe(
       tap(response => {
-        // Al recibir la respuesta, la procesamos
         this.handleAuthentication(response);
       })
     );
   }
 
-  /**
-   * Cierra la sesión del usuario.
-   */
-  logout(): void {
-    console.log('Cerrando sesión...');
-    localStorage.removeItem(ACCESS_TOKEN_KEY);
-    localStorage.removeItem(REFRESH_TOKEN_KEY);
-    this.isAuthenticatedSubject.next(false);
-    // Redirigir a la página de login (que crearemos)
-    this.router.navigate(['/login']);
-  }
-
-
-  /**
-   * Verifica de forma síncrona si el usuario está autenticado.
-   * Útil para los guardias de ruta.
-   * @returns `true` si el BehaviorSubject de autenticación es true.
-   */
-  isLoggedIn(): boolean {
-    return this.isAuthenticatedSubject.getValue();
-  }
-
-  /**
-   * Procesa la respuesta de autenticación, guarda tokens y actualiza el estado.
-   * @param response La respuesta del endpoint /api/token/
-   */
+  // --- El método handleAuthentication se mantiene para el login ---
   private handleAuthentication(response: TokenResponse): void {
     if (response.access && response.refresh) {
       localStorage.setItem(ACCESS_TOKEN_KEY, response.access);
       localStorage.setItem(REFRESH_TOKEN_KEY, response.refresh);
       this.isAuthenticatedSubject.next(true);
-      console.log('Tokens guardados y estado de autenticación actualizado a true.');
+      console.log('Tokens guardados (login) y estado de autenticación actualizado a true.');
     } else {
-        console.error('La respuesta de autenticación no contenía los tokens esperados.');
+        console.error('La respuesta de login no contenía los tokens esperados.');
     }
   }
 
-  /**
-   * Verifica si existe un token de acceso en localStorage.
-   * @returns `true` si existe, `false` si no.
-   */
-  private hasToken(): boolean {
-    const token = this.getAccessToken();
-    // Podríamos añadir una validación de expiración del token aquí en el futuro
-    return !!token;
+  // --- NUEVO MÉTODO para manejar solo la respuesta del refresh ---
+  private handleRefresh(response: { access: string }): void {
+    localStorage.setItem(ACCESS_TOKEN_KEY, response.access);
+    console.log('Nuevo token de acceso guardado correctamente después del refresh.');
+    // No es necesario actualizar el refresh token, ya que no viene en la respuesta.
+    // No es necesario actualizar isAuthenticatedSubject, ya que debería ser true.
   }
 
-  /**
-   * Obtiene el token de acceso desde localStorage.
-   * @returns El token de acceso o `null` si no existe.
-   */
+  // --- MÉTODO REFRESH TOKEN MODIFICADO ---
+  refreshToken(): Observable<any> {
+    if (this.isRefreshing) {
+      return this.refreshTokenSubject.pipe(
+        filter(result => result !== null),
+        take(1)
+      );
+    }
+
+    this.isRefreshing = true;
+    const refreshToken = this.getRefreshToken();
+
+    if (!refreshToken) {
+      this.isRefreshing = false;
+      this.logout();
+      return throwError(() => new Error('No refresh token available'));
+    }
+
+    // El tipo de respuesta esperado aquí es solo { access: string }
+    return this.http.post<{ access: string }>(this.apiTokenRefreshUrl, { refresh: refreshToken }).pipe(
+      tap((tokens) => {
+        this.isRefreshing = false;
+        this.handleRefresh(tokens); // <-- USAR EL NUEVO MÉTODO
+        this.refreshTokenSubject.next(tokens);
+      }),
+      catchError((error) => {
+        this.isRefreshing = false;
+        console.error('Falló el refresco del token, cerrando sesión.');
+        this.logout();
+        return throwError(() => error);
+      })
+    );
+  }
+
+  // ... (resto de los métodos: logout, hasToken, getAccessToken, etc., sin cambios)
+  logout(): void {
+    console.log('Cerrando sesión...');
+    localStorage.removeItem(ACCESS_TOKEN_KEY);
+    localStorage.removeItem(REFRESH_TOKEN_KEY);
+    this.isAuthenticatedSubject.next(false);
+    this.router.navigate(['/login']);
+  }
+  private hasToken(): boolean {
+    const token = this.getAccessToken();
+    return !!token;
+  }
+  isLoggedIn(): boolean {
+    return this.isAuthenticatedSubject.getValue();
+  }
   getAccessToken(): string | null {
     return localStorage.getItem(ACCESS_TOKEN_KEY);
   }
-
-  /**
-   * Obtiene el token de refresco desde localStorage.
-   * @returns El token de refresco o `null` si no existe.
-   */
   getRefreshToken(): string | null {
     return localStorage.getItem(REFRESH_TOKEN_KEY);
   }
-
-  // Futura implementación para refrescar el token
-  // refreshToken(): Observable<any> {
-  //   const refreshToken = this.getRefreshToken();
-  //   if (!refreshToken) {
-  //     // Manejar el caso donde no hay refresh token para renovar la sesión
-  //     this.logout();
-  //     return throwError(() => new Error('No refresh token available'));
-  //   }
-  //   return this.http.post<any>(this.apiTokenRefreshUrl, { refresh: refreshToken }).pipe(
-  //     tap(response => {
-  //       localStorage.setItem(ACCESS_TOKEN_KEY, response.access);
-  //       console.log('Token de acceso refrescado.');
-  //     })
-  //   );
-  // }
 }

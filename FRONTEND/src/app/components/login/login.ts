@@ -44,7 +44,7 @@ export class LoginComponent {
         this.notificationService.showSuccess('¡Inicio de sesión exitoso!');
         // Redirigir al dashboard del personal (crearemos esta ruta más adelante)
         // Por ahora, redirigimos a una ruta placeholder '/staff'.
-        this.router.navigate(['/staff/dashboard']);
+        this.router.navigate(['/staff/orders']);
       },
       error: (err) => {
         this.isLoading = false;

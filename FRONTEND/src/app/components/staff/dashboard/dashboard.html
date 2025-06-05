@@ -1,9 +1,54 @@
 <div class="dashboard-container">
-  <h2>Panel del Personal</h2>
-  <p>¡Bienvenido! Has iniciado sesión correctamente.</p>
-  
-  <div class="actions">
-    <p>Desde aquí podrás gestionar pedidos, mesas y ver estadísticas.</p>
+  <div class="dashboard-header">
+    <h2>Dashboard Principal</h2>
     <button (click)="logout()" class="logout-button">Cerrar Sesión</button>
+  </div>
+
+  <div *ngIf="isLoading" class="full-page-spinner">
+    <app-loading-spinner></app-loading-spinner>
+    <p>Cargando estadísticas...</p>
+  </div>
+
+  <div *ngIf="errorMessage" class="error-message">
+    <p>{{ errorMessage }}</p>
+  </div>
+
+  <div *ngIf="stats && !isLoading" class="stats-grid">
+    <div class="stat-card sales">
+      <div class="stat-icon">💰</div>
+      <div class="stat-info">
+        <span class="stat-value">${{ stats.sales_today | number:'1.0-0' }}</span>
+        <span class="stat-label">Ventas de Hoy</span>
+      </div>
+    </div>
+
+    <div class="stat-card orders">
+      <div class="stat-icon">📄</div>
+      <div class="stat-info">
+        <span class="stat-value">{{ stats.orders_today_count }}</span>
+        <span class="stat-label">Pedidos de Hoy</span>
+      </div>
+    </div>
+
+    <div class="stat-card pending">
+      <div class="stat-icon">⏳</div>
+      <div class="stat-info">
+        <span class="stat-value">{{ stats.pending_orders_count }}</span>
+        <span class="stat-label">Pedidos Pendientes</span>
+      </div>
+      <a routerLink="/staff/orders" class="card-link">Ver Pedidos</a>
+    </div>
+
+    <div class="stat-card top-products">
+      <h4>Productos Más Vendidos</h4>
+      <ol *ngIf="stats.top_selling_products.length > 0; else noTopProducts">
+        <li *ngFor="let product of stats.top_selling_products">
+          {{ product.product_name }} <span>({{ product.total_sold }} vendidos)</span>
+        </li>
+      </ol>
+      <ng-template #noTopProducts>
+        <p>No hay datos de ventas aún.</p>
+      </ng-template>
+    </div>
   </div>
 </div>

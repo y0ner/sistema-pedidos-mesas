@@ -1,28 +1,80 @@
 .dashboard-container {
-  max-width: 800px;
-  margin: 40px auto;
-  padding: 30px;
-  background: #fff;
+  padding: 20px;
+}
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.logout-button { background-color: #6c757d; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; }
+
+.full-page-spinner { text-align: center; padding: 50px; }
+.error-message { text-align: center; padding: 20px; background-color: #f8d7da; color: #721c24; border-radius: 4px; }
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.stat-card {
+  background-color: #fff;
   border-radius: 8px;
-  text-align: center;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  padding: 20px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+  display: flex;
+  align-items: center;
+  position: relative; /* Para el enlace */
 }
 
-.actions {
-  margin-top: 30px;
+.stat-icon {
+  font-size: 3em;
+  margin-right: 20px;
 }
-
-.logout-button {
-  background-color: #dc3545;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+.stat-info {
+  display: flex;
+  flex-direction: column;
+}
+.stat-value {
+  font-size: 2em;
+  font-weight: bold;
+  color: #333;
+}
+.stat-label {
   font-size: 1em;
-  transition: background-color 0.2s;
+  color: #777;
 }
 
-.logout-button:hover {
-  background-color: #c82333;
+.stat-card.pending .stat-icon { filter: hue-rotate(200deg); }
+.stat-card.orders .stat-icon { filter: hue-rotate(150deg); }
+
+.card-link {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    text-decoration: none;
+    font-size: 0.9em;
+    color: #007bff;
+    font-weight: bold;
+}
+
+.top-products {
+  grid-column: 1 / -1; /* Hacer que esta tarjeta ocupe todo el ancho */
+  display: block; /* Sobrescribir flex */
+}
+.top-products h4 {
+  margin-top: 0;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+}
+.top-products ol {
+  padding-left: 20px;
+}
+.top-products li {
+  padding: 5px 0;
+}
+.top-products li span {
+  color: #555;
+  font-style: italic;
 }

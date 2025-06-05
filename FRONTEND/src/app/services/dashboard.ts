@@ -10,7 +10,7 @@ export interface TopSellingProduct {
 }
 
 export interface DashboardStats {
-  sales_today: string; // El backend lo devuelve como string (ej. "54000.00")
+  sales_today: string;
   orders_today_count: number;
   top_selling_products: TopSellingProduct[];
   pending_orders_count: number;

@@ -3,8 +3,9 @@ import { RouterOutlet, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
 import { OrderContextService } from './services/order-context';
-// --- 1. VERIFICA ESTA LÍNEA DE IMPORTACIÓN ---
 import { NotificationComponent } from './components/notification/notification';
+// --- NUEVAS IMPORTACIONES ---
+import { AuthService } from './services/auth';
 
 @Component({
   selector: 'app-root',
@@ -13,8 +14,7 @@ import { NotificationComponent } from './components/notification/notification';
     CommonModule,
     RouterOutlet,
     RouterModule,
-    // --- 2. VERIFICA QUE NotificationComponent ESTÉ AQUÍ ---
-    NotificationComponent 
+    NotificationComponent
   ],
   templateUrl: './app.html',
   styleUrl: './app.css'
@@ -22,8 +22,15 @@ import { NotificationComponent } from './components/notification/notification';
 export class App {
   protected title = 'MesaFácil';
   public cartItemCount$: Observable<number>;
+  // --- NUEVA PROPIEDAD ---
+  public isStaffLoggedIn$: Observable<boolean>;
 
-  constructor(private orderContextService: OrderContextService) {
+  constructor(
+    private orderContextService: OrderContextService,
+    private authService: AuthService // <-- Inyectar AuthService
+  ) {
     this.cartItemCount$ = this.orderContextService.getCartItemCount();
+    // --- Asignar el observable de autenticación ---
+    this.isStaffLoggedIn$ = this.authService.isAuthenticated$;
   }
 }

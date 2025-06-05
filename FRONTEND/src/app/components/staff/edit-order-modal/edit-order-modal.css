@@ -1,0 +1,98 @@
+/* Estilos para el modal, similares al modal de detalles pero con más elementos de formulario */
+:host {
+  display: block; /* Asegura que el backdrop ocupe el espacio */
+}
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 1040;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: #fff;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 700px; /* Un poco más ancho para la edición */
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid #dee2e6;
+}
+.modal-header h2 { margin: 0; font-size: 1.5em; }
+.modal-close-btn { background: none; border: none; font-size: 2em; cursor: pointer; color: #6c757d; }
+
+.modal-body {
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.form-group { margin-bottom: 15px; }
+.form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
+.form-control { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+
+h4 { margin-top: 20px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
+
+.items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.edit-item {
+  display: grid;
+  grid-template-columns: 2fr 1.5fr 1fr 1fr;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border: 1px solid #f0f0f0;
+  border-radius: 4px;
+}
+.quantity-controls { display: flex; }
+.quantity-input { width: 40px; text-align: center; border: 1px solid #ccc; }
+.remove-btn { background-color: #f8d7da; border: none; padding: 5px 8px; border-radius: 3px; cursor: pointer; }
+
+.total-display { text-align: right; font-size: 1.2em; font-weight: bold; margin-top: 20px; }
+
+.add-product-form {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+.product-select {
+    flex-grow: 1;
+    padding: 8px;
+}
+.btn-add {
+    padding: 8px 15px;
+    background-color: #218838;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+.btn-add:disabled { background-color: #ccc; }
+
+.modal-footer {
+  padding: 15px 20px;
+  border-top: 1px solid #dee2e6;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+.btn-cancel, .btn-save { padding: 10px 20px; border-radius: 4px; border: 1px solid #ccc; cursor: pointer; }
+.btn-save { background-color: #007bff; color: white; border-color: #007bff; display: flex; align-items: center; height: 40px; }
+.btn-save:disabled { background-color: #5a9edc; }
+.btn-save app-loading-spinner ::ng-deep .spinner { margin: 0; width: 20px; height: 20px;}

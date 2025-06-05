@@ -1,1 +1,133 @@
-<p>order-management works!</p>
+<div class="management-container">
+  <header class="management-header">
+    <h1>Gestión de Pedidos Activos</h1>
+    <button class="refresh-btn" (click)="startPollingOrders()" [disabled]="isLoading">
+      <span *ngIf="!isLoading">Actualizar</span>
+      <span *ngIf="isLoading">Actualizando...</span>
+    </button>
+  </header>
+
+  <div *ngIf="isLoading && !pendingOrders.length && !confirmedOrders.length" class="full-page-spinner">
+    <app-loading-spinner></app-loading-spinner>
+    <p>Cargando pedidos...</p>
+  </div>
+
+  <div *ngIf="errorMessage" class="error-message">
+    <p>{{ errorMessage }}</p>
+  </div>
+
+  <div class="order-board">
+    <div class="order-column">
+      <h2 class="column-title pending">Pendientes ({{ pendingOrders.length }})</h2>
+      <div class="column-content">
+        <div *ngFor="let order of pendingOrders" class="order-card-summary pending-card" (click)="openDetailModal(order)">
+          <strong>Pedido #{{ order.id }}</strong>
+          <span>Mesa {{ order.table_number }}</span>
+        </div>
+        <p *ngIf="!pendingOrders.length && !isLoading" class="no-orders-msg">No hay pedidos pendientes.</p>
+      </div>
+    </div>
+
+    <div class="order-column">
+      <h2 class="column-title confirmed">Confirmados ({{ confirmedOrders.length }})</h2>
+      <div class="column-content">
+        <div *ngFor="let order of confirmedOrders" class="order-card-summary confirmed-card" (click)="openDetailModal(order)">
+          <strong>Pedido #{{ order.id }}</strong>
+          <span>Mesa {{ order.table_number }}</span>
+        </div>
+        <p *ngIf="!confirmedOrders.length && !isLoading" class="no-orders-msg">No hay pedidos confirmados.</p>
+      </div>
+    </div>
+
+    <div class="order-column">
+      <h2 class="column-title preparing">En Preparación ({{ preparingOrders.length }})</h2>
+      <div class="column-content">
+        <div *ngFor="let order of preparingOrders" class="order-card-summary preparing-card" (click)="openDetailModal(order)">
+          <strong>Pedido #{{ order.id }}</strong>
+          <span>Mesa {{ order.table_number }}</span>
+        </div>
+        <p *ngIf="!preparingOrders.length && !isLoading" class="no-orders-msg">Ningún pedido en preparación.</p>
+      </div>
+    </div>
+    
+    <div class="order-column">
+        <h2 class="column-title ready">Listos para Entregar ({{ readyToDeliverOrders.length }})</h2>
+        <div class="column-content">
+          <div *ngFor="let order of readyToDeliverOrders" class="order-card ready-card" (click)="openDetailModal(order)">
+            <strong>Pedido #{{ order.id }}</strong>
+            <span>Mesa {{ order.table_number }}</span>
+          </div>
+          <p *ngIf="!readyToDeliverOrders.length && !isLoading" class="no-orders-msg">Ningún pedido listo.</p>
+        </div>
+    </div>
+
+    <div class="order-column">
+      <h2 class="column-title delivered">Entregados ({{ deliveredOrders.length }})</h2>
+      <div class="column-content">
+        <div *ngFor="let order of deliveredOrders" class="order-card delivered-card" (click)="openDetailModal(order)">
+          <strong>Pedido #{{ order.id }}</strong>
+          <span>Mesa {{ order.table_number }}</span>
+        </div>
+        <p *ngIf="!deliveredOrders.length && !isLoading" class="no-orders-msg">Ningún pedido entregado pendiente de pago.</p>
+      </div>
+    </div>
+    </div> </div>
+
+<div *ngIf="isDetailModalVisible" class="modal-backdrop" (click)="closeDetailModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div *ngIf="selectedOrderDetail" class="modal-inner-content">
+      <footer class="modal-footer">
+        <ng-container [ngSwitch]="selectedOrderDetail.status.toLowerCase()">
+          <button *ngSwitchCase="'ready_to_deliver'" class="btn btn-deliver" (click)="onDeliverOrder(selectedOrderDetail.id)">Entregado</button>
+          <button *ngSwitchCase="'delivered'" class="btn btn-pay" (click)="onPayOrder(selectedOrderDetail.id)">Marcar como Pagado</button>
+        </ng-container>
+      </footer>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="isDetailModalVisible" class="modal-backdrop" (click)="closeDetailModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div *ngIf="selectedOrderDetail" class="modal-inner-content">
+      <header class="modal-header">
+        <h2>Detalle del Pedido #{{ selectedOrderDetail.id }}</h2>
+        <button class="modal-close-btn" (click)="closeDetailModal()">&times;</button>
+      </header>
+
+      <main class="modal-body">
+        <p><strong>Mesa:</strong> {{ selectedOrderDetail.table_number }}</p>
+        <p><strong>Cliente:</strong> {{ selectedOrderDetail.customer_name }}</p>
+        <p><strong>Estado Actual:</strong> <span class="status-badge status-{{selectedOrderDetail.status.toLowerCase()}}">{{ selectedOrderDetail.status | titlecase }}</span></p>
+
+        <h4>Artículos:</h4>
+        <ul>
+          <li *ngFor="let detail of selectedOrderDetail.details">
+            {{ detail.quantity }}x {{ detail.product.name }}
+            <span>(${{ detail.subtotal | number:'1.2-2' }})</span>
+          </li>
+        </ul>
+        <p class="total">Total: ${{ selectedOrderDetail.total | number:'1.2-2' }}</p>
+      </main>
+
+      <footer class="modal-footer">
+        <button *ngIf="selectedOrderDetail.status.toLowerCase() === 'pending'" class="btn btn-confirm" (click)="onConfirmOrder(selectedOrderDetail.id)">Confirmar</button>
+        <button *ngIf="selectedOrderDetail.status.toLowerCase() === 'pending'" class="btn btn-edit" (click)="onEditOrder(selectedOrderDetail.id)">Editar</button>
+        
+        <button *ngIf="selectedOrderDetail.status.toLowerCase() === 'confirmed'" class="btn btn-prepare" (click)="onPrepareOrder(selectedOrderDetail.id)">Mandar a Cocina</button>
+        
+        <button *ngIf="selectedOrderDetail.status.toLowerCase() === 'preparing'" class="btn btn-ready" (click)="onReadyOrder(selectedOrderDetail.id)">Listo para Entregar</button>
+        
+        <button *ngIf="selectedOrderDetail.status.toLowerCase() === 'ready_to_deliver'" class="btn btn-deliver" (click)="onDeliverOrder(selectedOrderDetail.id)">Entregado</button>
+        
+        <button *ngIf="selectedOrderDetail.status.toLowerCase() === 'delivered'" class="btn btn-pay" (click)="onPayOrder(selectedOrderDetail.id)">Marcar como Pagado</button>
+      </footer>
+    </div>
+  </div>
+</div>
+
+<app-edit-order-modal
+  *ngIf="isEditModalVisible"
+  [order]="selectedOrderToEdit"
+  (close)="closeEditModal()"
+  (orderUpdated)="handleOrderUpdated($event)"
+></app-edit-order-modal>

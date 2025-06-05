@@ -1,39 +1,36 @@
 import { Routes } from '@angular/router';
+
+// Componentes del Cliente
 import { ProductListComponent } from './components/product-list/product-list';
 import { TableCodeValidationComponent } from './components/table-code-validation/table-code-validation';
-import { tableValidatedGuard } from './guards/table-validated-guard';
 import { TableStatusDashboardComponent } from './components/table-status-dashboard/table-status-dashboard';
 import { ShoppingCartComponent } from './components/shopping-cart/shopping-cart';
 import { OrderStatusComponent } from './components/order-status/order-status';
-import { tableNotValidatedGuard } from './guards/table-not-validated-guard';
-import { authGuard } from './guards/auth-guard'; // Importar el nuevo AuthGuard
-import { DashboardComponent } from './components/staff/dashboard/dashboard'; // Importar el nuevo Dashboard
-// --- NUEVA IMPORTACIÓN ---
 import { LoginComponent } from './components/login/login';
 
+// Componentes del Personal y Layout
+import { StaffLayoutComponent } from './components/staff/staff-layout/staff-layout';
+import { DashboardComponent } from './components/staff/dashboard/dashboard';
+import { OrderManagementComponent } from './components/staff/order-management/order-management';
+
+// Guardias
+import { tableValidatedGuard } from './guards/table-validated-guard';
+import { tableNotValidatedGuard } from './guards/table-not-validated-guard';
+import { authGuard } from './guards/auth-guard';
+
 export const routes: Routes = [
-
-// --- NUEVA RUTA PROTEGIDA PARA EL PERSONAL ---
-  {
-    path: 'staff/dashboard',
-    component: DashboardComponent,
-    canActivate: [authGuard], // <-- ¡AQUÍ SE APLICA EL GUARDIA!
-    title: 'Dashboard - Personal'
-  },
-
+  // --- Rutas Públicas y del Cliente ---
   {
     path: '',
     component: TableCodeValidationComponent,
     canActivate: [tableNotValidatedGuard],
     title: 'Validar Mesa - MesaFácil'
   },
-  // --- NUEVA RUTA PARA EL LOGIN ---
   {
     path: 'login',
     component: LoginComponent,
     title: 'Inicio de Sesión - Personal'
   },
-  // --- FIN NUEVA RUTA ---
   {
     path: 'products',
     component: ProductListComponent,
@@ -56,4 +53,32 @@ export const routes: Routes = [
     component: OrderStatusComponent,
     title: 'Estado de tu Pedido - MesaFácil'
   },
+
+  // --- NUEVA RUTA PADRE PARA EL PANEL DEL PERSONAL ---
+  {
+    path: 'staff',
+    component: StaffLayoutComponent, // 1. Carga nuestro layout con el menú lateral
+    canActivate: [authGuard],       // 2. Protege TODAS las rutas hijas con el authGuard
+    children: [                     // 3. Define las rutas hijas que se mostrarán dentro del layout
+      {
+        path: 'dashboard', // Corresponde a /staff/dashboard
+        component: DashboardComponent,
+        title: 'Dashboard - Personal'
+      },
+      {
+        path: 'orders', // Corresponde a /staff/orders
+        component: OrderManagementComponent,
+        title: 'Gestión de Pedidos'
+      },
+      {
+        path: '', // Si alguien navega solo a /staff
+        redirectTo: 'orders', // Lo redirigimos a la vista de pedidos por defecto
+        pathMatch: 'full'
+      }
+    ]
+  },
+  // --- FIN DE LA RUTA PADRE ---
+
+  // Considera añadir una ruta wildcard al final para páginas no encontradas
+  // { path: '**', redirectTo: '' } 
 ];

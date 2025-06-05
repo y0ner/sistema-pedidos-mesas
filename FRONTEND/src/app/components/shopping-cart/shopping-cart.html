@@ -8,17 +8,16 @@
   <div *ngIf="(cartItems$ | async) as items; else emptyCart">
     <div *ngIf="items.length > 0; else emptyCart">
       <div class="cart-summary">
-        <span>Total de Productos: {{ cartItemCount$ | async }}</span>
+        <span>Total de Productos: <strong>{{ cartItemCount$ | async }}</strong></span>
         <span
           >Monto Total:
-          <strong>{{ cartTotalAmount$ | async | number:'1.2-2' }}</strong></span
+          <strong>${{ cartTotalAmount$ | async | number:'1.2-2' }}</strong></span
         >
       </div>
 
       <ul class="cart-items-list">
         <li *ngFor="let item of items" class="cart-item">
-          <div class="item-info">
-            <img
+          <div class="product-info-wrapper"> <img
               *ngIf="item.product.image"
               [src]="item.product.image"
               alt="{{ item.product.name }}"
@@ -26,8 +25,7 @@
             />
             <img
               *ngIf="!item.product.image"
-              src="https://via.placeholder.com/50?text=N/A"
-              alt="Sin imagen"
+              src="https://via.placeholder.com/60x60?text=No+Image" alt="Sin imagen"
               class="item-image"
             />
             <div class="item-details">
@@ -47,7 +45,7 @@
                 type="number"
                 [ngModel]="item.quantity"
                 (blur)="updateQuantity(item.product.id, $event)"
-                min="0"
+                (keyup.enter)="updateQuantity(item.product.id, $event)" min="0"
                 class="quantity-input"
                 aria-label="Cantidad"
               />
@@ -56,8 +54,7 @@
               </button>
             </div>
             <span class="item-subtotal">
-              Subtotal: ${{ (item.product.price * item.quantity) |
-              number:'1.2-2' }}
+              Subtotal: <strong>${{ (item.product.price * item.quantity) | number:'1.2-2' }}</strong>
             </span>
             <button
               (click)="removeItem(item.product.id)"
@@ -109,8 +106,7 @@
         <button
           (click)="proceedToOrder()"
           class="proceed-to-order-btn"
-          [disabled]="isSubmittingOrder || items.length === 0"
-        >
+          [disabled]="isSubmittingOrder || items.length === 0 || customerNameInput.invalid" >
           {{ isSubmittingOrder ? 'Enviando Pedido...' : 'Realizar Pedido' }}
         </button>
       </div>
@@ -119,8 +115,7 @@
 
   <ng-template #emptyCart>
     <p class="empty-cart-message">Tu carrito está vacío.</p>
-    <p>
-      <a routerLink="/products">Vuelve al catálogo</a> para añadir productos.
+    <p class="return-link"> <a routerLink="/products">Vuelve al catálogo</a> para añadir productos.
     </p>
   </ng-template>
 </div>

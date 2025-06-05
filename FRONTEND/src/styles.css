@@ -1,1 +1,114 @@
-/* You can add global styles to this file, and also import other style files */
+/* Estilos globales para la aplicación MesaFácil */
+
+/* 1. Reset básico para todos los elementos */
+*,
+*::before,
+*::after {
+  box-sizing: border-box; /* Asegura que padding y border se incluyan en el ancho/alto total */
+  margin: 0;
+  padding: 0;
+}
+
+/* 2. Definición de la Paleta de Colores con Variables CSS */
+:root {
+  /* Neutros de base */
+  --color-charcoal-gray: #2E2E2E;     /* Fondo oscuro elegante, texto en modo oscuro, encabezados */
+  --color-light-slate-gray: #ECEFF1;  /* Fondo claro para interfaces limpias */
+  --color-bone-white: #FAF9F6;       /* Fondo principal, tarjetas, elementos claros */
+  --color-ash-gray: #B0BEC5;         /* Íconos, bordes, separadores, estados secundarios, texto menos prominente */
+
+  /* Tonos cálidos y profesionales (acentos) */
+  --color-cocoa-brown: #6D4C41;      /* Acento principal, botones primarios, títulos */
+  --color-latte-beige: #D7CCC8;      /* Fondos o contenedores sutiles, hover de elementos claros */
+  --color-soft-gold: #D4AF37;        /* Detalles premium, acentos especiales, ciertos estados (ej. en preparación) */
+
+  /* Toques naturales (opcional para destacar) */
+  --color-soft-olive-green: #8E9775; /* Mensajes de éxito, indicar disponibilidad */
+  --color-elegant-wine: #7B1E3A;     /* Errores, alertas, eliminar, acentos fuertes */
+
+  /* Colores para estados específicos (ajustados para contraste y armonía) */
+  --color-status-pending: var(--color-soft-gold); /* Dorado suave para pendiente */
+  --color-status-confirmed: var(--color-cocoa-brown); /* Marrón para confirmado */
+  --color-status-preparing: var(--color-latte-beige); /* Beige para en preparación (quizás texto oscuro) */
+  --color-status-ready: var(--color-soft-olive-green); /* Verde olivo para listo */
+  --color-status-delivered: #20C997; /* Verde azulado (mantengo el tuyo si te gustaba, o un derivado del soft-olive) */
+  --color-status-paid: #007bff; /* Azul para pagado (mantengo el tuyo, o derivado del cocoa) */
+  --color-status-annulled: var(--color-elegant-wine); /* Vino tinto para anulado */
+  --color-status-occupied: var(--color-elegant-wine); /* Ocupada con vino tinto */
+  --color-status-available: var(--color-soft-olive-green); /* Disponible con verde olivo */
+  --color-status-reserved: var(--color-soft-gold); /* Reservada con dorado */
+  --color-status-unavailable: var(--color-ash-gray); /* No disponible con gris ceniza */
+
+
+  /* Colores para notificaciones (usando la paleta) */
+  --notification-success-bg: var(--color-soft-olive-green);
+  --notification-success-text: var(--color-bone-white); /* Texto claro sobre verde */
+
+  --notification-error-bg: var(--color-elegant-wine);
+  --notification-error-text: var(--color-bone-white);
+
+  --notification-info-bg: var(--color-cocoa-brown); /* Marrón para info */
+  --notification-info-text: var(--color-bone-white);
+
+  --notification-warning-bg: var(--color-soft-gold);
+  --notification-warning-text: var(--color-charcoal-gray); /* Texto oscuro sobre dorado */
+}
+
+/* 3. Aplicación de Tipografía Global */
+body {
+  font-family: 'Inter', sans-serif; /* Fuente principal para el cuerpo */
+  line-height: 1.6; /* Mejorar legibilidad */
+  color: var(--color-charcoal-gray); /* Color de texto principal */
+  background-color: var(--color-bone-white); /* Fondo general de la aplicación */
+  min-height: 100vh; /* Asegura que el body ocupe toda la altura */
+  display: flex; /* Para flexbox layout si es necesario en app.component.css */
+  flex-direction: column;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Playfair Display', serif; /* Fuente para encabezados */
+  margin-bottom: 0.5em;
+  color: var(--color-cocoa-brown); /* Color de encabezados por defecto */
+}
+
+a {
+  color: var(--color-cocoa-brown); /* Enlaces con color principal */
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Contenedor principal de la aplicación para centrar o limitar ancho */
+main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  flex-grow: 1; /* Permite que el main ocupe el espacio restante */
+  width: 100%; /* Asegura que ocupe el ancho disponible */
+}
+
+/* Estilo para los iconos de Material Design (ajustar color globalmente) */
+.material-icons-outlined {
+    font-family: 'Material Icons Outlined';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;  /* Preferred size */
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+    /* Support for all WebKit browsers. */
+    -webkit-font-smoothing: antialiased;
+    /* Support for Safari and Chrome. */
+    text-rendering: optimizeLegibility;
+    /* Support for Firefox. */
+    -moz-osx-font-smoothing: grayscale;
+    /* Support for IE. */
+    font-feature-settings: 'liga';
+    color: var(--color-ash-gray); /* Color por defecto para iconos */
+}

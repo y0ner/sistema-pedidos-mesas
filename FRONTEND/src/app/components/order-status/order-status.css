@@ -1,130 +1,230 @@
+/* Estilos para el componente de Estado del Pedido */
+
 .order-status-container {
-  max-width: 600px;
-  margin: 40px auto;
-  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px 20px;
+  min-height: calc(100vh - var(--header-height) - var(--footer-height));
+  background-color: var(--color-light-slate-gray); /* Fondo suave */
+}
+
+h2 {
   text-align: center;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  margin-bottom: 30px;
+  color: var(--color-cocoa-brown);
+  font-size: 2.2em;
 }
 
-.status-icon {
-  font-size: 3em;
+/* Mensajes de estado (loading, error, no-order-info) */
+.loading-message,
+.error-message,
+.no-order-info {
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
+  padding: 30px;
+  font-size: 1.1em;
+  color: var(--color-charcoal-gray);
+  background-color: var(--color-bone-white);
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+}
+
+.error-message {
+  background-color: var(--notification-error-bg);
+  color: var(--notification-error-text);
+  border: 1px solid var(--color-elegant-wine);
+}
+
+.no-order-info p {
   margin-bottom: 20px;
+  font-weight: 500;
 }
 
-.status-message {
-  font-size: 1.2em;
-  color: #333;
-  line-height: 1.6;
-  margin-bottom: 20px;
-}
-
-.order-status-container p {
-  font-size: 1em;
-  color: #555;
-  margin-bottom: 25px;
-}
-
-.home-button {
-  padding: 12px 25px;
-  font-size: 1em;
-  color: white;
-  background-color: #007bff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.home-button:hover {
-  background-color: #0056b3;
-}
-/* ... (estilos existentes de order-status.component.css) ... */
-
-.order-details {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  border: 1px solid #eee;
-  margin-bottom: 20px;
+/* Contenedor principal de los detalles del pedido (la "tarjeta") */
+.order-status-card {
+  max-width: 700px;
+  width: 100%;
+  padding: 35px;
+  text-align: center;
+  background-color: var(--color-bone-white);
+  border-radius: 15px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada */
+  color: var(--color-charcoal-gray);
+  position: relative; /* Para el indicador de actualización */
 }
 
 .status-highlight {
-  font-size: 1.3em;
-  margin-bottom: 15px;
+  font-size: 1.5em;
+  margin-bottom: 20px;
+  color: var(--color-cocoa-brown); /* "Hola [Cliente]!" en marrón cacao */
+}
+
+.order-summary-text {
+  font-size: 1.1em;
+  line-height: 1.6;
+  margin-bottom: 25px;
+}
+
+.order-id, .table-number {
+  color: var(--color-cocoa-brown);
+  font-weight: 700;
 }
 
 .status-text {
-  padding: 3px 8px;
-  border-radius: 4px;
-  color: white;
-  font-weight: bold;
+  display: inline-block; /* Para que el padding y border-radius funcionen bien */
+  padding: 5px 12px;
+  border-radius: 20px; /* Bordes más redondeados para un aspecto de "badge" */
+  color: var(--color-bone-white);
+  font-weight: 700;
+  margin-left: 10px; /* Espacio entre el texto y el badge de estado */
+  white-space: nowrap; /* Evita que el texto del estado se rompa */
 }
 
-.status-pending { background-color: #ffc107; color: #333;} /* Amarillo */
-.status-confirmed { background-color: #17a2b8; } /* Azul info */
-.status-preparing { background-color: #fd7e14; } /* Naranja */
-.status-delivered { background-color: #28a745; } /* Verde */
-.status-paid { background-color: #20c997; } /* Verde azulado */
-.status-cancelled { background-color: #6c757d; } /* Gris */
+/* Colores de estado (usando las variables de styles.css) */
+.status-pending { background-color: var(--color-status-pending); color: var(--color-charcoal-gray); } /* Dorado, texto oscuro */
+.status-confirmed { background-color: var(--color-status-confirmed); } /* Marrón */
+.status-preparing { background-color: var(--color-status-preparing); color: var(--color-charcoal-gray); } /* Beige, texto oscuro */
+.status-ready_to_deliver { background-color: var(--color-status-ready); } /* Verde olivo */
+.status-delivered { background-color: var(--color-status-delivered); } /* Verde azulado */
+.status-paid { background-color: var(--color-status-paid); } /* Azul */
+.status-annulled { background-color: var(--color-status-annulled); } /* Vino tinto */
+
 
 .items-summary {
-  margin-top: 20px;
+  margin-top: 30px;
   text-align: left;
-  border-top: 1px dashed #ddd;
-  padding-top: 15px;
+  border-top: 1px dashed var(--color-ash-gray); /* Separador sutil */
+  padding-top: 20px;
 }
 .items-summary h3 {
   margin-top: 0;
-  margin-bottom: 10px;
-  font-size: 1.1em;
+  margin-bottom: 15px;
+  font-size: 1.2em;
+  color: var(--color-charcoal-gray);
 }
 .items-summary ul {
   list-style: none;
   padding-left: 0;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 .items-summary li {
-  padding: 4px 0;
+  padding: 6px 0;
   display: flex;
   justify-content: space-between;
+  border-bottom: 1px dotted var(--color-light-slate-gray); /* Línea punteada sutil */
+  font-size: 1em;
+  color: var(--color-charcoal-gray);
+}
+.items-summary li:last-child {
+  border-bottom: none;
 }
 .items-summary li span {
-  color: #555;
-}
-.total-amount {
-  font-size: 1.2em;
-  font-weight: bold;
-  text-align: right;
-  margin-top: 10px;
-  padding-top: 10px;
-  border-top: 1px solid #eee;
+  color: var(--color-cocoa-brown); /* Precio de cada ítem en marrón */
+  font-weight: 600;
 }
 
+.total-amount {
+  font-size: 1.5em;
+  font-weight: 700;
+  text-align: right;
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 2px solid var(--color-cocoa-brown); /* Borde más fuerte para el total */
+  color: var(--color-elegant-wine); /* Total en vino tinto */
+}
+
+/* Mensajes de "siguiente paso" o informativos */
 .next-step-message {
   font-style: italic;
-  color: #007bff;
-  margin-top: 15px;
+  font-size: 1.05em;
+  margin-top: 25px;
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+.next-step-message.info {
+  background-color: var(--color-light-slate-gray);
+  color: var(--color-charcoal-gray);
+}
+
+.next-step-message.success {
+  background-color: var(--notification-success-bg);
+  color: var(--notification-success-text);
+}
+
+.next-step-message.error {
+  background-color: var(--notification-error-bg);
+  color: var(--notification-error-text);
 }
 
 .last-updated-time {
   font-size: 0.85em;
-  color: #777;
-  margin-top: 15px;
+  color: var(--color-ash-gray);
+  margin-top: 25px;
 }
+
 .updating-indicator {
-  font-style: italic;
+  font-style: normal; /* No cursiva, para que resalte más */
+  font-weight: bold;
+  color: var(--color-cocoa-brown); /* En marrón para destacar */
 }
 
-/* ... (tus estilos existentes .status-pending, .status-confirmed, etc.) ... */
+.home-button {
+  padding: 15px 30px;
+  font-size: 1.1em;
+  color: var(--color-bone-white);
+  background-color: var(--color-cocoa-brown);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-top: 30px; /* Más espacio superior */
+  font-weight: 600;
+}
 
-.status-preparing { background-color: #fd7e14; } /* Naranja */
+.home-button:hover {
+  background-color: #5A3F36;
+  transform: translateY(-2px);
+}
 
-/* --- NUEVA CLASE DE ESTADO --- */
-.status-ready_to_deliver { background-color: #6f42c1; } /* Púrpura/Indigo */
-/* --- FIN NUEVA CLASE --- */
+/* Media Queries para responsividad */
+@media (max-width: 768px) {
+  .order-status-container {
+    padding: 20px;
+  }
+  .order-status-card {
+    padding: 25px;
+  }
+  .status-highlight {
+    font-size: 1.3em;
+  }
+  .order-summary-text {
+    font-size: 1em;
+  }
+  .total-amount {
+    font-size: 1.3em;
+  }
+}
 
-.status-delivered { background-color: #28a745; } /* Verde */
-.status-paid { background-color: #20c997; } /* Verde azulado */
-.status-cancelled { background-color: #6c757d; } /* Gris */
+@media (max-width: 480px) {
+  h2 {
+    font-size: 1.8em;
+  }
+  .order-status-card {
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
+  .status-text {
+    margin-left: 5px;
+    padding: 3px 8px;
+    font-size: 0.9em;
+  }
+  .home-button {
+    padding: 12px 20px;
+    font-size: 1em;
+  }
+}

@@ -1,190 +1,408 @@
-.loading-message,
-.error-message,
-.empty-message {
+/* Estilos para el componente de Product List */
+
+h2 {
   text-align: center;
-  padding: 20px;
-  font-style: italic;
+  margin-bottom: 30px;
+  color: var(--color-cocoa-brown);
+  font-size: 2.2em;
 }
 
-.error-message {
-  color: red;
-}
-
-.product-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 20px;
-  padding: 20px;
-}
-
-.product-card {
-  border: 1px solid #ddd;
-  border-radius: 8px;
+/* Banner de información de mesa validada */
+.table-info-banner {
+  text-align: center;
   padding: 15px;
-  text-align: center;
-  background-color: #f9f9f9;
+  background-color: var(--color-latte-beige); /* Beige café con leche */
+  border: 1px solid var(--color-ash-gray); /* Borde suave */
+  color: var(--color-charcoal-gray); /* Texto gris carbón */
+  border-radius: 8px;
+  margin: 0 auto 30px; /* Centrado y más margen inferior */
+  max-width: 800px;
 }
 
-.product-image {
-  width: 100%;
-  max-height: 150px;
-  object-fit: cover;
-  border-radius: 4px;
-  margin-bottom: 10px;
+.table-info-banner strong {
+  color: var(--color-cocoa-brown); /* Destacar número de mesa */
 }
 
-.product-card h3 {
-  margin-top: 0;
-  font-size: 1.2em;
-  color: #333;
+/* Sección de filtros y búsqueda */
+.filters-section {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around; /* Distribuye el espacio y centra */
+  align-items: flex-end; /* Alinea los elementos a la parte inferior (útil para inputs con labels encima) */
+  gap: 20px; /* Espacio entre los grupos de filtros */
+  margin-bottom: 40px;
+  padding: 30px;
+  background-color: var(--color-light-slate-gray);
+  border-radius: 15px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
 }
 
-.product-description {
-  font-size: 0.9em;
-  color: #666;
-  min-height: 40px; /* Para alinear un poco las tarjetas */
-}
-
-.product-price {
-  font-weight: bold;
-  color: #007bff;
-  margin: 10px 0;
-}
-
-.product-availability.available {
-  color: green;
-}
-
-.product-availability.unavailable {
-  color: #aaa;
-}
-
-/* ... (tus estilos anteriores para product-grid, product-card, etc.) ... */
-
+/* Contenedor de búsqueda (input y botones) */
 .search-container {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 15px;
-  margin-bottom: 20px;
-  gap: 10px; /* Espacio entre input y botones */
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 10px;
+  flex: 2; /* Ocupa más espacio */
+  min-width: 300px;
 }
 
 .search-input {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  width: 300px; /* Ajusta según necesidad */
-  font-size: 1em;
+  flex-grow: 1;
+  min-width: 180px;
+  padding: 14px 18px;
+  border: 1px solid var(--color-ash-gray);
+  border-radius: 8px;
+  font-size: 1.05em;
+  color: var(--color-charcoal-gray);
+  background-color: var(--color-bone-white);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.search-input:focus {
+  border-color: var(--color-cocoa-brown);
+  box-shadow: 0 0 0 3px rgba(109, 76, 65, 0.2);
+  outline: none;
 }
 
 .search-button,
 .clear-button {
-  padding: 10px 15px;
+  padding: 14px 22px;
   border: none;
-  border-radius: 4px;
-  color: white;
+  border-radius: 8px;
+  color: var(--color-bone-white);
   cursor: pointer;
-  font-size: 1em;
+  font-size: 1.05em;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  white-space: nowrap;
 }
 
 .search-button {
-  background-color: #007bff; /* Azul */
+  background-color: var(--color-cocoa-brown);
 }
 
 .search-button:hover {
-  background-color: #0056b3;
+  background-color: #5A3F36;
+  transform: translateY(-2px);
 }
 
 .clear-button {
-  background-color: #6c757d; /* Gris */
+  background-color: var(--color-ash-gray);
 }
 
 .clear-button:hover {
-  background-color: #545b62;
+  background-color: #8C99A0;
+  transform: translateY(-2px);
 }
 
-
-.search-controls {
-  display: flex;
-  flex-direction: column; /* Apila la búsqueda y el filtro verticalmente */
-  align-items: center;   /* Centra los elementos */
-  gap: 15px;             /* Espacio entre la búsqueda y el filtro */
-  margin-bottom: 20px;
-}
-
-.search-container,
+/* Contenedor de filtro por disponibilidad */
 .filter-container {
   display: flex;
-  align-items: center;
-  gap: 10px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  flex: 1;
+  min-width: 150px;
 }
 
-.filter-container label {
-  font-weight: bold;
+.filter-container label,
+.price-filter-container label {
+  color: var(--color-charcoal-gray);
+  font-weight: 500;
+  font-size: 0.95em;
+  margin-bottom: 4px;
 }
 
 .filter-select {
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  background-color: white;
+  padding: 12px 15px;
+  border: 1px solid var(--color-ash-gray);
+  border-radius: 8px;
+  font-size: 1em;
+  color: var(--color-charcoal-gray);
+  background-color: var(--color-bone-white);
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* ... (tus estilos anteriores) ... */
+.filter-select:focus {
+  border-color: var(--color-cocoa-brown);
+  box-shadow: 0 0 0 3px rgba(109, 76, 65, 0.2);
+  outline: none;
+}
 
+/* Contenedor de filtros de precio (ahora con flex para sus hijos) */
 .price-filter-container {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  display: flex; /* Cambiado a flex */
+  align-items: flex-end; /* Alinea los grupos de input/label */
+  gap: 15px; /* Espacio entre los grupos de min y max */
+  flex: 1;
+  min-width: 200px; /* Ancho mínimo para el contenedor de precios */
+  justify-content: center; /* Centra los inputs de precio si hay espacio extra */
 }
 
-.price-filter-container label {
-  font-weight: bold;
+.price-input-group { /* NUEVO: Estilo para cada par label/input de precio */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
 }
 
 .price-input {
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  width: 80px; /* Ajusta el ancho según sea necesario */
+  padding: 12px 15px;
+  border: 1px solid var(--color-ash-gray);
+  border-radius: 8px;
   font-size: 1em;
+  color: var(--color-charcoal-gray);
+  background-color: var(--color-bone-white);
+  width: 100px; /* Ancho fijo para los inputs de precio */
   text-align: center;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.table-info-banner {
-  text-align: center;
-  padding: 10px;
-  background-color: #e2f3ff;
-  border: 1px solid #b6d4fe;
-  color: #0c5460;
-  border-radius: 4px;
-  margin: 0 20px 20px;
+.price-input:focus {
+  border-color: var(--color-cocoa-brown);
+  box-shadow: 0 0 0 3px rgba(109, 76, 65, 0.2);
+  outline: none;
 }
 
-/* ... (tus estilos existentes) ... */
+
+/* Mensajes de estado (loading, error, empty) */
+.loading-message,
+.error-message,
+.empty-message {
+  text-align: center;
+  padding: 30px;
+  font-size: 1.1em;
+  color: var(--color-ash-gray);
+  background-color: var(--color-light-slate-gray);
+  border-radius: 8px;
+  margin-top: 30px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.error-message {
+  background-color: var(--notification-error-bg);
+  color: var(--notification-error-text);
+  border: 1px solid var(--color-elegant-wine);
+}
+
+/* Cuadrícula de productos */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 25px;
+  padding: 20px 0;
+}
+
+.product-card {
+  background-color: var(--color-bone-white);
+  border: 1px solid var(--color-ash-gray);
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.product-image-wrapper {
+  width: 100%;
+  height: 180px;
+  overflow: hidden;
+  border-bottom: 1px solid var(--color-ash-gray);
+}
+
+.product-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.product-card:hover .product-image {
+  transform: scale(1.05);
+}
+
+.product-info {
+  padding: 15px 20px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-card h3 {
+  margin-top: 0;
+  margin-bottom: 8px;
+  font-size: 1.5em;
+  color: var(--color-cocoa-brown);
+  min-height: 1.2em;
+}
+
+.product-description {
+  font-size: 0.95em;
+  color: var(--color-charcoal-gray);
+  line-height: 1.4;
+  margin-bottom: 15px;
+  flex-grow: 1;
+  min-height: 40px;
+}
+
+.product-price {
+  font-weight: 700;
+  color: var(--color-elegant-wine);
+  font-size: 1.3em;
+  margin-top: auto;
+  margin-bottom: 15px;
+}
+
+.product-availability {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9em;
+  margin-bottom: 15px;
+  font-weight: 500;
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot-available {
+  background-color: var(--color-soft-olive-green);
+}
+
+.dot-unavailable {
+  background-color: var(--color-ash-gray);
+}
+
+.product-availability.available {
+  color: var(--color-soft-olive-green);
+}
+
+.product-availability.unavailable {
+  color: var(--color-ash-gray);
+}
+
 
 .add-to-cart-button {
-  background-color: #28a745; /* Verde */
-  color: white;
+  width: calc(100% - 40px);
+  margin: 0 20px 20px;
+  background-color: var(--color-cocoa-brown);
+  color: var(--color-bone-white);
   border: none;
-  padding: 8px 15px;
+  padding: 12px 15px;
   text-align: center;
   text-decoration: none;
-  display: inline-block;
-  font-size: 14px;
-  margin-top: 10px;
+  font-size: 1.1em;
   cursor: pointer;
-  border-radius: 4px;
-  transition: background-color 0.2s;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  font-weight: 600;
 }
 
 .add-to-cart-button:hover:not(:disabled) {
-  background-color: #218838; /* Verde más oscuro */
+  background-color: #5A3F36;
+  transform: translateY(-2px);
 }
 
 .add-to-cart-button:disabled {
-  background-color: #6c757d; /* Gris */
+  background-color: var(--color-ash-gray);
   cursor: not-allowed;
   opacity: 0.7;
+  transform: none;
+}
+
+/* Media Queries para responsividad */
+@media (max-width: 992px) {
+  .filters-section {
+    flex-direction: column; /* Apila todos los grupos de filtros en columnas */
+    align-items: stretch; /* Estira los elementos para ocupar el ancho completo */
+    gap: 20px; /* Reducir el espacio entre grupos apilados */
+  }
+
+  .search-container,
+  .filter-container,
+  .price-filter-container {
+    width: 100%;
+    max-width: none;
+    min-width: unset;
+    align-items: center;
+  }
+
+  .search-input,
+  .filter-select,
+  .price-input {
+    max-width: 100%;
+  }
+
+  .search-container {
+    flex-direction: row; /* Mantener input y botones de búsqueda en fila */
+    flex-wrap: wrap; /* Permitir que los botones de búsqueda se envuelvan si es necesario */
+    justify-content: center; /* Centrar botones de búsqueda */
+  }
+
+  .search-input {
+    flex-basis: 70%; /* Input ocupa más espacio */
+  }
+}
+
+@media (max-width: 768px) {
+  .product-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+}
+
+@media (max-width: 576px) {
+  .filters-section {
+    padding: 20px;
+  }
+  .search-container {
+    flex-direction: column; /* Botones de búsqueda debajo del input en pantallas muy pequeñas */
+    align-items: stretch;
+  }
+  .search-input {
+    flex-basis: auto;
+  }
+  .search-button,
+  .clear-button {
+    width: 100%; /* Botones ocupan todo el ancho */
+  }
+  .price-filter-container {
+    flex-direction: column; /* Apilar price min/max en pantallas muy pequeñas */
+    align-items: stretch;
+  }
+  .price-input-group { /* Cada input de precio ocupa todo el ancho */
+    width: 100%;
+    align-items: center;
+  }
+  .price-input {
+    width: 100%; /* Asegurar que el input de precio ocupe todo el ancho */
+    max-width: 120px; /* Mantener un max-width si se desea */
+  }
+  .product-grid {
+    grid-template-columns: 1fr; /* Una columna en pantallas muy pequeñas */
+  }
+  .product-card {
+    text-align: center; /* Centrar texto en tarjetas si es una sola columna */
+  }
+  .product-info {
+    padding: 15px;
+  }
+  .add-to-cart-button {
+    width: calc(100% - 30px);
+    margin: 0 15px 15px;
+  }
 }

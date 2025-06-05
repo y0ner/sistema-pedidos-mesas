@@ -1,84 +1,147 @@
-/* src/app/app.css */
+/* src/app/app.css - Estilos específicos del componente raíz (Header y Footer) */
+
 header {
-  background-color: #333;
-  padding: 10px 20px;
-  color: white;
+  background-color: var(--color-charcoal-gray); /* Fondo oscuro elegante para el encabezado */
+  padding: 15px 25px; /* Más padding para más "aire" */
+  color: var(--color-bone-white); /* Texto en blanco hueso para contraste */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* Sombra sutil para profundidad */
+  position: sticky; /* Hace que el header se pegue arriba al hacer scroll */
+  top: 0;
+  z-index: 1000; /* Asegura que el header esté por encima de otros elementos */
+  width: 100%; /* Asegura que el header ocupe todo el ancho */
 }
 
 .header-content {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  max-width: 1200px;
+  justify-content: space-between; /* Distribuye el espacio entre el logo y la navegación */
+  align-items: center; /* Centra verticalmente los elementos */
+  max-width: 1200px; /* Mantener un ancho máximo para centrar */
   margin: 0 auto;
+  width: 100%; /* Asegura que el contenido ocupe todo el ancho disponible */
 }
 
 .logo {
   text-decoration: none;
-  color: white;
-  font-size: 1.5em; /* Ajustado para que no sea tan grande como h1 solo */
+  color: var(--color-soft-gold); /* Dorado suave para el logo, le da un toque premium */
+  font-size: 1.8em; /* Tamaño un poco más grande */
+  font-weight: 700; /* Negrita para el logo */
+  font-family: 'Playfair Display', serif; /* Usamos la fuente de títulos aquí */
+  line-height: 1; /* Asegura que no haya espacio extra vertical */
+  padding: 0; /* Asegura que no haya padding que lo desalinee */
+  margin: 0; /* Asegura que no haya margen que lo desalinee */
 }
 
-header h1 { /* Para que el h1 dentro del logo no tenga márgenes extra */
-  margin: 0;
-  font-size: 1em; /* El tamaño lo controla .logo */
+header h1 {
+  margin: 0; /* Eliminar márgenes por defecto del h1 */
+  font-size: 1em; /* Asegura que el tamaño lo controle .logo */
 }
-
 
 nav {
   display: flex;
-  gap: 15px;
+  align-items: center; /* Centra verticalmente los elementos de navegación */
+  gap: 20px; /* Aumentar el espacio entre los enlaces de navegación */
 }
 
 .nav-link {
-  color: white;
+  color: var(--color-light-slate-gray); /* Texto gris pizarra claro para los enlaces */
   text-decoration: none;
-  padding: 8px 12px;
-  border-radius: 4px;
-  transition: background-color 0.2s;
+  padding: 10px 15px; /* Más padding para los botones de navegación */
+  border-radius: 6px; /* Bordes más suaves */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Transición más suave */
+  font-weight: 500; /* Un poco de peso para el texto */
+  display: flex; /* Asegura que los enlaces se comporten como flex items */
+  align-items: center; /* Centra el texto y el icono verticalmente */
+  gap: 5px; /* Espacio entre icono y texto si lo hubiera */
 }
 
 .nav-link:hover {
-  background-color: #555;
+  background-color: var(--color-cocoa-brown); /* Marrón cacao al pasar el ratón */
+  color: var(--color-bone-white); /* Texto blanco hueso al pasar el ratón */
 }
 
 .cart-link {
   position: relative; /* Para posicionar el badge */
+  display: flex; /* Asegura que el texto y el badge estén alineados */
+  align-items: center;
+  gap: 5px; /* Espacio entre "Carrito" y el número */
 }
 
 .cart-badge {
-  background-color: #dc3545; /* Rojo */
-  color: white;
+  background-color: var(--color-elegant-wine); /* Vino tinto para el badge del carrito */
+  color: var(--color-bone-white);
   border-radius: 50%;
-  padding: 2px 6px;
-  font-size: 0.8em;
-  position: absolute;
-  top: -5px;
-  right: -5px;
-  min-width: 10px; /* Para que se vea bien con 1 dígito */
-  text-align: center;
-  line-height: 1.1;
+  padding: 3px 7px; /* Ajustar padding */
+  font-size: 0.75em; /* Tamaño un poco más pequeño */
+  position: absolute; /* Posicionamiento absoluto */
+  top: -8px; /* Subir un poco el badge */
+  right: -8px; /* Mover a la derecha */
+  min-width: 18px; /* Para que se vea bien con 1 o 2 dígitos */
+  height: 18px; /* Altura para hacer el círculo perfecto */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  line-height: 1; /* Eliminar espacio extra */
 }
 
-/* Ajustes generales si no los tienes */
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
+/* Iconos del personal/login */
+.staff-link .icon {
+  display: flex; /* Para centrar el SVG */
+  align-items: center;
+  justify-content: center;
+  line-height: 1; /* Evitar espacio extra del icono */
+  margin-right: 5px; /* Espacio entre el icono y la palabra "Personal" */
 }
 
+.staff-link .icon svg {
+  fill: var(--color-light-slate-gray); /* Color del icono SVG */
+  transition: fill 0.3s ease;
+  vertical-align: middle; /* Alineación vertical */
+}
+
+.staff-link:hover .icon svg {
+  fill: var(--color-bone-white); /* Cambiar color del icono al pasar el ratón */
+}
+
+
+/* Ajustes generales (pueden ser overrideados por componentes si es necesario) */
 main {
-  padding: 15px;
-  min-height: calc(100vh - 120px); /* Ajusta según altura de header y footer */
+  padding: 25px; /* Aumentar el padding general */
+  min-height: calc(100vh - 160px); /* Ajusta según la altura del header y footer (aprox 80px cada uno) */
+  background-color: var(--color-bone-white); /* Fondo principal de la aplicación */
+  flex-grow: 1; /* Para que el main se estire */
 }
 
 footer {
   text-align: center;
-  padding: 15px;
-  background-color: #333;
-  color: white;
-  /* position: fixed; */ /* Descomenta si quieres pie de página fijo abajo */
-  /* bottom: 0; */
-  /* width: 100%; */
+  padding: 20px;
+  background-color: var(--color-charcoal-gray); /* Fondo oscuro consistente con el header */
+  color: var(--color-ash-gray); /* Texto gris ceniza para el footer */
+  font-size: 0.9em; /* Fuente un poco más pequeña */
 }
-/* ... (estilos existentes) ... */
+
+/* Media Query para Header en pantallas pequeñas */
+@media (max-width: 768px) {
+  .header-content {
+    flex-direction: column; /* Apila el logo y la navegación verticalmente */
+    gap: 15px; /* Espacio entre el logo y la nav */
+    padding-bottom: 15px; /* Padding extra abajo para separación */
+  }
+
+  nav {
+    width: 100%; /* La navegación ocupa todo el ancho */
+    justify-content: space-around; /* Distribuye los enlaces uniformemente */
+    gap: 10px; /* Menor espacio entre enlaces en móvil */
+  }
+
+  .nav-link {
+    padding: 8px 10px; /* Menor padding para enlaces en móvil */
+    font-size: 0.9em; /* Fuente más pequeña para que quepan */
+  }
+
+  .cart-link {
+    /* Ajustar posición del badge si es necesario, o mantenerlo */
+    top: -5px;
+    right: -5px;
+  }
+}

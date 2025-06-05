@@ -1,29 +1,52 @@
+/* Estilos para el Carrito de Compras */
+
 .cart-container {
-  max-width: 800px;
-  margin: 20px auto;
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  max-width: 900px; /* Un poco más ancho para mejor visualización */
+  margin: 30px auto;
+  padding: 30px;
+  background-color: var(--color-bone-white);
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); /* Sombra más pronunciada pero suave */
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: var(--color-cocoa-brown);
+  font-size: 2.2em;
 }
 
 .table-info {
   text-align: center;
-  font-size: 1.1em;
-  margin-bottom: 15px;
-  padding: 10px;
-  background-color: #e2f3ff;
-  border-radius: 4px;
-  color: #0c5460;
+  font-size: 1.15em;
+  margin-bottom: 25px;
+  padding: 15px;
+  background-color: var(--color-latte-beige); /* Beige suave */
+  border-radius: 8px;
+  color: var(--color-charcoal-gray);
+  font-weight: 500;
+  border: 1px solid var(--color-ash-gray);
+}
+
+.table-info strong {
+  color: var(--color-cocoa-brown); /* Destacar número de mesa */
 }
 
 .cart-summary {
   display: flex;
   justify-content: space-between;
-  font-size: 1.1em;
-  margin-bottom: 20px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #eee;
+  align-items: center;
+  font-size: 1.2em;
+  font-weight: 600;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid var(--color-ash-gray); /* Línea divisoria más prominente */
+  color: var(--color-charcoal-gray);
+}
+
+.cart-summary strong {
+  color: var(--color-elegant-wine); /* Monto total en color de acento */
+  font-size: 1.3em;
 }
 
 .cart-items-list {
@@ -34,27 +57,31 @@
 
 .cart-item {
   display: flex;
+  flex-wrap: wrap; /* Permite que los ítems se envuelvan en pantallas pequeñas */
   justify-content: space-between;
   align-items: center;
-  padding: 15px 0;
-  border-bottom: 1px solid #f0f0f0;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--color-ash-gray); /* Separador de ítems */
 }
 
 .cart-item:last-child {
   border-bottom: none;
 }
 
-.item-info {
+.product-info-wrapper { /* NUEVO: para la imagen y detalles */
   display: flex;
   align-items: center;
+  flex: 1 1 50%; /* Ocupa al menos el 50% del ancho, flexible */
+  min-width: 250px; /* Ancho mínimo para evitar colapso */
 }
 
 .item-image {
-  width: 50px;
-  height: 50px;
+  width: 70px; /* Tamaño de imagen un poco más grande */
+  height: 70px;
   object-fit: cover;
-  border-radius: 4px;
-  margin-right: 15px;
+  border-radius: 8px; /* Bordes redondeados */
+  margin-right: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); /* Sombra sutil */
 }
 
 .item-details {
@@ -63,156 +90,294 @@
 }
 
 .item-name {
-  font-weight: bold;
-  font-size: 1.1em;
+  font-weight: 600; /* Seminegrita */
+  font-size: 1.2em;
+  color: var(--color-cocoa-brown); /* Nombre del producto en marrón cacao */
+  margin-bottom: 5px;
 }
 
 .item-price {
-  font-size: 0.9em;
-  color: #555;
+  font-size: 0.95em;
+  color: var(--color-ash-gray); /* Precio unitario en gris ceniza */
 }
 
 .item-actions {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 20px; /* Más espacio entre controles */
+  flex: 1 1 40%; /* Ocupa el 40% restante, flexible */
+  justify-content: flex-end; /* Alinea los controles a la derecha */
 }
 
 .quantity-controls {
   display: flex;
   align-items: center;
+  border: 1px solid var(--color-ash-gray);
+  border-radius: 8px;
+  overflow: hidden; /* Para que los botones se vean como parte del grupo */
 }
 
 .quantity-btn {
-  background-color: #f0f0f0;
-  border: 1px solid #ccc;
-  color: #333;
+  background-color: var(--color-light-slate-gray); /* Fondo suave */
+  border: none;
+  color: var(--color-charcoal-gray);
   cursor: pointer;
-  padding: 5px 10px;
-  font-size: 1em;
+  padding: 10px 15px; /* Más padding para botones de cantidad */
+  font-size: 1.1em;
+  transition: background-color 0.2s ease;
+}
+
+.quantity-btn:hover {
+  background-color: var(--color-latte-beige); /* Beige al pasar el ratón */
 }
 
 .quantity-input {
-  width: 40px;
+  width: 50px; /* Ancho más grande para el input de cantidad */
   text-align: center;
-  border: 1px solid #ccc;
-  border-left: none;
-  border-right: none;
-  padding: 5px 0;
-  font-size: 1em;
-  height: 28px; /* Alineación con botones */
-  box-sizing: border-box;
+  border: none; /* Quitamos bordes individuales */
+  padding: 10px 0;
+  font-size: 1.1em;
+  color: var(--color-charcoal-gray);
+  background-color: var(--color-bone-white);
+  -moz-appearance: textfield; /* Eliminar flechas en Firefox */
 }
 
+.quantity-input::-webkit-outer-spin-button,
+.quantity-input::-webkit-inner-spin-button {
+  -webkit-appearance: none; /* Eliminar flechas en Chrome/Safari */
+  margin: 0;
+}
+
+
 .item-subtotal {
-  min-width: 100px; /* Para alinear un poco */
+  min-width: 110px; /* Para alinear subtotales */
   text-align: right;
-  font-weight: bold;
+  font-weight: 700;
+  font-size: 1.1em;
+  color: var(--color-elegant-wine); /* Subtotal en vino tinto */
 }
 
 .remove-item-btn {
-  background-color: #f8d7da;
-  color: #721c24;
-  border: 1px solid #f5c6cb;
-  padding: 5px 10px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.9em;
-}
-
-.cart-actions {
-  margin-top: 20px;
-  padding-top: 20px;
-  border-top: 1px solid #eee;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.clear-cart-btn,
-.proceed-to-order-btn {
-  padding: 10px 20px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 1em;
-}
-
-.clear-cart-btn {
-  background-color: #dc3545;
-  color: white;
+  background-color: var(--color-elegant-wine); /* Vino tinto para eliminar */
+  color: var(--color-bone-white);
   border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.95em;
+  transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
-.proceed-to-order-btn {
-  background-color: #28a745;
-  color: white;
-  border: none;
+.remove-item-btn:hover {
+  background-color: #5A172B; /* Tono más oscuro de vino tinto */
+  transform: translateY(-1px);
 }
 
-.empty-cart-message {
-  text-align: center;
-  font-size: 1.2em;
-  color: #777;
-  padding: 30px 0;
-}
-.empty-cart-message a {
-  color: #007bff;
-  text-decoration: none;
-}
-.empty-cart-message a:hover {
-  text-decoration: underline;
-}
-
-/* ... (tus estilos existentes para el carrito) ... */
-
+/* Sección de nombre del cliente */
 .customer-name-section {
-  margin-top: 20px;
-  margin-bottom: 20px;
-  padding: 15px;
-  background-color: #f9f9f9;
-  border-radius: 4px;
-  border: 1px solid #eee;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  padding: 20px;
+  background-color: var(--color-light-slate-gray); /* Fondo gris suave */
+  border-radius: 8px;
+  border: 1px solid var(--color-ash-gray);
 }
 
 .customer-name-section label {
   display: block;
-  margin-bottom: 8px;
-  font-weight: bold;
-  color: #333;
+  margin-bottom: 10px;
+  font-weight: 600;
+  color: var(--color-charcoal-gray);
+  font-size: 1.1em;
 }
 
 .customer-name-input {
-  width: calc(100% - 22px); /* Considera padding y borde */
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid var(--color-ash-gray);
+  border-radius: 8px;
   font-size: 1em;
+  color: var(--color-charcoal-gray);
+  background-color: var(--color-bone-white);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+.customer-name-input:focus {
+  border-color: var(--color-cocoa-brown);
+  box-shadow: 0 0 0 3px rgba(109, 76, 65, 0.2);
+  outline: none;
+}
+
+/* Mensajes de feedback (éxito, error) */
 .submission-success-message,
 .submission-error-message {
-  padding: 10px;
-  margin-top: 15px;
-  margin-bottom: 15px;
-  border-radius: 4px;
+  padding: 15px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-radius: 8px;
   text-align: center;
+  font-weight: 500;
+  font-size: 1.05em;
 }
 
 .submission-success-message {
-  background-color: #d4edda;
-  color: #155724;
-  border: 1px solid #c3e6cb;
+  background-color: var(--notification-success-bg);
+  color: var(--notification-success-text);
+  border: 1px solid var(--color-soft-olive-green);
 }
 
 .submission-error-message {
-  background-color: #f8d7da;
-  color: #721c24;
-  border: 1px solid #f5c6cb;
+  background-color: var(--notification-error-bg);
+  color: var(--notification-error-text);
+  border: 1px solid var(--color-elegant-wine);
 }
 
 .input-error-message {
-  color: #721c24; /* Color de error de Bootstrap */
+  color: var(--color-elegant-wine); /* Mensaje de error de validación */
   font-size: 0.9em;
   text-align: left;
-  margin-top: 4px;
+  margin-top: 8px;
+  font-weight: 400;
+}
+
+
+/* Acciones del carrito (botones) */
+.cart-actions {
+  margin-top: 30px;
+  padding-top: 25px;
+  border-top: 2px solid var(--color-ash-gray); /* Línea divisoria */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap; /* Envuelve los botones si no hay espacio */
+  gap: 15px; /* Espacio entre botones */
+}
+
+.clear-cart-btn,
+.proceed-to-order-btn {
+  padding: 15px 25px; /* Más padding para botones grandes */
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.1em;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  flex: 1 1 auto; /* Permite que los botones crezcan */
+  min-width: 180px; /* Ancho mínimo para que no se vean muy pequeños */
+}
+
+.clear-cart-btn {
+  background-color: var(--color-elegant-wine); /* Vino tinto para vaciar */
+  color: var(--color-bone-white);
+  border: none;
+}
+
+.clear-cart-btn:hover:not(:disabled) {
+  background-color: #5A172B; /* Tono más oscuro de vino tinto */
+  transform: translateY(-2px);
+}
+
+.proceed-to-order-btn {
+  background-color: var(--color-cocoa-brown); /* Marrón cacao para realizar pedido */
+  color: var(--color-bone-white);
+  border: none;
+}
+
+.proceed-to-order-btn:hover:not(:disabled) {
+  background-color: #5A3F36; /* Tono más oscuro de marrón */
+  transform: translateY(-2px);
+}
+
+.clear-cart-btn:disabled,
+.proceed-to-order-btn:disabled {
+  background-color: var(--color-ash-gray);
+  cursor: not-allowed;
+  opacity: 0.7;
+  transform: none;
+}
+
+/* Mensaje de carrito vacío */
+.empty-cart-message {
+  text-align: center;
+  font-size: 1.3em;
+  color: var(--color-charcoal-gray);
+  padding: 50px 0;
+  font-weight: 500;
+}
+
+.empty-cart-message a {
+  color: var(--color-cocoa-brown); /* Enlace en marrón cacao */
+  font-weight: 600;
+}
+
+.empty-cart-message a:hover {
+  text-decoration: underline;
+}
+
+.return-link { /* NUEVO: Estilo para el párrafo que contiene el enlace de retorno */
+  text-align: center;
+  margin-top: 15px;
+  font-size: 1.1em;
+}
+
+/* Media Queries para responsividad */
+@media (max-width: 768px) {
+  .cart-item {
+    flex-direction: column;
+    align-items: flex-start; /* Alinea items a la izquierda */
+    gap: 15px;
+  }
+
+  .product-info-wrapper {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .item-actions {
+    width: 100%;
+    justify-content: space-between; /* Distribuye controles de cantidad y eliminar */
+    padding-left: 90px; /* Alinea con el texto del producto si la imagen es 70px + 20px margen */
+    box-sizing: border-box;
+  }
+
+  .item-subtotal {
+    min-width: unset; /* Reinicia el min-width */
+    text-align: left; /* Alinea a la izquierda en móviles */
+    flex: 1; /* Permite que ocupe espacio si es necesario */
+  }
+
+  .cart-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+@media (max-width: 480px) {
+  .cart-container {
+    padding: 20px;
+    margin: 20px auto;
+  }
+
+  h2 {
+    font-size: 1.8em;
+  }
+
+  .item-actions {
+    flex-direction: column;
+    align-items: flex-start;
+    padding-left: 0; /* Elimina padding extra en móviles muy pequeños */
+  }
+
+  .quantity-controls {
+    width: 100%;
+    justify-content: space-between; /* Asegura que los botones ocupen el espacio */
+  }
+
+  .quantity-input {
+    flex-grow: 1; /* Permite que el input crezca */
+  }
+
+  .remove-item-btn {
+    width: 100%;
+    margin-top: 10px;
+  }
 }

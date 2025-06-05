@@ -17,20 +17,21 @@
       No se pudo cargar la información del pedido. Intenta validar una mesa y
       realizar un pedido.
     </p>
+    <button (click)="navigateToHome()" class="home-button">
+      Volver al Inicio / Validar Mesa
+    </button>
   </div>
 
-  <div *ngIf="currentOrder" class="order-details">
+  <div *ngIf="currentOrder" class="order-status-card">
     <p class="status-highlight">
       <strong
         >Hola {{ currentOrder.customer_name || initialCustomerName || 'Cliente'
         }}!</strong
       >
     </p>
-    <p>
-      Tu pedido <strong>#{{ currentOrder.id }}</strong> para la
-      <strong
-        >Mesa {{ currentOrder.table_number || initialTableNumber }}</strong
-      >
+    <p class="order-summary-text">
+      Tu pedido <strong class="order-id">#{{ currentOrder.id }}</strong> para la
+      <strong class="table-number">Mesa {{ currentOrder.table_number || initialTableNumber }}</strong>
       está actualmente:
       <strong class="status-text status-{{currentOrder.status.toLowerCase()}}"
         >{{ currentOrder.status | titlecase }}</strong
@@ -45,35 +46,66 @@
       <ul>
         <li *ngFor="let item of currentOrder.details">
           {{ item.quantity }} x {{ item.product.name }}
-          <span>(${{ item.subtotal }})</span>
+          <span>${{ item.subtotal | number:'1.2-2' }}</span>
         </li>
       </ul>
       <p class="total-amount">
-        Total: <strong>${{ currentOrder.total }}</strong>
+        Total: <strong>${{ currentOrder.total | number:'1.2-2' }}</strong>
       </p>
     </div>
 
     <p
-      *ngIf="currentOrder.status.toLowerCase() === 'confirmed'"
-      class="next-step-message"
+      *ngIf="currentOrder.status.toLowerCase() === 'pending'"
+      class="next-step-message info"
     >
-      ¡Tu pedido ha sido confirmado y se está preparando!
+      ¡Tu pedido ha sido recibido! Estamos esperando la confirmación del personal.
+    </p>
+    <p
+      *ngIf="currentOrder.status.toLowerCase() === 'confirmed'"
+      class="next-step-message success"
+    >
+      ¡Tu pedido ha sido confirmado! Ahora está en preparación.
+    </p>
+    <p
+      *ngIf="currentOrder.status.toLowerCase() === 'preparing'"
+      class="next-step-message info"
+    >
+      Tu pedido está siendo preparado con dedicación. ¡Pronto estará listo!
     </p>
     <p
       *ngIf="currentOrder.status.toLowerCase() === 'ready_to_deliver'"
-      class="next-step-message"
+      class="next-step-message success"
     >
-      ¡Tu pedido está listo! Un mesero lo traerá a tu mesa en cualquier momento.
+      ¡Tu pedido está listo para ser entregado! Un mesero lo traerá a tu mesa en breve.
     </p>
+    <p
+      *ngIf="currentOrder.status.toLowerCase() === 'delivered'"
+      class="next-step-message success"
+    >
+      ¡Tu pedido ha sido entregado! Agradecemos tu preferencia.
+    </p>
+    <p
+      *ngIf="currentOrder.status.toLowerCase() === 'paid'"
+      class="next-step-message info"
+    >
+      ¡Gracias por tu compra! Tu pedido ha sido pagado.
+    </p>
+    <p
+      *ngIf="currentOrder.status.toLowerCase() === 'annulled'"
+      class="next-step-message error"
+    >
+      Este pedido ha sido anulado. Por favor, contacta al personal si tienes preguntas.
+    </p>
+
     <p class="last-updated-time" *ngIf="lastUpdated">
       Última actualización: {{ lastUpdated | date:'mediumTime' }}
       <span *ngIf="isLoading" class="updating-indicator"
         >(Actualizando...)</span
       >
     </p>
-  </div>
 
-  <button (click)="navigateToHome()" class="home-button">
-    Volver al Inicio / Validar Mesa
-  </button>
+    <button (click)="navigateToHome()" class="home-button">
+      Volver al Inicio
+    </button>
+  </div>
 </div>

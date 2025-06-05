@@ -1,77 +1,112 @@
+/* Estilos para el componente de Login */
+
 .login-container {
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 40px 20px;
-  min-height: 60vh;
+  min-height: calc(100vh - var(--header-height) - var(--footer-height)); /* Ocupa el espacio disponible */
+  background-color: var(--color-light-slate-gray); /* Fondo suave para la sección */
 }
 
 .login-form-wrapper {
   width: 100%;
-  max-width: 400px;
-  padding: 30px;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  max-width: 450px; /* Un poco más ancho */
+  padding: 40px; /* Más padding */
+  background-color: var(--color-bone-white); /* Fondo blanco hueso */
+  border-radius: 12px; /* Bordes más redondeados */
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15); /* Sombra más pronunciada */
   text-align: center;
 }
 
 h2 {
-  margin-bottom: 10px;
-  color: #333;
+  margin-bottom: 15px;
+  color: var(--color-cocoa-brown); /* Título en marrón cacao */
+  font-size: 2.2em;
 }
 
 p {
-  color: #666;
-  margin-bottom: 25px;
+  color: var(--color-charcoal-gray); /* Texto en gris carbón */
+  margin-bottom: 30px;
+  line-height: 1.5;
 }
 
 .form-group {
-  margin-bottom: 20px;
+  margin-bottom: 25px; /* Más espacio entre grupos de formulario */
   text-align: left;
 }
 
 .form-group label {
   display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
+  margin-bottom: 8px;
+  font-weight: 500; /* Menos negrita */
+  color: var(--color-charcoal-gray);
+  font-size: 1.05em;
 }
 
 .form-control {
   width: 100%;
-  padding: 10px;
-  font-size: 1em;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box; /* Importante para que el padding no afecte el ancho */
+  padding: 14px 18px; /* Más padding para inputs más grandes */
+  font-size: 1.1em;
+  border: 1px solid var(--color-ash-gray); /* Borde gris ceniza */
+  border-radius: 8px; /* Bordes redondeados */
+  box-sizing: border-box;
+  color: var(--color-charcoal-gray);
+  background-color: var(--color-light-slate-gray); /* Fondo ligero */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-control:focus {
+  border-color: var(--color-cocoa-brown); /* Borde marrón al enfocar */
+  box-shadow: 0 0 0 3px rgba(109, 76, 65, 0.2); /* Sombra suave al enfocar */
+  outline: none;
+}
+
+.form-control:disabled {
+  background-color: var(--color-ash-gray);
+  opacity: 0.7;
+  cursor: not-allowed;
 }
 
 .submit-button {
   width: 100%;
-  padding: 12px;
-  font-size: 1.1em;
-  color: white;
-  background-color: #007bff;
+  padding: 16px; /* Más padding */
+  font-size: 1.2em; /* Fuente más grande */
+  color: var(--color-bone-white);
+  background-color: var(--color-cocoa-brown); /* Marrón cacao */
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  font-weight: 600;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 48px; /* Altura fija para evitar saltos al mostrar el spinner */
+  height: 55px; /* Altura fija para evitar saltos al mostrar el spinner */
 }
 
 .submit-button:disabled {
-  background-color: #5a9edc;
+  background-color: var(--color-ash-gray);
   cursor: not-allowed;
+  opacity: 0.8;
+  transform: none;
 }
 
 .submit-button:not(:disabled):hover {
-  background-color: #0056b3;
+  background-color: #5A3F36; /* Tono más oscuro de marrón */
+  transform: translateY(-2px);
 }
 
-/* El spinner dentro del botón no necesita margen */
-.submit-button app-loading-spinner ::ng-deep .spinner {
-  margin: 0;
+/* Estilo para el contenedor del spinner dentro del botón */
+.spinner-wrapper { /* NUEVO ESTILO */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%; /* Asegura que ocupe la altura del botón */
+}
+
+.submit-button .spinner-wrapper ::ng-deep .spinner {
+  margin: 0; /* Eliminar margen si lo tiene por defecto */
+  width: 24px; /* Tamaño un poco más grande para el spinner */
+  height: 24px;
 }

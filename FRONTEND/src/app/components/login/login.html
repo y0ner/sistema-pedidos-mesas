@@ -28,9 +28,10 @@
           [disabled]="isLoading"
         >
       </div>
-      <button type="submit" class="submit-button" [disabled]="isLoading">
+    <button type="submit" class="submit-button" [disabled]="isLoading">
         <span *ngIf="!isLoading">Ingresar</span>
-        <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+        <span class="spinner-wrapper" *ngIf="isLoading"> <app-loading-spinner></app-loading-spinner>
+        </span>
       </button>
     </form>
   </div>

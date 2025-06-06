@@ -67,7 +67,7 @@ export interface ApiError {
   providedIn: 'root'
 })
 export class OrderService {
-  private baseApiUrl = 'http://localhost:8000/api/v1/orders/';
+  private baseApiUrl = 'http://darcia2.pythonanywhere.com/api/v1/orders/';
 
   constructor(private http: HttpClient) { }
 

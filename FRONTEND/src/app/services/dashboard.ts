@@ -23,7 +23,7 @@ export interface DashboardStats {
 })
 export class DashboardService {
 
-  private apiUrl = 'http://localhost:8000/api/v1/dashboard-stats/';
+  private apiUrl = 'http://darcia2.pythonanywhere.com/api/v1/dashboard-stats/';
 
   constructor(private http: HttpClient) { }
 

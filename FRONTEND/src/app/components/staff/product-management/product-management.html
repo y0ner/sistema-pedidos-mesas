@@ -1,0 +1,105 @@
+<div class="management-container">
+  
+  <div class="header">
+    <h1>Gestión de Productos</h1>
+    <button class="btn btn-create" (click)="openCreateModal()">
+      <span class="material-icons-outlined">add</span>
+      Crear Producto
+    </button>
+  </div>
+
+  <div class="list-card">
+    <div *ngIf="isLoading && !isModalVisible" class="loading-message">
+        <app-loading-spinner></app-loading-spinner>
+        Cargando productos...
+    </div>
+    <div *ngIf="!isLoading && products.length === 0" class="empty-message">No hay productos registrados.</div>
+    
+    <table *ngIf="!isLoading && products.length > 0">
+      <thead>
+        <tr>
+          <th>Imagen</th>
+          <th>Nombre</th>
+          <th>Precio</th>
+          <th>Disponibilidad</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of products">
+          <td>
+            <img [src]="product.image || 'https://via.placeholder.com/60?text=No+Img'" 
+                 alt="{{ product.name }}" 
+                 class="product-table-image">
+          </td>
+          <td>{{ product.name }}</td>
+          <td>{{ product.price | currency:'$':'symbol':'1.0-0' }}</td>
+          <td>
+            <span class="status-badge" [ngClass]="product.availability ? 'status-available' : 'status-unavailable'">
+              {{ product.availability ? 'Disponible' : 'No Disp.' }}
+            </span>
+          </td>
+          <td class="action-buttons">
+            <button class="btn btn-edit" (click)="openEditModal(product)">Editar</button>
+            
+            <button class="btn btn-delete" (click)="deleteProduct(product.id)">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div *ngIf="isModalVisible" class="modal-backdrop" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>{{ isEditMode ? 'Editar Producto' : 'Crear Nuevo Producto' }}</h2>
+      <button class="close-btn" (click)="closeModal()">&times;</button>
+    </div>
+    
+    <div class="modal-body">
+      <form (ngSubmit)="saveProduct()" #productForm="ngForm">
+        <div class="form-group">
+          <label for="name">Nombre del Producto</label>
+          <input type="text" id="name" name="name" [(ngModel)]="selectedProduct.name" required class="form-control">
+        </div>
+        
+        <div class="form-group">
+          <label for="description">Descripción</label>
+          <textarea id="description" name="description" [(ngModel)]="selectedProduct.description" class="form-control"></textarea>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="price">Precio</label>
+            <input type="number" id="price" name="price" [(ngModel)]="selectedProduct.price" required min="0" step="0.01" class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="availability">Disponibilidad</label>
+            <select id="availability" name="availability" [(ngModel)]="selectedProduct.availability" class="form-control">
+              <option [ngValue]="true">Disponible</option>
+              <option [ngValue]="false">No Disponible</option>
+            </select>
+          </div>
+        </div>
+          
+        <div class="form-group">
+          <label for="image">Imagen</label>
+          <input type="file" id="image" (change)="onFileSelected($event)" accept="image/*" class="form-control-file">
+          <div *ngIf="currentImageUrl" class="image-preview-container">
+            <img [src]="currentImageUrl" alt="Imagen actual" class="current-image-preview">
+            <small>Imagen actual. Sube una nueva para reemplazarla.</small>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-cancel" (click)="closeModal()">Cancelar</button>
+          <button type="submit" class="btn btn-save" [disabled]="!productForm.form.valid || isLoading">
+            <span *ngIf="!isLoading">{{ isEditMode ? 'Actualizar' : 'Crear' }}</span>
+            <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

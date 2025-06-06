@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpParams, HttpErrorResponse } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
+// Interfaz actualizada para manejar la imagen como archivo al crear/editar
 export interface Product {
   id: number;
   name: string;
   description?: string;
   price: number;
-  image?: string;
+  image?: string | File; // Puede ser una URL (string) o un Archivo para la subida
   availability: boolean;
 }
 
@@ -20,32 +22,53 @@ export class ProductService {
 
   constructor(private http: HttpClient) { }
 
+  // --- OBTENER PRODUCTOS (SIN CAMBIOS) ---
   getProducts(
     searchTerm?: string,
     availability?: boolean | null,
-    minPrice?: number | null, // <--- NUEVO
-    maxPrice?: number | null  // <--- NUEVO
+    minPrice?: number | null,
+    maxPrice?: number | null
   ): Observable<Product[]> {
     let params = new HttpParams();
+    if (searchTerm) params = params.set('search', searchTerm);
+    if (availability === true) params = params.set('availability', 'true');
+    else if (availability === false) params = params.set('availability', 'false');
+    if (minPrice != null) params = params.set('price__gte', minPrice.toString());
+    if (maxPrice != null) params = params.set('price__lte', maxPrice.toString());
 
-    if (searchTerm) {
-      params = params.set('search', searchTerm);
-    }
+    return this.http.get<Product[]>(this.apiUrl, { params }).pipe(catchError(this.handleError));
+  }
+  
+  // --- OBTENER UN SOLO PRODUCTO (NUEVO Y ÚTIL) ---
+  getProduct(id: number): Observable<Product> {
+    return this.http.get<Product>(`${this.apiUrl}${id}/`).pipe(catchError(this.handleError));
+  }
 
-    if (availability === true) {
-      params = params.set('availability', 'true');
-    } else if (availability === false) {
-      params = params.set('availability', 'false');
-    }
+  // --- CREAR UN NUEVO PRODUCTO (NUEVO) ---
+  createProduct(productData: FormData): Observable<Product> {
+    return this.http.post<Product>(this.apiUrl, productData).pipe(catchError(this.handleError));
+  }
 
-    // NUEVO: Añadir filtros de precio si se proporcionan
-    if (minPrice != null) { // Usamos != null para cubrir undefined y null, pero no 0
-      params = params.set('price__gte', minPrice.toString());
-    }
-    if (maxPrice != null) {
-      params = params.set('price__lte', maxPrice.toString());
-    }
+  // --- ACTUALIZAR UN PRODUCTO (NUEVO) ---
+  updateProduct(id: number, productData: FormData): Observable<Product> {
+    return this.http.put<Product>(`${this.apiUrl}${id}/`, productData).pipe(catchError(this.handleError));
+  }
 
-    return this.http.get<Product[]>(this.apiUrl, { params });
+  // --- ELIMINAR UN PRODUCTO (NUEVO) ---
+  deleteProduct(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}${id}/`).pipe(catchError(this.handleError));
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    let errorMessage = 'Ocurrió un error desconocido.';
+    if (error.error instanceof ErrorEvent) {
+      errorMessage = `Error del lado del cliente: ${error.error.message}`;
+    } else {
+      // El backend devolvió un código de error.
+      // Podemos intentar extraer un mensaje de error más específico si el backend lo envía.
+      errorMessage = `Error del servidor (código ${error.status}): ${error.error.detail || error.message}`;
+    }
+    console.error(errorMessage);
+    return throwError(() => new Error(errorMessage));
   }
 }

@@ -1,0 +1,83 @@
+<div class="management-container">
+  <div class="header">
+    <h1>Gestión de Mesas</h1>
+    <button class="btn btn-create" (click)="openCreateModal()">
+      <span class="material-icons-outlined">add</span>
+      Crear Mesa
+    </button>
+  </div>
+
+  <div class="list-card">
+    <div *ngIf="isLoading && !isModalVisible" class="loading-message">
+      <app-loading-spinner></app-loading-spinner>
+      Cargando mesas...
+    </div>
+    <div *ngIf="!isLoading && tables.length === 0" class="empty-message">No hay mesas registradas.</div>
+    
+    <table *ngIf="!isLoading && tables.length > 0">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Número</th>
+          <th>Estado</th>
+          <th>Código Actual</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let table of tables">
+          <td>{{ table.id }}</td>
+          <td>Mesa {{ table.number }}</td>
+          <td>
+            <span class="status-badge status-{{table.status}}">
+              {{ getStatusLabel(table.status) }}
+            </span>
+          </td>
+          <td>
+            <span *ngIf="table.current_code" class="code-display">{{ table.current_code }}</span>
+            <span *ngIf="!table.current_code" class="no-code">-</span>
+          </td>
+          <td class="action-buttons">
+            <button class="btn btn-secondary" (click)="generateCode(table.id)" [disabled]="table.status !== 'available'">
+              Generar Código
+            </button>
+            <button class="btn btn-edit" (click)="openEditModal(table)">Editar</button>
+            <button class="btn btn-delete" (click)="deleteTable(table.id)">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div *ngIf="isModalVisible" class="modal-backdrop" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>{{ isEditMode ? 'Editando Mesa' : 'Crear Nueva Mesa' }}</h2>
+      <button class="close-btn" (click)="closeModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form (ngSubmit)="saveTable()" #tableForm="ngForm">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="number">Número de Mesa</label>
+            <input type="number" id="number" name="number" [(ngModel)]="selectedTable.number" required class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="status">Estado</label>
+            <select id="status" name="status" [(ngModel)]="selectedTable.status" class="form-control" required>
+              <option *ngFor="let status of statusChoices" [value]="status.value">{{ status.label }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-cancel" (click)="closeModal()">Cancelar</button>
+          <button type="submit" class="btn btn-save" [disabled]="!tableForm.form.valid || isLoading">
+            <span *ngIf="!isLoading">{{ isEditMode ? 'Actualizar' : 'Crear' }}</span>
+            <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

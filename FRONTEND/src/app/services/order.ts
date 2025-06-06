@@ -9,14 +9,16 @@ import { Product } from './product';
 export interface SaleDetailItem {
   product_name: string;
   quantity: number;
-  price: string; // Precio al momento de la venta
+  product_price_at_sale: string; // Corregido de 'price' a 'product_price_at_sale'
+  subtotal: string;
 }
 
 export interface SaleRecord {
   id: number;
-  total: string;
-  sale_timestamp: string; // La fecha y hora de la venta
-  user: string; // El nombre de usuario del personal que marcó el pedido como pagado
+  order: number; // <-- AÑADIDO: El ID del pedido original
+  total_amount: string; // <-- CORREGIDO: de 'total' a 'total_amount'
+  sale_timestamp: string;
+  processed_by_username: string; // <-- CORREGIDO: de 'user' a 'processed_by_username'
   items_sold: SaleDetailItem[];
 }
 

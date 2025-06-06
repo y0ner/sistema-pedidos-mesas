@@ -12,11 +12,19 @@ import { LoginComponent } from './components/login/login';
 import { StaffLayoutComponent } from './components/staff/staff-layout/staff-layout';
 import { DashboardComponent } from './components/staff/dashboard/dashboard';
 import { OrderManagementComponent } from './components/staff/order-management/order-management';
+import { ProductManagementComponent } from './components/staff/product-management/product-management';
+import { TableManagementComponent } from './components/staff/table-management/table-management';
+import { PromotionManagementComponent } from './components/staff/promotion-management/promotion-management';
+import { SalesHistoryComponent } from './components/staff/sales-history/sales-history';
 
 // Guardias
 import { tableValidatedGuard } from './guards/table-validated-guard';
 import { tableNotValidatedGuard } from './guards/table-not-validated-guard';
 import { authGuard } from './guards/auth-guard';
+
+
+
+
 export const routes: Routes = [
   // --- Rutas Públicas y del Cliente ---
   {
@@ -68,6 +76,26 @@ export const routes: Routes = [
         path: 'orders', // Corresponde a /staff/orders
         component: OrderManagementComponent,
         title: 'Gestión de Pedidos'
+      },
+      {
+        path: 'products', // Corresponde a /staff/products
+        component: ProductManagementComponent,
+        title: 'Gestión de Productos'
+      },
+      {
+        path: 'tables', // Corresponde a /staff/tables
+        component: TableManagementComponent,
+        title: 'Gestión de Mesas'
+      },
+      {
+        path: 'promotions', // Corresponde a /staff/promotions
+        component: PromotionManagementComponent,
+        title: 'Gestión de Promociones'
+      },
+      {
+        path: 'history', // Corresponde a /staff/history
+        component: SalesHistoryComponent,
+        title: 'Historial de Ventas'
       },
       {
         path: '', // Si alguien navega solo a /staff

@@ -93,10 +93,10 @@ WSGI_APPLICATION = 'core.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'sistema_pedidos_db',
-        'USER': 'root',
-        'PASSWORD': 'Root', 
-        'HOST': 'localhost',
+        'NAME': 'Darcia2$sistema_pedidos_db',
+        'USER': 'Darcia2',
+        'PASSWORD': 'sistema@pedidos',
+        'HOST': 'Darcia2.mysql.pythonanywhere-services.com',
         'PORT': '3306',
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",

@@ -58,10 +58,12 @@ MIDDLEWARE = [
 
 ]
 
-CORS_ALLOW_ALL_ORIGINS = [
+CORS_ALLOWED_ORIGINS = [
     "http://localhost:4200",
-    "https://mi-mesa-facil.vercel.app", # URL de Vercel
+    "https://mi-mesa-facil.vercel.app",
 ]
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 ROOT_URLCONF = 'core.urls'
 

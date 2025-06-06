@@ -1,0 +1,92 @@
+<div class="management-container">
+  <div class="header">
+    <h1>Gestión de Promociones</h1>
+    <button class="btn btn-create" (click)="openCreateModal()">
+      <span class="material-icons-outlined">add</span>
+      Crear Promoción
+    </button>
+  </div>
+
+  <div class="list-card">
+    <div *ngIf="isLoading && !isModalVisible" class="loading-message">
+      <app-loading-spinner></app-loading-spinner>
+      Cargando promociones...
+    </div>
+    <div *ngIf="!isLoading && promotions.length === 0" class="empty-message">No hay promociones registradas.</div>
+    
+    <table *ngIf="!isLoading && promotions.length > 0">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Título</th>
+          <th>Fecha Inicio</th>
+          <th>Fecha Fin</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let promo of promotions">
+          <td>{{ promo.id }}</td>
+          <td>{{ promo.title }}</td>
+          <td>{{ promo.start_date | date:'dd/MM/yy, h:mm a' }}</td>
+          <td>{{ promo.end_date | date:'dd/MM/yy, h:mm a' }}</td>
+          <td>
+            <span class="status-badge" [ngClass]="promo.is_active ? 'status-active' : 'status-inactive'">
+              {{ promo.is_active ? 'Activa' : 'Inactiva' }}
+            </span>
+          </td>
+          <td class="action-buttons">
+            <button class="btn btn-edit" (click)="openEditModal(promo)">Editar</button>
+            <button class="btn btn-delete" (click)="deletePromotion(promo.id)">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div *ngIf="isModalVisible" class="modal-backdrop" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>{{ isEditMode ? 'Editando Promoción' : 'Crear Nueva Promoción' }}</h2>
+      <button class="close-btn" (click)="closeModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form (ngSubmit)="savePromotion()" #promotionForm="ngForm">
+        <div class="form-group">
+          <label for="title">Título de la Promoción</label>
+          <input type="text" id="title" name="title" [(ngModel)]="selectedPromotion.title" required class="form-control">
+        </div>
+        <div class="form-group">
+          <label for="description">Descripción</label>
+          <textarea id="description" name="description" [(ngModel)]="selectedPromotion.description" required class="form-control"></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="start_date">Fecha de Inicio</label>
+            <input type="datetime-local" id="start_date" name="start_date" [(ngModel)]="selectedPromotion.start_date" required class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="end_date">Fecha de Fin</label>
+            <input type="datetime-local" id="end_date" name="end_date" [(ngModel)]="selectedPromotion.end_date" required class="form-control">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="is_active">Estado</label>
+          <select id="is_active" name="is_active" [(ngModel)]="selectedPromotion.is_active" class="form-control">
+            <option [ngValue]="true">Activa</option>
+            <option [ngValue]="false">Inactiva</option>
+          </select>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-cancel" (click)="closeModal()">Cancelar</button>
+          <button type="submit" class="btn btn-save" [disabled]="!promotionForm.form.valid || isLoading">
+            <span *ngIf="!isLoading">{{ isEditMode ? 'Actualizar' : 'Crear' }}</span>
+            <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

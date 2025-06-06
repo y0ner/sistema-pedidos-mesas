@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-2+h!xxf@+o290sv^ei@lp&ady+()rnqs!i6o@d9^hhw3kto^*0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['Darcia2.pythonanywhere.com', 'mi-mesa-facil.vercel.app']
 
 
 # Application definition
@@ -58,6 +58,11 @@ MIDDLEWARE = [
 
 ]
 
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:4200",
+    "https://mi-mesa-facil.vercel.app",
+]
+
 CORS_ALLOW_ALL_ORIGINS = True
 
 ROOT_URLCONF = 'core.urls'
@@ -88,10 +93,10 @@ WSGI_APPLICATION = 'core.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'sistema_pedidos_db',
-        'USER': 'root',
-        'PASSWORD': 'Root', 
-        'HOST': 'localhost',
+        'NAME': 'Darcia2$sistema_pedidos_db',
+        'USER': 'Darcia2',
+        'PASSWORD': 'sistema@pedidos',
+        'HOST': 'Darcia2.mysql.pythonanywhere-services.com',
         'PORT': '3306',
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",

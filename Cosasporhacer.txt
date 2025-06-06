@@ -1,0 +1,4 @@
+1.hacer la parte administrativa de los usuarios en el front
+2.crud de pedidos, mesas en el front
+3.crear un apartado en la parte administrativa para ver todos los pedidos vendidos y sus fechas
+4.cuando se este el crud de las mesas hay que ponerle la opcion de generar el codigo

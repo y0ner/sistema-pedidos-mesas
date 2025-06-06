@@ -3,32 +3,26 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
-// Interfaz para el payload que enviaremos al backend
+// Interfaces para el payload y respuestas
 export interface ValidateCodePayload {
   code: string;
 }
 
-// Interfaz para la respuesta esperada del backend si la validación es exitosa
 export interface ValidatedTableResponse {
   id: number;
   number: number;
   status: string;
   current_code: string | null;
-  last_code_update: string | null;
 }
 
-// --- NUEVO: Interfaz para representar una Mesa (basado en TableSerializer y modelos) ---
 export interface Table {
   id: number;
   number: number;
-  status: 'available' | 'occupied' | 'reserved' | 'blocked' | string; // Hacemos status más específico si es posible
-  current_code?: string | null; // Opcional, ya que puede no estar presente para todas las mesas
-  last_code_update?: string | null; // Opcional
+  status: 'available' | 'occupied' | 'reserved' | 'unavailable' | string;
+  current_code?: string | null;
+  last_code_update?: string | null;
 }
-// --- FIN NUEVO ---
 
-
-// Interfaz para el error esperado del backend
 export interface ApiError {
   error: string;
 }
@@ -38,10 +32,11 @@ export interface ApiError {
 })
 export class TableService {
 
-  private apiUrl = 'http://127.0.0.1:8000/api/v1/tables/';
+  private apiUrl = 'http://localhost:8000/api/v1/tables/';
 
   constructor(private http: HttpClient) { }
 
+  // --- MÉTODOS EXISTENTES ---
   validateTableCode(code: string): Observable<ValidatedTableResponse> {
     const endpoint = `${this.apiUrl}validate-code/`;
     const payload: ValidateCodePayload = { code: code };
@@ -50,18 +45,39 @@ export class TableService {
     );
   }
 
-  // --- NUEVO MÉTODO ---
-  /**
-   * Obtiene una lista de todas las mesas y su estado.
-   * Asume que el endpoint GET /api/v1/tables/ es público o accesible.
-   */
   getAllTables(): Observable<Table[]> {
-    // El endpoint es la URL base del servicio (this.apiUrl)
     return this.http.get<Table[]>(this.apiUrl).pipe(
       catchError(this.handleError)
     );
   }
-  // --- FIN NUEVO MÉTODO ---
+
+  // --- NUEVOS MÉTODOS CRUD ---
+  createTable(tableData: { number: number; status: string }): Observable<Table> {
+    return this.http.post<Table>(this.apiUrl, tableData).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  updateTable(id: number, tableData: { number: number; status: string }): Observable<Table> {
+    return this.http.put<Table>(`${this.apiUrl}${id}/`, tableData).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  deleteTable(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}${id}/`).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  // --- NUEVO MÉTODO PARA GENERAR CÓDIGO ---
+  generateCodeForTable(id: number): Observable<Table> {
+    const endpoint = `${this.apiUrl}${id}/generate-code/`;
+    return this.http.post<Table>(endpoint, {}).pipe(
+      catchError(this.handleError)
+    );
+  }
+  // --- FIN NUEVOS MÉTODOS ---
 
   private handleError(error: HttpErrorResponse) {
     let errorMessage: string;

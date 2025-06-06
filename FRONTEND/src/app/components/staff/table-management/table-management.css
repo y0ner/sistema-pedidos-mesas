@@ -1,0 +1,83 @@
+/* --- Estilos de la Página de Gestión --- */
+.management-container {
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.header h1 {
+  margin: 0;
+  text-align: left;
+}
+
+.list-card {
+  background-color: var(--color-bone-white);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+th, td { padding: 15px; text-align: left; border-bottom: 1px solid var(--color-ash-gray); vertical-align: middle; }
+th { background-color: var(--color-light-slate-gray); font-weight: 600; color: var(--color-cocoa-brown); }
+tbody tr:hover { background-color: var(--color-latte-beige); }
+
+/* Badges y Código */
+.status-badge { padding: 5px 10px; border-radius: 15px; font-size: 0.85em; font-weight: 600; color: white; white-space: nowrap; }
+.status-available { background-color: var(--color-soft-olive-green); }
+.status-occupied { background-color: var(--color-elegant-wine); }
+.status-reserved { background-color: var(--color-soft-gold); color: var(--color-charcoal-gray); }
+.status-unavailable { background-color: var(--color-ash-gray); }
+.code-display { font-family: monospace; font-size: 1.2em; font-weight: bold; color: var(--color-elegant-wine); background-color: var(--color-latte-beige); padding: 3px 8px; border-radius: 4px; }
+.no-code { color: var(--color-ash-gray); }
+
+.loading-message, .empty-message { text-align: center; padding: 40px; font-style: italic; color: var(--color-ash-gray); }
+
+/* --- Estilos de Botones Generales --- */
+.action-buttons { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.btn { padding: 8px 15px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.2s; font-size: 0.9em; }
+.btn-create { background-color: var(--color-cocoa-brown); color: white; display: flex; align-items: center; gap: 8px; font-size: 1em; padding: 12px 20px; }
+.btn-edit { background-color: var(--color-soft-gold); color: var(--color-charcoal-gray); }
+.btn-delete { background-color: var(--color-elegant-wine); color: var(--color-bone-white); }
+.btn-secondary { background-color: var(--color-light-slate-gray); color: var(--color-charcoal-gray); }
+.btn-save { background-color: var(--color-cocoa-brown); color: white; min-width: 120px; }
+.btn-cancel { background-color: var(--color-ash-gray); color: var(--color-charcoal-gray); }
+
+.btn:disabled { background-color: #ccc; cursor: not-allowed; opacity: 0.7; }
+
+/* --- Estilos del Modal --- */
+.modal-backdrop {
+  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 1040;
+  display: flex; justify-content: center; align-items: center;
+  animation: fadeIn 0.3s ease-out;
+}
+.modal-content {
+  background-color: var(--color-bone-white); padding: 25px 35px; border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  width: 90%; max-width: 600px; max-height: 90vh;
+  display: flex; flex-direction: column;
+}
+.modal-header {
+  display: flex; justify-content: space-between; align-items: center;
+  border-bottom: 1px solid var(--color-ash-gray); padding-bottom: 15px; margin-bottom: 25px;
+}
+.modal-header h2 { text-align: left; border: none; padding: 0; margin: 0; font-size: 1.8em; }
+.close-btn { background: none; border: none; font-size: 2.5em; line-height: 1; cursor: pointer; color: var(--color-ash-gray); }
+.modal-body { overflow-y: auto; padding-right: 15px; }
+.modal-footer { display: flex; justify-content: flex-end; gap: 15px; margin-top: 25px; padding-top: 20px; border-top: 1px solid var(--color-ash-gray); }
+.modal-body .form-group { margin-bottom: 20px; }
+.modal-body .form-group label { display: block; margin-bottom: 8px; font-weight: 600; }
+.modal-body .form-control { width: 100%; padding: 12px; border: 1px solid var(--color-ash-gray); border-radius: 8px; box-sizing: border-box; }
+.modal-body .form-row { display: flex; gap: 20px; }
+.modal-body .form-row .form-group { flex: 1; }
+
+@keyframes fadeIn {
+  from { opacity: 0; } to { opacity: 1; }
+}

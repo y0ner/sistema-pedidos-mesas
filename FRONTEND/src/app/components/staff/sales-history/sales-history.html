@@ -1,33 +1,87 @@
-<div class="staff-layout-container">
-  <aside class="staff-sidebar">
-    <div class="sidebar-header">
-      <h3>Panel de Personal</h3>
-    </div>
-    <nav class="sidebar-nav">
-      <a 
-        routerLink="/staff/dashboard" 
-        routerLinkActive="active-link"
-        class="nav-link">
-        <span class="material-icons-outlined">dashboard</span>
-        Dashboard
-      </a>
-      <a 
-        routerLink="/staff/orders" 
-        routerLinkActive="active-link"
-        class="nav-link">
-        <span class="material-icons-outlined">list_alt</span>
-        Gestión de Pedidos
-      </a>
-      </nav>
-    <div class="sidebar-footer">
-      <button (click)="logout()" class="logout-button">
-        <span class="material-icons-outlined">logout</span>
-        Cerrar Sesión
-      </button>
-    </div>
-  </aside>
+<div class="history-container">
+  <h1>Historial de Ventas</h1>
 
-  <main class="staff-content">
-    <router-outlet></router-outlet>
-  </main>
+  <div class="filters-card">
+    <form (ngSubmit)="onFilterSubmit()" class="filter-form">
+      <div class="form-group">
+        <label for="dateFrom">Desde:</label>
+        <input type="date" id="dateFrom" [(ngModel)]="dateFrom" name="dateFrom" class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="dateTo">Hasta:</label>
+        <input type="date" id="dateTo" [(ngModel)]="dateTo" name="dateTo" class="form-control">
+      </div>
+      <div class="filter-actions">
+        <button type="submit" class="btn btn-primary">Filtrar</button>
+        <button type="button" (click)="clearFilters()" class="btn btn-secondary">Limpiar Filtros</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="sales-list-card">
+    <div class="summary-header">
+      <h2>Ventas Registradas</h2>
+      <div class="total-summary">
+        Total de Ventas (periodo): <strong>{{ totalSalesValue | currency:'$':'symbol':'1.0-0' }}</strong>
+      </div>
+    </div>
+
+    <div *ngIf="isLoading" class="loading-message">
+      <app-loading-spinner></app-loading-spinner>
+      <p>Cargando historial...</p>
+    </div>
+    
+    <div *ngIf="errorMessage && !isLoading" class="error-message">
+      {{ errorMessage }}
+    </div>
+
+    <div *ngIf="!isLoading && sales.length === 0" class="empty-message">
+      No se encontraron ventas para el periodo seleccionado.
+    </div>
+
+    <div class="table-wrapper" *ngIf="!isLoading && sales.length > 0">
+      <table>
+        <thead>
+          <tr>
+            <th>ID Venta</th>
+            <th>Fecha y Hora</th>
+            <th>ID Pedido</th>
+            <th>Procesado Por</th>
+            <th>Total</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let sale of sales">
+            <tr (click)="toggleDetails(sale.id)" class="summary-row">
+              <td>#{{ sale.id }}</td>
+              <td>{{ sale.sale_timestamp | date:'dd/MM/yyyy h:mm a' }}</td>
+              <td>#{{ sale.order }}</td>
+              <td>{{ sale.processed_by_username || 'N/A' }}</td>
+              <td class="total-column">{{ sale.total_amount | currency:'$':'symbol':'1.0-0' }}</td>
+              <td>
+                <button class="btn-details">
+                  {{ expandedSaleId === sale.id ? 'Ocultar' : 'Ver' }} Detalles
+                </button>
+              </td>
+            </tr>
+            <tr *ngIf="expandedSaleId === sale.id" class="details-row">
+              <td colspan="6">
+                <div class="details-content">
+                  <h4>Artículos Vendidos</h4>
+                  <ul>
+                    <li *ngFor="let item of sale.items_sold">
+                      <span>{{ item.quantity }} x {{ item.product_name }}</span>
+                      <span> ({{ item.product_price_at_sale | currency:'$':'symbol':'1.0-0' }} c/u)</span>
+                      <strong>Subtotal: {{ item.subtotal | currency:'$':'symbol':'1.0-0' }}</strong>
+                    </li>
+                  </ul>
+                </div>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>

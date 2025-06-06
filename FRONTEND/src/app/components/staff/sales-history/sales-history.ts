@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule, DatePipe, DecimalPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router'; // <-- 1. IMPORTAR RouterModule
 import { OrderService, SaleRecord } from '../../../services/order';
 import { NotificationService } from '../../../services/notification';
 import { LoadingSpinnerComponent } from '../../loading-spinner/loading-spinner';
-import { AuthService } from '../../../services/auth'; // <-- 2. IMPORTAR AuthService
 
 @Component({
   selector: 'app-sales-history',
@@ -15,8 +13,7 @@ import { AuthService } from '../../../services/auth'; // <-- 2. IMPORTAR AuthSer
     FormsModule,
     DatePipe,
     DecimalPipe,
-    LoadingSpinnerComponent,
-    RouterModule // <-- 3. AÑADIR RouterModule A LOS IMPORTS
+    LoadingSpinnerComponent
   ],
   templateUrl: './sales-history.html',
   styleUrls: ['./sales-history.css']
@@ -27,13 +24,17 @@ export class SalesHistoryComponent implements OnInit {
   isLoading: boolean = true;
   errorMessage: string | null = null;
   totalSalesValue: number = 0;
+  
+  // Para los filtros de fecha
   dateFrom: string = '';
   dateTo: string = '';
+
+  // Para expandir los detalles de una venta
+  expandedSaleId: number | null = null;
 
   constructor(
     private orderService: OrderService,
     private notificationService: NotificationService,
-    private authService: AuthService // <-- 4. INYECTAR AuthService
   ) {}
 
   ngOnInit(): void {
@@ -41,15 +42,13 @@ export class SalesHistoryComponent implements OnInit {
   }
 
   loadSalesHistory(): void {
-    // ... (este método no cambia)
     this.isLoading = true;
     this.errorMessage = null;
     this.orderService.getSalesHistory(this.dateFrom, this.dateTo).subscribe({
       next: (data) => {
-        this.sales = data.sort((a, b) => new Date(b.sale_timestamp).getTime() - new Date(a.sale_timestamp).getTime());
+        this.sales = data; // La API ya debería devolverlos ordenados, si no, se puede ordenar aquí.
         this.calculateTotalSales();
         this.isLoading = false;
-        console.log('Historial de ventas cargado:', this.sales);
       },
       error: (err) => {
         this.isLoading = false;
@@ -62,7 +61,6 @@ export class SalesHistoryComponent implements OnInit {
   }
   
   onFilterSubmit(): void {
-    console.log('Filtrando ventas desde', this.dateFrom, 'hasta', this.dateTo);
     this.loadSalesHistory();
   }
 
@@ -73,11 +71,16 @@ export class SalesHistoryComponent implements OnInit {
   }
 
   calculateTotalSales(): void {
-    this.totalSalesValue = this.sales.reduce((total, sale) => total + parseFloat(sale.total), 0);
+    // Usamos 'total_amount' en lugar de 'total'
+    this.totalSalesValue = this.sales.reduce((total, sale) => total + parseFloat(sale.total_amount), 0);
   }
 
-  // --- 5. AÑADIR ESTE NUEVO MÉTODO ---
-  logout(): void {
-    this.authService.logout();
+  // Método para mostrar/ocultar los detalles de una venta
+  toggleDetails(saleId: number): void {
+    if (this.expandedSaleId === saleId) {
+      this.expandedSaleId = null; // Si ya está expandido, lo colapsamos
+    } else {
+      this.expandedSaleId = saleId; // Si no, lo expandimos
+    }
   }
 }

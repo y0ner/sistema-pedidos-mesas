@@ -15,26 +15,30 @@
 
   <div *ngIf="stats && !isLoading" class="stats-grid">
     <div class="stat-card sales">
-      <div class="stat-icon">💰</div>
-      <div class="stat-info">
-        <span class="stat-value">${{ stats.sales_today | number:'1.0-0' }}</span>
-        <span class="stat-label">Ventas de Hoy</span>
+      <div class="card-content"> <div class="stat-icon">💰</div>
+        <div class="stat-info">
+          <span class="stat-value">${{ stats.sales_today | number:'1.2-2' }}</span> <span class="stat-label">Ventas de Hoy</span>
+        </div>
       </div>
     </div>
 
     <div class="stat-card orders">
-      <div class="stat-icon">📄</div>
-      <div class="stat-info">
-        <span class="stat-value">{{ stats.orders_today_count }}</span>
-        <span class="stat-label">Pedidos de Hoy</span>
+      <div class="card-content">
+        <div class="stat-icon">📄</div>
+        <div class="stat-info">
+          <span class="stat-value">{{ stats.orders_today_count }}</span>
+          <span class="stat-label">Pedidos de Hoy</span>
+        </div>
       </div>
     </div>
 
     <div class="stat-card pending">
-      <div class="stat-icon">⏳</div>
-      <div class="stat-info">
-        <span class="stat-value">{{ stats.pending_orders_count }}</span>
-        <span class="stat-label">Pedidos Pendientes</span>
+      <div class="card-content">
+        <div class="stat-icon">⏳</div>
+        <div class="stat-info">
+          <span class="stat-value">{{ stats.pending_orders_count }}</span>
+          <span class="stat-label">Pedidos Pendientes</span>
+        </div>
       </div>
       <a routerLink="/staff/orders" class="card-link">Ver Pedidos</a>
     </div>
@@ -47,8 +51,7 @@
         </li>
       </ol>
       <ng-template #noTopProducts>
-        <p>No hay datos de ventas aún.</p>
-      </ng-template>
+        <p class="no-data-message">No hay datos de ventas aún.</p> </ng-template>
     </div>
   </div>
 </div>

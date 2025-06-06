@@ -111,6 +111,7 @@
   overflow-y: auto;
   background-color: var(--color-bone-white); /* Fondo principal del contenido */
   box-shadow: inset 2px 0 10px rgba(0, 0, 0, 0.05); /* Sombra interna para el contenido */
+  /* NO agregar max-width aquí para que ocupe todo el espacio disponible */
 }
 
 /* Media Queries para responsividad */

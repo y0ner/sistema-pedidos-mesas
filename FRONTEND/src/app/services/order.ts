@@ -4,6 +4,23 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Product } from './product';
 
+// --- INTERFACES PARA EL HISTORIAL DE VENTAS ---
+
+export interface SaleDetailItem {
+  product_name: string;
+  quantity: number;
+  price: string; // Precio al momento de la venta
+}
+
+export interface SaleRecord {
+  id: number;
+  total: string;
+  sale_timestamp: string; // La fecha y hora de la venta
+  user: string; // El nombre de usuario del personal que marcó el pedido como pagado
+  items_sold: SaleDetailItem[];
+}
+
+
 // --- INTERFACES DE PAYLOAD (Lo que enviamos al backend) ---
 export interface OrderDetailWritePayload {
   product_id: number;
@@ -114,7 +131,31 @@ export class OrderService {
   annulOrder(orderId: number): Observable<OrderResponse> {
     return this.postAction(orderId, 'annul');
   }
+  // --- NUEVO MÉTODO PARA HISTORIAL DE VENTAS ---
+  /**
+   * Obtiene el historial de ventas, opcionalmente filtrado por fecha.
+   * @param dateFrom Fecha de inicio en formato YYYY-MM-DD
+   * @param dateTo Fecha de fin en formato YYYY-MM-DD
+   */
+  getSalesHistory(dateFrom?: string, dateTo?: string): Observable<SaleRecord[]> {
+    const url = `http://127.0.0.1:8000/api/v1/sales/`;
+    let params = new HttpParams();
 
+    if (dateFrom) {
+      // El backend espera sale_timestamp__date, o gte/lte para rangos más específicos
+      params = params.set('sale_timestamp__gte', `${dateFrom}T00:00:00Z`);
+    }
+    if (dateTo) {
+      params = params.set('sale_timestamp__lte', `${dateTo}T23:59:59Z`);
+    }
+
+    // El interceptor se encargará de añadir el token de autenticación
+    return this.http.get<SaleRecord[]>(url, { params }).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  // ... (método handleError sin cambios)
   // ... (handleError sin cambios) ...
   private handleError(error: HttpErrorResponse) {
     let errorMessage: string;

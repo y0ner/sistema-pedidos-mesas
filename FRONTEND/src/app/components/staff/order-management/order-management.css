@@ -1,153 +1,164 @@
+/* Estilos para el componente de Gestión de Pedidos */
+
 .management-container {
-  padding: 20px;
+  padding: 30px;
+  background-color: var(--color-bone-white); /* Fondo del contenido de la gestión de pedidos */
+  border-radius: 12px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
 }
 
 .management-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
+  border-bottom: 1px solid var(--color-ash-gray);
+  padding-bottom: 20px;
+}
+
+.management-header h1 {
+  color: var(--color-cocoa-brown);
+  font-size: 2.2em;
+  margin: 0;
 }
 
 .refresh-btn {
-    padding: 8px 16px;
-    font-size: 1em;
-    cursor: pointer;
+  padding: 10px 20px;
+  font-size: 1em;
+  cursor: pointer;
+  background-color: var(--color-cocoa-brown);
+  color: var(--color-bone-white);
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.refresh-btn:hover:not(:disabled) {
+  background-color: #5A3F36;
+  transform: translateY(-2px);
+}
+
+.refresh-btn:disabled {
+  background-color: var(--color-ash-gray);
+  cursor: not-allowed;
+  opacity: 0.7;
 }
 
 .full-page-spinner {
   text-align: center;
   padding: 50px;
+  background-color: var(--color-light-slate-gray);
+  border-radius: 12px;
+  margin-top: 30px;
 }
 
+.error-message {
+  text-align: center;
+  padding: 20px;
+  background-color: var(--notification-error-bg);
+  color: var(--notification-error-text);
+  border-radius: 8px;
+  border: 1px solid var(--color-elegant-wine);
+  margin-top: 30px;
+}
+
+/* Tablero de pedidos (Kanban-style) */
 .order-board {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 20px;
+  /* Aumentamos el minmax para que las columnas sean más anchas */
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+  gap: 25px; /* Más espacio entre columnas */
   align-items: flex-start; /* Alinea las columnas en la parte superior */
 }
 
 .order-column {
-  background-color: #f4f5f7;
-  border-radius: 5px;
+  background-color: var(--color-light-slate-gray); /* Fondo suave para las columnas */
+  border-radius: 12px;
   display: flex;
   flex-direction: column;
+  min-height: 400px; /* Altura mínima para que las columnas vacías se vean bien */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  overflow: hidden; /* Para que el border-radius se aplique bien */
 }
 
 .column-title {
-  padding: 15px;
+  padding: 15px 20px;
   margin: 0;
-  font-size: 1.2em;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-  color: white;
+  font-size: 1.3em;
+  font-weight: 600;
+  color: var(--color-bone-white);
   text-align: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Separador sutil */
 }
+
+/* Colores de los títulos de las columnas (basados en los colores de estado) */
+.column-title.pending { background-color: var(--color-status-pending); color: var(--color-charcoal-gray); } /* Dorado, texto oscuro */
+.column-title.confirmed { background-color: var(--color-status-confirmed); } /* Marrón */
+.column-title.preparing { background-color: var(--color-status-preparing); color: var(--color-charcoal-gray); } /* Beige, texto oscuro */
+.column-title.ready { background-color: var(--color-status-ready); } /* Verde olivo */
+.column-title.delivered { background-color: var(--color-status-delivered); } /* Verde azulado */
+
 
 .column-content {
-  padding: 10px;
+  padding: 15px;
   flex-grow: 1;
-  min-height: 100px; /* Altura mínima para que columnas vacías no colapsen */
+  overflow-y: auto; /* Scroll dentro de la columna si hay muchos pedidos */
 }
 
-.order-card {
-  background-color: #fff;
-  border-radius: 3px;
-  box-shadow: 0 1px 1px rgba(0,0,0,0.1);
-  padding: 15px;
-  margin-bottom: 10px;
-  border-left: 5px solid transparent; /* Para el color del estado */
-}
-
-.order-card h3 {
-  margin-top: 0;
-  margin-bottom: 10px;
-  font-size: 1.1em;
-  border-bottom: 1px solid #eee;
-  padding-bottom: 5px;
-}
-
-.order-card ul {
-  list-style: none;
-  padding: 0;
-  margin: 10px 0;
-}
-
-.order-card li {
-  color: #555;
-  font-size: 0.95em;
-}
-
-.order-card .total {
-    font-weight: bold;
-    text-align: right;
-    margin-top: 10px;
-    border-top: 1px solid #eee;
-    padding-top: 5px;
-}
-
-.actions {
-  margin-top: 15px;
-  display: flex;
-  gap: 10px;
-  justify-content: flex-end;
-  flex-wrap: wrap; /* Para que los botones se ajusten en pantallas pequeñas */
-}
-
-.btn {
-  padding: 8px 12px;
-  border: none;
-  border-radius: 3px;
-  color: white;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-.btn-confirm { background-color: #28a745; }
-.btn-edit { background-color: #ffc107; color: #212529; }
-.btn-prepare { background-color: #17a2b8; }
-.btn-ready { background-color: #6f42c1; }
-.btn-deliver { background-color: #007bff; }
-
-.no-orders-msg {
-    text-align: center;
-    color: #777;
-    padding: 20px;
-    font-style: italic;
-}
-
-/* Colores de las columnas y tarjetas */
-.column-title.pending, .pending-card { border-left-color: #6c757d; }
-.column-title.confirmed, .confirmed-card { border-left-color: #007bff; }
-.column-title.preparing, .preparing-card { border-left-color: #fd7e14; }
-.column-title.ready, .ready-card { border-left-color: #6f42c1; }
-
-.column-title.pending { background-color: #6c757d; }
-.column-title.confirmed { background-color: #007bff; }
-.column-title.preparing { background-color: #fd7e14; }
-.column-title.ready { background-color: #6f42c1; }
-
-/* Estilo para las nuevas tarjetas de resumen */
+/* Tarjetas de resumen de pedidos */
 .order-card-summary {
-  background-color: #fff;
-  border-radius: 3px;
-  box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+  background-color: var(--color-bone-white); /* Fondo blanco hueso para las tarjetas */
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); /* Sombra suave */
   padding: 15px;
-  margin-bottom: 10px;
-  border-left: 5px solid transparent;
+  margin-bottom: 15px; /* Espacio entre tarjetas */
+  border-left: 5px solid transparent; /* Para el color del estado */
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column; /* Apila los detalles */
+  align-items: flex-start; /* Alinea a la izquierda */
+  gap: 5px; /* Espacio entre los elementos de texto */
 }
 
 .order-card-summary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
 }
 
-/* --- ESTILOS PARA EL MODAL --- */
+.order-card-summary strong {
+  font-size: 1.1em;
+  color: var(--color-cocoa-brown); /* Número de pedido en marrón cacao */
+}
+
+.order-card-summary span {
+  font-size: 0.95em;
+  color: var(--color-charcoal-gray);
+}
+
+.order-card-summary .customer-info { /* Estilo para el nombre del cliente */
+  font-weight: 500;
+  color: var(--color-ash-gray);
+}
+
+/* Colores de borde izquierdo para las tarjetas de resumen */
+.order-card-summary.pending-card { border-left-color: var(--color-status-pending); }
+.order-card-summary.confirmed-card { border-left-color: var(--color-status-confirmed); }
+.order-card-summary.preparing-card { border-left-color: var(--color-status-preparing); }
+.order-card-summary.ready-card { border-left-color: var(--color-status-ready); }
+.order-card-summary.delivered-card { border-left-color: var(--color-status-delivered); }
+
+
+.no-orders-msg {
+  text-align: center;
+  color: var(--color-ash-gray);
+  padding: 20px;
+  font-style: italic;
+  font-size: 0.95em;
+}
+
+/* --- ESTILOS PARA EL MODAL DE DETALLE DE PEDIDO --- */
 
 .modal-backdrop {
   position: fixed;
@@ -155,110 +166,253 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
-  z-index: 1040;
+  background-color: rgba(0, 0, 0, 0.7); /* Fondo más oscuro para el modal */
+  z-index: 1050;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .modal-content {
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-  width: 90%;
-  max-width: 600px;
+  background-color: var(--color-bone-white);
+  border-radius: 15px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3); /* Sombra más grande para el modal */
+  width: 95%;
+  max-width: 650px; /* Un poco más ancho */
   max-height: 90vh;
   display: flex;
   flex-direction: column;
+  animation: fadeInScale 0.3s ease-out; /* Animación de entrada */
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 20px;
-  border-bottom: 1px solid #dee2e6;
+  padding: 20px 25px;
+  border-bottom: 1px solid var(--color-ash-gray);
 }
 
 .modal-header h2 {
   margin: 0;
-  font-size: 1.5em;
+  font-size: 1.8em;
+  color: var(--color-cocoa-brown);
 }
 
 .modal-close-btn {
   background: none;
   border: none;
-  font-size: 2em;
+  font-size: 2.2em; /* Más grande */
   line-height: 1;
   cursor: pointer;
   padding: 0;
-  color: #6c757d;
+  color: var(--color-ash-gray);
+  transition: color 0.2s ease;
+}
+
+.modal-close-btn:hover {
+  color: var(--color-elegant-wine); /* Vino tinto al pasar el ratón */
 }
 
 .modal-body {
-  padding: 20px;
-  overflow-y: auto; /* Para que el contenido del pedido sea scrollable si es muy largo */
+  padding: 25px;
+  overflow-y: auto;
+  flex-grow: 1; /* Permite que el cuerpo se estire */
 }
 
-.modal-body h4 {
-  margin-top: 20px;
+.modal-body p {
   margin-bottom: 10px;
+  font-size: 1em;
+  color: var(--color-charcoal-gray);
 }
 
-.modal-body ul {
-    list-style: none;
-    padding-left: 0;
-}
-.modal-body li {
-    display: flex;
-    justify-content: space-between;
-    padding: 8px 0;
-    border-bottom: 1px solid #f0f0f0;
-}
-.modal-body li span {
-    color: #555;
+.modal-body p strong {
+  color: var(--color-cocoa-brown);
 }
 
-.modal-body .total {
-    font-weight: bold;
-    font-size: 1.2em;
-    text-align: right;
-    margin-top: 15px;
-    padding-top: 10px;
-    border-top: 2px solid #333;
+.modal-body .order-total-display { /* Estilo para el total dentro del modal */
+  font-size: 1.4em;
+  font-weight: 700;
+  color: var(--color-elegant-wine);
 }
 
 .status-badge {
-    padding: 5px 10px;
-    border-radius: 15px;
-    color: white;
-    font-size: 0.9em;
-    font-weight: bold;
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 20px;
+  color: var(--color-bone-white);
+  font-size: 0.95em;
+  font-weight: 600;
+  margin-left: 10px;
+  white-space: nowrap;
 }
 
-.modal-footer {
-  padding: 15px 20px;
-  border-top: 1px solid #dee2e6;
+/* Reusar colores de estado ya definidos en :root */
+.status-badge.status-pending { background-color: var(--color-status-pending); color: var(--color-charcoal-gray); }
+.status-badge.status-confirmed { background-color: var(--color-status-confirmed); }
+.status-badge.status-preparing { background-color: var(--color-status-preparing); color: var(--color-charcoal-gray); }
+.status-badge.status-ready_to_deliver { background-color: var(--color-status-ready); }
+.status-badge.status-delivered { background-color: var(--color-status-delivered); }
+.status-badge.status-paid { background-color: var(--color-status-paid); }
+.status-badge.status-annulled { background-color: var(--color-status-annulled); }
+
+
+.modal-body h4 {
+  margin-top: 25px;
+  margin-bottom: 15px;
+  font-size: 1.2em;
+  color: var(--color-cocoa-brown);
+  border-bottom: 1px dashed var(--color-ash-gray);
+  padding-bottom: 10px;
+}
+
+.order-items-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.order-items-list li {
   display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px dotted var(--color-light-slate-gray);
+  font-size: 1em;
+  color: var(--color-charcoal-gray);
+}
+.order-items-list li:last-child {
+  border-bottom: none;
+}
+.order-items-list li span:last-child { /* Subtotal de cada ítem */
+  color: var(--color-elegant-wine);
+  font-weight: 600;
+}
+
+
+.modal-footer {
+  padding: 20px 25px;
+  border-top: 1px solid var(--color-ash-gray);
+  display: flex;
+  flex-wrap: wrap; /* Para que los botones se envuelvan */
   justify-content: flex-end;
   gap: 10px;
 }
 
-/* ... (estilos existentes para .btn, .column-title, etc.) ... */
+.btn {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  color: var(--color-bone-white);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.95em;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
 
-/* Estilo para el nuevo botón de Pagar */
-.btn-pay { background-color: #86C166; } /* Un verde más suave para la acción final */
+/* Colores de los botones de acción */
+.btn-confirm { background-color: var(--color-soft-olive-green); } /* Verde olivo */
+.btn-edit { background-color: var(--color-soft-gold); color: var(--color-charcoal-gray); } /* Dorado suave */
+.btn-prepare { background-color: var(--color-cocoa-brown); } /* Marrón cacao */
+.btn-ready { background-color: var(--color-soft-gold); } /* Dorado suave */
+.btn-deliver { background-color: #5A9EDC; } /* Un azul más suave para entrega */
+.btn-pay { background-color: #20C997; } /* Verde azulado para pagar */
+.btn-annul { background-color: var(--color-elegant-wine); } /* Vino tinto para anular */
 
-/* Colores para la nueva columna y tarjeta de Entregados */
-.column-title.delivered, .delivered-card { border-left-color: #20c997; } /* Verde azulado */
-.column-title.delivered { background-color: #20c997; }
+.btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
 
-/* Ajuste al grid para que quepan potencialmente 5 columnas */
-.order-board {
-  display: grid;
-  /* Usamos minmax para que las columnas se ajusten. 280px es un buen ancho mínimo. */
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 20px;
-  align-items: flex-start;
+.btn-confirm:hover { background-color: #7A8068; }
+.btn-edit:hover { background-color: #BBAF35; }
+.btn-prepare:hover { background-color: #5A3F36; }
+.btn-ready:hover { background-color: #BBAF35; }
+.btn-deliver:hover { background-color: #438ED1; }
+.btn-pay:hover { background-color: #1A9F78; }
+.btn-annul:hover { background-color: #5A172B; }
+
+.btn:disabled {
+  background-color: var(--color-ash-gray);
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Media Queries para responsividad del tablero */
+@media (max-width: 1200px) {
+  .order-board {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* Más columnas en anchos intermedios */
+  }
+}
+
+@media (max-width: 992px) {
+  .order-board {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Menos columnas para que se vean bien */
+  }
+  .management-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  .management-header h1 {
+    font-size: 2em;
+  }
+  .refresh-btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .order-board {
+    grid-template-columns: 1fr; /* Una sola columna en tabletas */
+    gap: 15px;
+  }
+  .order-column {
+    min-height: auto; /* Ajusta altura automáticamente */
+  }
+  .modal-content {
+    max-width: 95%;
+  }
+}
+
+@media (max-width: 480px) {
+  .management-container {
+    padding: 15px;
+  }
+  .management-header h1 {
+    font-size: 1.8em;
+  }
+  .column-title {
+    font-size: 1.1em;
+    padding: 12px 15px;
+  }
+  .order-card-summary {
+    padding: 12px;
+    font-size: 0.9em;
+  }
+  .modal-header h2 {
+    font-size: 1.5em;
+  }
+  .modal-close-btn {
+    font-size: 1.8em;
+  }
+  .modal-body {
+    padding: 20px;
+  }
+  .modal-footer {
+    flex-direction: column; /* Apila los botones del modal */
+    gap: 8px;
+  }
+  .btn {
+    width: 100%;
+  }
 }

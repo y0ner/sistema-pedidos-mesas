@@ -1,32 +1,54 @@
+/* Estilos para el Dashboard de Estado de Mesas */
+
 .dashboard-container {
-  padding: 20px;
-  font-family: Arial, sans-serif;
+  padding: 30px;
+  background-color: var(--color-bone-white); /* Fondo del contenido */
+  border-radius: 12px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 30px;
+  border-bottom: 1px solid var(--color-ash-gray);
+  padding-bottom: 20px;
+}
+
+.header h2 {
+  color: var(--color-cocoa-brown);
+  font-size: 2.2em;
+  margin: 0;
 }
 
 .refresh-button {
-  padding: 8px 15px;
-  background-color: #007bff;
-  color: white;
+  padding: 10px 20px;
+  background-color: var(--color-cocoa-brown);
+  color: var(--color-bone-white);
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
+  font-size: 1em;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.refresh-button:hover:not(:disabled) {
+  background-color: #5A3F36;
+  transform: translateY(-2px);
 }
 
 .refresh-button:disabled {
-  background-color: #ccc;
+  background-color: var(--color-ash-gray);
+  cursor: not-allowed;
+  opacity: 0.7;
 }
 
 .last-updated {
   font-size: 0.9em;
-  color: #555;
-  margin-bottom: 20px;
+  color: var(--color-ash-gray);
+  margin-bottom: 25px;
   text-align: right;
 }
 
@@ -34,84 +56,198 @@
 .error-message,
 .empty-message {
   text-align: center;
-  padding: 20px;
-  border-radius: 4px;
-  margin-bottom: 20px;
+  padding: 30px;
+  border-radius: 12px;
+  margin-top: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  font-size: 1.1em;
+  color: var(--color-charcoal-gray);
 }
 
 .loading-message {
-  background-color: #eef;
+  background-color: var(--color-light-slate-gray);
 }
 
 .error-message {
-  background-color: #f8d7da;
-  color: #721c24;
-  border: 1px solid #f5c6cb;
+  background-color: var(--notification-error-bg);
+  color: var(--notification-error-text);
+  border: 1px solid var(--color-elegant-wine);
 }
 
 .empty-message {
-  background-color: #f0f0f0;
+  background-color: var(--color-latte-beige);
 }
 
 .tables-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 15px;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* Tarjetas un poco más grandes */
+  gap: 25px; /* Más espacio entre tarjetas */
 }
 
 .table-card {
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 15px;
+  background-color: var(--color-bone-white);
+  border: 1px solid var(--color-ash-gray);
+  border-radius: 12px;
+  padding: 20px;
   text-align: center;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative; /* Para el dot de estado si se usa */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.table-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
 }
 
 .table-number {
-  font-size: 1.5em;
-  font-weight: bold;
-  margin-bottom: 8px;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8em;
+  font-weight: 700;
+  color: var(--color-cocoa-brown);
+  margin-bottom: 10px;
 }
 
-.table-status {
-  font-size: 1em;
-  font-style: italic;
+.table-image-container { /* NUEVO: para la imagen de la mesa */
+  width: 100px; /* Tamaño fijo para la imagen/icono */
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 15px;
 }
 
-/* Clases de estado */
-.status-available {
-  background-color: #d4edda; /* Verde claro */
-  border-left: 5px solid #28a745; /* Borde verde oscuro */
-}
-.status-available .table-status {
-  color: #155724;
+.table-image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Para que la imagen se ajuste sin recortarse */
+  filter: drop-shadow(2px 2px 5px rgba(0,0,0,0.1)); /* Sombra suave para la imagen */
 }
 
-.status-occupied {
-  background-color: #f8d7da; /* Rojo claro */
-  border-left: 5px solid #dc3545; /* Borde rojo oscuro */
-}
-.status-occupied .table-status {
-  color: #721c24;
+.table-icon { /* Estilo para el Material Icon como fallback */
+  font-size: 4em; /* Icono más grande */
+  color: var(--color-ash-gray); /* Color neutro para el icono */
 }
 
-.status-reserved {
-  background-color: #fff3cd; /* Amarillo claro */
-  border-left: 5px solid #ffc107; /* Borde amarillo oscuro */
-}
-.status-reserved .table-status {
-  color: #856404;
+
+.table-status-badge { /* NUEVO: Badge para el estado */
+  display: inline-flex; /* Usar flex para alinear texto y punto */
+  align-items: center;
+  gap: 8px; /* Espacio entre texto y punto */
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.9em;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: var(--color-bone-white); /* Texto blanco por defecto */
 }
 
-.status-blocked {
-  background-color: #e2e3e5; /* Gris claro */
-  border-left: 5px solid #6c757d; /* Borde gris oscuro */
+.status-dot-indicator { /* NUEVO: El punto indicador de estado */
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0; /* Evita que el punto se encoja */
 }
-.status-blocked .table-status {
-  color: #383d41;
+
+/* Clases de estado para el badge y el punto */
+.table-card.status-available .table-status-badge {
+  background-color: var(--color-soft-olive-green);
 }
+.dot-available { background-color: var(--color-bone-white); } /* Punto blanco sobre verde */
+
+.table-card.status-occupied .table-status-badge {
+  background-color: var(--color-elegant-wine);
+}
+.dot-occupied { background-color: var(--color-bone-white); }
+
+.table-card.status-reserved .table-status-badge {
+  background-color: var(--color-soft-gold);
+  color: var(--color-charcoal-gray); /* Texto oscuro sobre dorado */
+}
+.dot-reserved { background-color: var(--color-charcoal-gray); } /* Punto oscuro sobre dorado */
+
+
+.table-card.status-unavailable .table-status-badge,
+.table-card.status-blocked .table-status-badge {
+  background-color: var(--color-ash-gray);
+}
+.dot-unavailable, .dot-blocked { background-color: var(--color-bone-white); }
 
 .status-unknown {
-  background-color: #f0f0f0;
-  border-left: 5px solid #ccc;
+  background-color: var(--color-ash-gray);
+}
+
+
+.table-code {
+  font-size: 1em;
+  color: var(--color-charcoal-gray);
+  margin-top: 10px;
+  padding: 5px 10px;
+  background-color: var(--color-latte-beige);
+  border-radius: 5px;
+  font-weight: 500;
+}
+
+.table-code strong {
+  color: var(--color-cocoa-brown);
+  font-family: 'Inter', sans-serif; /* Usar fuente Inter para el código */
+  font-weight: 700;
+}
+
+
+/* Media Queries para responsividad */
+@media (max-width: 992px) {
+  .tables-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  .header h2 {
+    font-size: 2em;
+  }
+  .refresh-button {
+    width: 100%;
+  }
+  .tables-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  }
+  .table-image-container {
+    width: 80px;
+    height: 80px;
+  }
+  .table-icon {
+    font-size: 3.5em;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-container {
+    padding: 15px;
+  }
+  .header h2 {
+    font-size: 1.8em;
+  }
+  .tables-grid {
+    grid-template-columns: 1fr; /* Una sola columna en móviles muy pequeños */
+  }
+  .table-card {
+    padding: 15px;
+  }
+  .table-number {
+    font-size: 1.5em;
+  }
+  .table-image-container {
+    width: 90px;
+    height: 90px;
+  }
 }

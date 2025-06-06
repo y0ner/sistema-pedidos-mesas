@@ -7,22 +7,23 @@
     </button>
   </header>
 
-  <div *ngIf="isLoading && !pendingOrders.length && !confirmedOrders.length" class="full-page-spinner">
+  <div *ngIf="isLoading && !pendingOrders.length && !confirmedOrders.length && !preparingOrders.length && !readyToDeliverOrders.length && !deliveredOrders.length" class="full-page-spinner">
     <app-loading-spinner></app-loading-spinner>
     <p>Cargando pedidos...</p>
   </div>
 
-  <div *ngIf="errorMessage" class="error-message">
+  <div *ngIf="errorMessage && !isLoading" class="error-message">
     <p>{{ errorMessage }}</p>
   </div>
 
-  <div class="order-board">
+  <div *ngIf="!isLoading && !errorMessage" class="order-board">
     <div class="order-column">
       <h2 class="column-title pending">Pendientes ({{ pendingOrders.length }})</h2>
       <div class="column-content">
         <div *ngFor="let order of pendingOrders" class="order-card-summary pending-card" (click)="openDetailModal(order)">
           <strong>Pedido #{{ order.id }}</strong>
           <span>Mesa {{ order.table_number }}</span>
+          <span class="customer-info">{{ order.customer_name }}</span>
         </div>
         <p *ngIf="!pendingOrders.length && !isLoading" class="no-orders-msg">No hay pedidos pendientes.</p>
       </div>
@@ -34,6 +35,7 @@
         <div *ngFor="let order of confirmedOrders" class="order-card-summary confirmed-card" (click)="openDetailModal(order)">
           <strong>Pedido #{{ order.id }}</strong>
           <span>Mesa {{ order.table_number }}</span>
+          <span class="customer-info">{{ order.customer_name }}</span>
         </div>
         <p *ngIf="!confirmedOrders.length && !isLoading" class="no-orders-msg">No hay pedidos confirmados.</p>
       </div>
@@ -45,6 +47,7 @@
         <div *ngFor="let order of preparingOrders" class="order-card-summary preparing-card" (click)="openDetailModal(order)">
           <strong>Pedido #{{ order.id }}</strong>
           <span>Mesa {{ order.table_number }}</span>
+          <span class="customer-info">{{ order.customer_name }}</span>
         </div>
         <p *ngIf="!preparingOrders.length && !isLoading" class="no-orders-msg">Ningún pedido en preparación.</p>
       </div>
@@ -53,9 +56,10 @@
     <div class="order-column">
         <h2 class="column-title ready">Listos para Entregar ({{ readyToDeliverOrders.length }})</h2>
         <div class="column-content">
-          <div *ngFor="let order of readyToDeliverOrders" class="order-card ready-card" (click)="openDetailModal(order)">
+          <div *ngFor="let order of readyToDeliverOrders" class="order-card-summary ready-card" (click)="openDetailModal(order)">
             <strong>Pedido #{{ order.id }}</strong>
             <span>Mesa {{ order.table_number }}</span>
+            <span class="customer-info">{{ order.customer_name }}</span>
           </div>
           <p *ngIf="!readyToDeliverOrders.length && !isLoading" class="no-orders-msg">Ningún pedido listo.</p>
         </div>
@@ -64,24 +68,13 @@
     <div class="order-column">
       <h2 class="column-title delivered">Entregados ({{ deliveredOrders.length }})</h2>
       <div class="column-content">
-        <div *ngFor="let order of deliveredOrders" class="order-card delivered-card" (click)="openDetailModal(order)">
+        <div *ngFor="let order of deliveredOrders" class="order-card-summary delivered-card" (click)="openDetailModal(order)">
           <strong>Pedido #{{ order.id }}</strong>
           <span>Mesa {{ order.table_number }}</span>
+          <span class="customer-info">{{ order.customer_name }}</span>
         </div>
         <p *ngIf="!deliveredOrders.length && !isLoading" class="no-orders-msg">Ningún pedido entregado pendiente de pago.</p>
       </div>
-    </div>
-    </div> </div>
-
-<div *ngIf="isDetailModalVisible" class="modal-backdrop" (click)="closeDetailModal()">
-  <div class="modal-content" (click)="$event.stopPropagation()">
-    <div *ngIf="selectedOrderDetail" class="modal-inner-content">
-      <footer class="modal-footer">
-        <ng-container [ngSwitch]="selectedOrderDetail.status.toLowerCase()">
-          <button *ngSwitchCase="'ready_to_deliver'" class="btn btn-deliver" (click)="onDeliverOrder(selectedOrderDetail.id)">Entregado</button>
-          <button *ngSwitchCase="'delivered'" class="btn btn-pay" (click)="onPayOrder(selectedOrderDetail.id)">Marcar como Pagado</button>
-        </ng-container>
-      </footer>
     </div>
   </div>
 </div>
@@ -96,22 +89,23 @@
 
       <main class="modal-body">
         <p><strong>Mesa:</strong> {{ selectedOrderDetail.table_number }}</p>
-        <p><strong>Cliente:</strong> {{ selectedOrderDetail.customer_name }}</p>
+        <p><strong>Cliente:</strong> {{ selectedOrderDetail.customer_name || 'N/A' }}</p>
         <p><strong>Estado Actual:</strong> <span class="status-badge status-{{selectedOrderDetail.status.toLowerCase()}}">{{ selectedOrderDetail.status | titlecase }}</span></p>
+        <p><strong>Total:</strong> <span class="order-total-display">${{ selectedOrderDetail.total | number:'1.2-2' }}</span></p>
 
         <h4>Artículos:</h4>
-        <ul>
+        <ul class="order-items-list">
           <li *ngFor="let detail of selectedOrderDetail.details">
-            {{ detail.quantity }}x {{ detail.product.name }}
-            <span>(${{ detail.subtotal | number:'1.2-2' }})</span>
+            <span>{{ detail.quantity }}x {{ detail.product.name }}</span>
+            <span>${{ detail.subtotal | number:'1.2-2' }}</span>
           </li>
         </ul>
-        <p class="total">Total: ${{ selectedOrderDetail.total | number:'1.2-2' }}</p>
       </main>
 
       <footer class="modal-footer">
         <button *ngIf="selectedOrderDetail.status.toLowerCase() === 'pending'" class="btn btn-confirm" (click)="onConfirmOrder(selectedOrderDetail.id)">Confirmar</button>
         <button *ngIf="selectedOrderDetail.status.toLowerCase() === 'pending'" class="btn btn-edit" (click)="onEditOrder(selectedOrderDetail.id)">Editar</button>
+        <button *ngIf="selectedOrderDetail.status.toLowerCase() === 'pending' || selectedOrderDetail.status.toLowerCase() === 'confirmed'" class="btn btn-annul" (click)="annulOrder(selectedOrderDetail.id)">Anular</button>
         
         <button *ngIf="selectedOrderDetail.status.toLowerCase() === 'confirmed'" class="btn btn-prepare" (click)="onPrepareOrder(selectedOrderDetail.id)">Mandar a Cocina</button>
         

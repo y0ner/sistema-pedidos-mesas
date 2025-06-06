@@ -94,6 +94,27 @@ export class EditOrderModalComponent implements OnChanges, OnInit {
     }
   }
 
+  // --- MÉTODO AÑADIDO: updateItemQuantity ---
+  updateItemQuantity(productId: number, newQuantity: number): void {
+    console.log(`updateItemQuantity: productId=${productId}, newQuantity=${newQuantity}`);
+    let currentItems = [...this.editableDetails];
+    const itemIndex = currentItems.findIndex(item => item.product.id === productId);
+
+    if (itemIndex > -1) {
+      if (newQuantity > 0) {
+        currentItems[itemIndex].quantity = newQuantity;
+        console.log(`Cantidad del producto ${productId} actualizada a ${newQuantity}.`);
+      } else {
+        currentItems.splice(itemIndex, 1); // Eliminar si la cantidad es 0 o menos
+        console.log(`Producto ${productId} eliminado del carrito (cantidad <= 0).`);
+      }
+      this.editableDetails = currentItems; // Actualizar la referencia del arreglo
+    } else {
+      console.warn(`updateItemQuantity: Producto con ID ${productId} no encontrado en los detalles.`);
+    }
+  }
+  // --- FIN MÉTODO AÑADIDO ---
+
   removeItem(productId: number): void {
     // .filter() ya devuelve un nuevo arreglo, por lo que aquí no se necesitan cambios.
     this.editableDetails = this.editableDetails.filter(detail => detail.product.id !== productId);

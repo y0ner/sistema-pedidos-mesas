@@ -178,6 +178,20 @@ export class OrderManagementComponent implements OnInit, OnDestroy {
     });
   }
 
+   // --- MÉTODO DE ACCIÓN AÑADIDO: ANULAR PEDIDO ---
+  annulOrder(orderId: number): void {
+    if (confirm(`¿Estás seguro de que quieres ANULAR el pedido #${orderId}? Esta acción es irreversible.`)) {
+      this.orderService.annulOrder(orderId).subscribe({
+        next: (updatedOrder) => {
+          this.notificationService.showSuccess(`Pedido #${orderId} ha sido anulado.`);
+          this.refreshOrderInList(updatedOrder); // El pedido desaparecerá de las listas activas
+          this.closeDetailModal();
+        },
+        error: (err) => this.notificationService.showError(err.message || 'Error al anular el pedido.')
+      });
+    }
+  }
+
    // --- NUEVO MÉTODO DE ACCIÓN ---
   onPayOrder(orderId: number): void {
     // Usamos el confirm de JavaScript para una doble verificación simple.
@@ -199,13 +213,15 @@ export class OrderManagementComponent implements OnInit, OnDestroy {
     this.confirmedOrders = this.confirmedOrders.filter(o => o.id !== updatedOrder.id);
     this.preparingOrders = this.preparingOrders.filter(o => o.id !== updatedOrder.id);
     this.readyToDeliverOrders = this.readyToDeliverOrders.filter(o => o.id !== updatedOrder.id);
+    this.deliveredOrders = this.deliveredOrders.filter(o => o.id !== updatedOrder.id); // También filtrar de Entregados
 
     this.processOrders([
       updatedOrder,
       ...this.pendingOrders,
       ...this.confirmedOrders,
       ...this.preparingOrders,
-      ...this.readyToDeliverOrders
+      ...this.readyToDeliverOrders,
+      ...this.deliveredOrders // Incluir deliveredOrders para re-procesar correctamente
     ]);
   }
 

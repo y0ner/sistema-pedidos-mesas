@@ -8,36 +8,37 @@
     <main class="modal-body">
       <div class="form-group">
         <label for="customerName">Nombre del Cliente:</label>
-        <input type="text" id="customerName" name="customerName" [(ngModel)]="customerName" class="form-control">
+        <input type="text" id="customerName" name="customerName" [(ngModel)]="customerName" class="form-control" placeholder="Nombre del cliente">
       </div>
 
       <h4>Artículos del Pedido</h4>
       <div *ngIf="editableDetails.length > 0" class="items-list">
         <div *ngFor="let item of editableDetails" class="edit-item">
-          <span>{{ item.product.name }}</span>
-          <div class="quantity-controls">
-            <button (click)="decrementQuantity(item)">-</button>
-            <input type="number" [(ngModel)]="item.quantity" min="1" class="quantity-input">
-            <button (click)="incrementQuantity(item)">+</button>
+          <div class="item-name-qty"> <span>{{ item.product.name }}</span>
+            <div class="quantity-controls">
+              <button (click)="decrementQuantity(item)">-</button>
+              <input type="number" [(ngModel)]="item.quantity" min="1" class="quantity-input" (blur)="updateItemQuantity(item.product.id, item.quantity)" (keyup.enter)="updateItemQuantity(item.product.id, item.quantity)">
+              <button (click)="incrementQuantity(item)">+</button>
+            </div>
           </div>
-          <span>Subtotal: ${{ (item.product.price * item.quantity) | number:'1.2-2' }}</span>
-          <button class="remove-btn" (click)="removeItem(item.product.id)">Eliminar</button>
+          <div class="item-subtotal-actions"> <span class="item-subtotal-text">Subtotal: <strong>${{ (item.product.price * item.quantity) | number:'1.2-2' }}</strong></span>
+            <button class="remove-btn" (click)="removeItem(item.product.id)">Eliminar</button>
+          </div>
         </div>
       </div>
-      <p *ngIf="editableDetails.length === 0">No hay artículos en este pedido.</p>
+      <p *ngIf="editableDetails.length === 0" class="no-items-message">No hay artículos en este pedido.</p>
 
       <div class="total-display">
-        <strong>Nuevo Total: ${{ calculateTotal() | number:'1.2-2' }}</strong>
+        <span>Nuevo Total:</span>
+        <strong>${{ calculateTotal() | number:'1.2-2' }}</strong>
       </div>
 
-      <hr>
-
-      <h4>Añadir Producto</h4>
+      <hr class="section-divider"> <h4>Añadir Producto</h4>
       <div class="add-product-form">
         <select [(ngModel)]="selectedProductIdToAdd" class="product-select">
           <option [ngValue]="null" disabled>Selecciona un producto...</option>
           <option *ngFor="let product of allProducts" [value]="product.id">
-            {{ product.name }} (${{ product.price }})
+            {{ product.name }} (${{ product.price | number:'1.2-2' }})
           </option>
         </select>
         <button (click)="addProduct()" [disabled]="!selectedProductIdToAdd" class="btn-add">Añadir</button>
@@ -45,10 +46,12 @@
     </main>
 
     <footer class="modal-footer">
-      <button class="btn-cancel" (click)="closeModal()">Cancelar</button>
-      <button class="btn-save" (click)="saveChanges()" [disabled]="isLoading">
+      <button class="btn btn-cancel" (click)="closeModal()">Cancelar</button>
+      <button class="btn btn-save" (click)="saveChanges()" [disabled]="isLoading">
         <span *ngIf="!isLoading">Guardar Cambios</span>
-        <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+        <span class="spinner-wrapper" *ngIf="isLoading">
+          <app-loading-spinner></app-loading-spinner>
+        </span>
       </button>
     </footer>
   </div>

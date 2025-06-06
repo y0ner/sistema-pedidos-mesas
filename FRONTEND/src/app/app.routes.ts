@@ -17,7 +17,6 @@ import { OrderManagementComponent } from './components/staff/order-management/or
 import { tableValidatedGuard } from './guards/table-validated-guard';
 import { tableNotValidatedGuard } from './guards/table-not-validated-guard';
 import { authGuard } from './guards/auth-guard';
-
 export const routes: Routes = [
   // --- Rutas Públicas y del Cliente ---
   {
@@ -72,7 +71,7 @@ export const routes: Routes = [
       },
       {
         path: '', // Si alguien navega solo a /staff
-        redirectTo: 'orders', // Lo redirigimos a la vista de pedidos por defecto
+        redirectTo: 'dashboard', // Lo redirigimos al dashboard por defecto
         pathMatch: 'full'
       }
     ]

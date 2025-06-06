@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Table, TableService } from '../../services/table'; // Importamos el servicio y la interfaz Table
 import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner';
@@ -11,7 +11,7 @@ import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner';
   styleUrls: ['./table-status-dashboard.css'],
   
 })
-export class TableStatusDashboardComponent implements OnInit {
+export class TableStatusDashboardComponent implements OnInit, OnDestroy {
   tables: Table[] = [];
   isLoading: boolean = true;
   errorMessage: string | null = null;
@@ -53,7 +53,7 @@ export class TableStatusDashboardComponent implements OnInit {
     });
   }
 
-  // Método para obtener una clase CSS basada en el estado de la mesa
+  // Método para obtener una clase CSS basada en el estado de la mesa (¡CORREGIDO!)
   getTableStatusClass(status: string): string {
     switch (status.toLowerCase()) {
       case 'available':
@@ -62,10 +62,28 @@ export class TableStatusDashboardComponent implements OnInit {
         return 'status-occupied';
       case 'reserved':
         return 'status-reserved';
-      case 'blocked':
-        return 'status-blocked';
+      case 'unavailable': // Añadido para el estado "No disponible"
+      case 'blocked':     // Añadido para el estado "Bloqueada"
+        return 'status-unavailable'; // Usaremos una clase genérica para no disponibles/bloqueadas
       default:
         return 'status-unknown';
+    }
+  }
+
+  // Método para obtener la ruta de la imagen según el estado (¡AÑADIDO!)
+  getImageSrc(status: string): string | null {
+    switch (status.toLowerCase()) {
+      case 'available':
+        return 'assets/images/tables/table_available.png';
+      case 'occupied':
+        return 'assets/images/tables/table_occupied.png';
+      case 'reserved':
+        return 'assets/images/tables/table_reserved.png';
+      case 'unavailable':
+      case 'blocked':
+        return 'assets/images/tables/table_unavailable.png';
+      default:
+        return null; // No hay imagen específica, se usará el fallback de Material Icon en HTML
     }
   }
 }

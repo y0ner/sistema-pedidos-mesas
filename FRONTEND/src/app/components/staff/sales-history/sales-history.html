@@ -1,0 +1,33 @@
+<div class="staff-layout-container">
+  <aside class="staff-sidebar">
+    <div class="sidebar-header">
+      <h3>Panel de Personal</h3>
+    </div>
+    <nav class="sidebar-nav">
+      <a 
+        routerLink="/staff/dashboard" 
+        routerLinkActive="active-link"
+        class="nav-link">
+        <span class="material-icons-outlined">dashboard</span>
+        Dashboard
+      </a>
+      <a 
+        routerLink="/staff/orders" 
+        routerLinkActive="active-link"
+        class="nav-link">
+        <span class="material-icons-outlined">list_alt</span>
+        Gestión de Pedidos
+      </a>
+      </nav>
+    <div class="sidebar-footer">
+      <button (click)="logout()" class="logout-button">
+        <span class="material-icons-outlined">logout</span>
+        Cerrar Sesión
+      </button>
+    </div>
+  </aside>
+
+  <main class="staff-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

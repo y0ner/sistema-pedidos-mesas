@@ -19,10 +19,6 @@
   </div>
   <div *ngIf="errorMessage && !isLoading" class="error-message">
     <p>{{ errorMessage }}</p>
-  </div>
-
-  <div *ngIf="errorMessage && !isLoading" class="error-message">
-    <p>{{ errorMessage }}</p>
     <p>
       Por favor, asegúrate de que el backend esté funcionando y que el endpoint
       <code>GET /api/v1/tables/</code> sea accesible.
@@ -46,7 +42,19 @@
       [ngClass]="getTableStatusClass(table.status)"
     >
       <div class="table-number">Mesa {{ table.number }}</div>
-      <div class="table-status">{{ table.status | titlecase }}</div>
+      <div class="table-image-container"> <img *ngIf="table.status.toLowerCase() === 'available'" src="assets/images/tables/table_available.png" alt="Mesa Disponible">
+        <img *ngIf="table.status.toLowerCase() === 'occupied'" src="assets/images/tables/table_occupied.png" alt="Mesa Ocupada">
+        <img *ngIf="table.status.toLowerCase() === 'reserved'" src="assets/images/tables/table_reserved.png" alt="Mesa Reservada">
+        <img *ngIf="table.status.toLowerCase() === 'unavailable' || table.status.toLowerCase() === 'blocked'" src="assets/images/tables/table_unavailable.png" alt="Mesa No Disponible">
+        
+        <span *ngIf="!getImageSrc(table.status)" class="material-icons-outlined table-icon">table_bar</span>
+      </div>
+      <div class="table-status-badge"> {{ table.status | titlecase }}
+        <span class="status-dot-indicator" [ngClass]="'dot-' + table.status.toLowerCase()"></span>
+      </div>
+      <div *ngIf="table.current_code && table.status.toLowerCase() === 'available'" class="table-code">
+        Código: <strong>{{ table.current_code }}</strong>
+      </div>
     </div>
   </div>
 </div>

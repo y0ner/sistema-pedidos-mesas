@@ -18,7 +18,7 @@ export interface Promotion {
 })
 export class PromotionService {
 
-  private apiUrl = 'http://Darcia2.pythonanywhere.com/api/v1/promotions/';
+  private apiUrl = 'http://localhost:8000/api/v1/promotions/';
 
   constructor(private http: HttpClient) { }
 

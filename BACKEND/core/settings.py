@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-2+h!xxf@+o290sv^ei@lp&ady+()rnqs!i6o@d9^hhw3kto^*0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['Darcia2.pythonanywhere.com', 'mi-mesa-facil.vercel.app']
 
 
 # Application definition
@@ -58,7 +58,10 @@ MIDDLEWARE = [
 
 ]
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = [
+    "http://localhost:4200",
+    "https://mi-mesa-facil.vercel.app", # URL de Vercel
+]
 
 ROOT_URLCONF = 'core.urls'
 

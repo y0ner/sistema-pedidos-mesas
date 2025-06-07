@@ -61,6 +61,7 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:4200",
     "https://mi-mesa-facil.vercel.app",
+    "https://glistening-swan-20b967.netlify.app"
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True

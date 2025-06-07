@@ -21,8 +21,8 @@ const REFRESH_TOKEN_KEY = 'mesaFacilRefreshToken';
   providedIn: 'root'
 })
 export class AuthService {
-  private apiTokenUrl = 'http://darcia2.pythonanywhere.com/api/token/';
-  private apiTokenRefreshUrl = 'http://darcia2.pythonanywhere.com/api/token/refresh/';
+  private apiTokenUrl = 'https://darcia2.pythonanywhere.com/api/token/';
+  private apiTokenRefreshUrl = 'https://darcia2.pythonanywhere.com/api/token/refresh/';
 
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.hasToken());
   public isAuthenticated$: Observable<boolean> = this.isAuthenticatedSubject.asObservable();

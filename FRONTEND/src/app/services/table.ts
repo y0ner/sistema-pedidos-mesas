@@ -32,7 +32,7 @@ export interface ApiError {
 })
 export class TableService {
 
-  private apiUrl = 'http://darcia2.pythonanywhere.com/api/v1/tables/';
+  private apiUrl = 'https://darcia2.pythonanywhere.com/api/v1/tables/';
 
   constructor(private http: HttpClient) { }
 

@@ -67,7 +67,7 @@ export interface ApiError {
   providedIn: 'root'
 })
 export class OrderService {
-  private baseApiUrl = 'http://darcia2.pythonanywhere.com/api/v1/orders/';
+  private baseApiUrl = 'https://darcia2.pythonanywhere.com/api/v1/orders/';
 
   constructor(private http: HttpClient) { }
 
@@ -140,7 +140,7 @@ export class OrderService {
    * @param dateTo Fecha de fin en formato YYYY-MM-DD
    */
   getSalesHistory(dateFrom?: string, dateTo?: string): Observable<SaleRecord[]> {
-    const url = `http://darcia2.pythonanywhere.com/api/v1/sales/`;
+    const url = `https://darcia2.pythonanywhere.com/api/v1/sales/`;
     let params = new HttpParams();
 
     if (dateFrom) {

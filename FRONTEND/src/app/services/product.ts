@@ -18,7 +18,7 @@ export interface Product {
 })
 export class ProductService {
 
-  private apiUrl = 'http://darcia2.pythonanywhere.com/api/v1/products/';
+  private apiUrl = 'https://darcia2.pythonanywhere.com/api/v1/products/';
 
   constructor(private http: HttpClient) { }
 

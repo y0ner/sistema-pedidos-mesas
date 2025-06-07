@@ -140,7 +140,7 @@ export class OrderService {
    * @param dateTo Fecha de fin en formato YYYY-MM-DD
    */
   getSalesHistory(dateFrom?: string, dateTo?: string): Observable<SaleRecord[]> {
-    const url = `http://127.0.0.1:8000/api/v1/sales/`;
+    const url = `http://darcia2.pythonanywhere.com/api/v1/sales/`;
     let params = new HttpParams();
 
     if (dateFrom) {

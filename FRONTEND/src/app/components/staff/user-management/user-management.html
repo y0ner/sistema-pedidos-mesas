@@ -1,0 +1,100 @@
+<div class="management-container">
+  <div class="header">
+    <h1>Gestión de Usuarios</h1>
+    <button *ngIf="currentUser?.is_superuser" class="btn btn-create" (click)="openCreateModal()">
+      <span class="material-icons-outlined">add</span>
+      Crear Usuario
+    </button>
+  </div>
+
+  <div class="list-card">
+    <div *ngIf="isLoading && !isModalVisible" class="loading-message">
+      <app-loading-spinner></app-loading-spinner>
+      Cargando usuarios...
+    </div>
+    <div *ngIf="!isLoading && users.length === 0" class="empty-message">No hay usuarios registrados.</div>
+    
+    <table *ngIf="!isLoading && users.length > 0">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Usuario</th>
+          <th>Email</th>
+          <th>Nombre</th>
+          <th>Rol</th>
+          <th *ngIf="currentUser?.is_superuser">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{ user.id }}</td>
+          <td>{{ user.username }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.first_name }} {{ user.last_name }}</td>
+          <td>
+            <span class="role-badge" [class.role-admin]="user.is_superuser" [class.role-employee]="!user.is_superuser">
+              {{ user.is_superuser ? 'Admin' : 'Empleado' }}
+            </span>
+          </td>
+          <td *ngIf="currentUser?.is_superuser" class="action-buttons">
+            <button class="btn btn-edit" (click)="openEditModal(user)">Editar</button>
+            <button *ngIf="currentUser?.id !== user.id" class="btn btn-delete" (click)="deleteUser(user.id)">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div *ngIf="isModalVisible" class="modal-backdrop" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>{{ isEditMode ? 'Editar Usuario' : 'Crear Nuevo Usuario' }}</h2>
+      <button class="close-btn" (click)="closeModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form (ngSubmit)="saveUser()" #userForm="ngForm">
+        <div class="form-group">
+          <label for="username">Nombre de Usuario</label>
+          <input type="text" id="username" name="username" [(ngModel)]="selectedUser.username" required class="form-control">
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" [(ngModel)]="selectedUser.email" required class="form-control">
+        </div>
+        <div class="form-group">
+          <label for="password">Contraseña</label>
+          <input type="password" id="password" name="password" [(ngModel)]="selectedUser.password" [required]="!isEditMode" class="form-control" placeholder="{{ isEditMode ? 'Dejar en blanco para no cambiar' : '' }}">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="first_name">Nombre</label>
+            <input type="text" id="first_name" name="first_name" [(ngModel)]="selectedUser.first_name" class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="last_name">Apellido</label>
+            <input type="text" id="last_name" name="last_name" [(ngModel)]="selectedUser.last_name" class="form-control">
+          </div>
+        </div>
+        <div class="form-group roles-group">
+            <label>Roles</label>
+            <div>
+              <input type="checkbox" id="is_staff" name="is_staff" [(ngModel)]="selectedUser.is_staff">
+              <label for="is_staff">Empleado (puede acceder al panel)</label>
+            </div>
+            <div>
+              <input type="checkbox" id="is_superuser" name="is_superuser" [(ngModel)]="selectedUser.is_superuser">
+              <label for="is_superuser">Administrador (control total)</label>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-cancel" (click)="closeModal()">Cancelar</button>
+          <button type="submit" class="btn btn-save" [disabled]="!userForm.form.valid || isLoading">
+            <span *ngIf="!isLoading">{{ isEditMode ? 'Actualizar' : 'Crear' }}</span>
+            <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -15,7 +15,7 @@
 
   <div *ngIf="stats && !isLoading" class="stats-grid">
     <div class="stat-card sales">
-      <div class="card-content"> <div class="stat-icon">💰</div>
+      <div class="card-content"> <div class="stat-icon"><img width="50" height="50" src="https://img.icons8.com/isometric/50/bullish.png" alt="bullish"/></div>
         <div class="stat-info">
           <span class="stat-value">${{ stats.sales_today | number:'1.2-2' }}</span> <span class="stat-label">Ventas de Hoy</span>
         </div>
@@ -24,7 +24,7 @@
 
     <div class="stat-card orders">
       <div class="card-content">
-        <div class="stat-icon">📄</div>
+        <div class="stat-icon"><img  src="assets/images/staff/pedidos_hoy.png" alt="Pedidos de Hoy"></div>
         <div class="stat-info">
           <span class="stat-value">{{ stats.orders_today_count }}</span>
           <span class="stat-label">Pedidos de Hoy</span>
@@ -34,7 +34,7 @@
 
     <div class="stat-card pending">
       <div class="card-content">
-        <div class="stat-icon">⏳</div>
+        <div class="stat-icon"><img  src="assets/images/staff/pendiente.png" alt="Pendientes"></div>
         <div class="stat-info">
           <span class="stat-value">{{ stats.pending_orders_count }}</span>
           <span class="stat-label">Pedidos Pendientes</span>

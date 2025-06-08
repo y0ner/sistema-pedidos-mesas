@@ -12,7 +12,6 @@ import { LoadingSpinnerComponent } from '../../loading-spinner/loading-spinner';
     CommonModule,
     FormsModule,
     DatePipe,
-    DecimalPipe,
     LoadingSpinnerComponent
   ],
   templateUrl: './sales-history.html',

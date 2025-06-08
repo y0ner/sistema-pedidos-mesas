@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, tap, catchError, throwError, filter, take, switchMap } from 'rxjs'; // Añade filter, take
+import { UserService, User } from './user'; // <-- AÑADE User Y UserService
+
+
 // --- INTERFACES ---
 export interface LoginCredentials {
   username?: string;
@@ -21,28 +24,55 @@ const REFRESH_TOKEN_KEY = 'mesaFacilRefreshToken';
   providedIn: 'root'
 })
 export class AuthService {
+
+
+  
   private apiTokenUrl = 'https://darcia2.pythonanywhere.com/api/token/';
   private apiTokenRefreshUrl = 'https://darcia2.pythonanywhere.com/api/token/refresh/';
 
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.hasToken());
   public isAuthenticated$: Observable<boolean> = this.isAuthenticatedSubject.asObservable();
-  
+// --- AÑADE ESTAS DOS LÍNEAS ---
+  private currentUserSubject = new BehaviorSubject<User | null>(null);
+  public currentUser$ = this.currentUserSubject.asObservable();
+
   private isRefreshing = false;
   private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
   constructor(
     private http: HttpClient,
-    private router: Router
-  ) {}
+    private router: Router,
+    private userService: UserService // <-- INYECTA UserService aquí
+  ) {// Al recargar la página, si hay un token, carga los datos del usuario
+    if (this.hasToken()) {
+      this.loadCurrentUser();
+    }
+  }
 
-  // ... (método login() sin cambios)
+  // --- AÑADE ESTE MÉTODO NUEVO ---
+  loadCurrentUser(): void {
+    this.userService.getMe().subscribe({
+      next: user => this.currentUserSubject.next(user),
+      error: () => { // Si el token es viejo o inválido, cierra sesión
+        this.logout();
+      }
+    });
+  }
+
   login(credentials: LoginCredentials): Observable<TokenResponse> {
     return this.http.post<TokenResponse>(this.apiTokenUrl, credentials).pipe(
       tap(response => {
-        this.handleAuthentication(response);
+        // Guardamos los tokens
+        localStorage.setItem(ACCESS_TOKEN_KEY, response.access);
+        localStorage.setItem(REFRESH_TOKEN_KEY, response.refresh);
+        this.isAuthenticatedSubject.next(true);
+
+        // Inmediatamente después, cargamos los datos del usuario
+        this.loadCurrentUser(); 
       })
     );
   }
+
 
   // --- El método handleAuthentication se mantiene para el login ---
   private handleAuthentication(response: TokenResponse): void {
@@ -104,6 +134,7 @@ export class AuthService {
     localStorage.removeItem(ACCESS_TOKEN_KEY);
     localStorage.removeItem(REFRESH_TOKEN_KEY);
     this.isAuthenticatedSubject.next(false);
+    this.currentUserSubject.next(null);
     this.router.navigate(['/login']);
   }
   private hasToken(): boolean {

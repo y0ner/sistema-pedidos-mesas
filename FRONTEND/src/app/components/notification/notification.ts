@@ -1,7 +1,9 @@
+// FRONTEND/src/app/components/notification/notification.ts
+
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
-import { Notification, NotificationService } from '../../services/notification'; // Importamos el servicio y las interfaces
+import { Notification, NotificationService, NotificationType } from '../../services/notification';
 
 @Component({
   selector: 'app-notification',
@@ -12,6 +14,7 @@ import { Notification, NotificationService } from '../../services/notification';
 })
 export class NotificationComponent implements OnInit, OnDestroy {
   currentNotification: Notification | null = null;
+  isClosing: boolean = false; // Nuevo estado para controlar la animación de salida
   private notificationSubscription?: Subscription;
   private timeoutId: any;
 
@@ -20,11 +23,12 @@ export class NotificationComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.notificationSubscription = this.notificationService.notification$
       .subscribe(notification => {
+        this.isClosing = false; // Resetea el estado al recibir una nueva notificación
         this.currentNotification = notification;
+        
         if (notification) {
-          // Si hay una notificación y tiene una duración, programar su cierre
           if (this.timeoutId) {
-            clearTimeout(this.timeoutId); // Limpiar timeout anterior si existe
+            clearTimeout(this.timeoutId);
           }
           if (notification.duration) {
             this.timeoutId = setTimeout(() => {
@@ -35,19 +39,38 @@ export class NotificationComponent implements OnInit, OnDestroy {
       });
   }
 
+  // Método de cierre MODIFICADO para la animación
   closeNotification(): void {
     if (this.timeoutId) {
       clearTimeout(this.timeoutId);
       this.timeoutId = null;
     }
-    this.notificationService.clearNotification(); // Esto hará que el BehaviorSubject emita null
-    this.currentNotification = null; // Aseguramos que se oculte inmediatamente en la UI
+
+    if (this.currentNotification) {
+      this.isClosing = true; // 1. Activa la animación de salida
+      // 2. Espera a que la animación termine (400ms, como en el CSS) para limpiar la notificación
+      setTimeout(() => {
+        this.notificationService.clearNotification();
+        this.isClosing = false; // Resetea para la próxima vez
+      }, 400); 
+    }
   }
 
-  // Para obtener clases CSS dinámicas basadas en el tipo de notificación
+  // Método para obtener clases CSS dinámicas
   getNotificationClass(notification: Notification | null): string {
     if (!notification) return '';
-    return `notification notification-${notification.type}`;
+    return `notification-${notification.type}`;
+  }
+
+  // NUEVO: Método para obtener el nombre del icono según el tipo
+  getIconName(type: NotificationType): string {
+    switch (type) {
+      case 'success': return 'check_circle';
+      case 'error': return 'error';
+      case 'info': return 'info';
+      case 'warning': return 'warning';
+      default: return 'notifications';
+    }
   }
 
   ngOnDestroy(): void {

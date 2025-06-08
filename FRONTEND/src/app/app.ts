@@ -7,6 +7,7 @@ import { OrderContextService } from './services/order-context';
 import { NotificationComponent } from './components/notification/notification';
 import { AuthService } from './services/auth';
 import { NavigationEnd, Router } from '@angular/router';
+import { User } from './services/user';
 
 @Component({
   selector: 'app-root',
@@ -22,10 +23,14 @@ import { NavigationEnd, Router } from '@angular/router';
 })
 export class App implements OnInit {
   protected title = 'MesaFácil';
-  public cartItemCount$: Observable<number>;
-  public isStaffLoggedIn$: Observable<boolean>;
-  public isMobileMenuOpen: boolean = false;
 
+  // 1. SOLO declaramos las variables aquí.
+  // Usamos el signo "!" para decirle a TypeScript: "Confía en mí, inicializaré esto en el constructor".
+  public cartItemCount$!: Observable<number>;
+  public isStaffLoggedIn$!: Observable<boolean>;
+  public currentUser$!: Observable<User | null>;
+
+  public isMobileMenuOpen: boolean = false;
   private touchStartX: number = 0;
 
   constructor(
@@ -35,9 +40,12 @@ export class App implements OnInit {
     private el: ElementRef,
     private router: Router
   ) {
+    // 2. Les damos su valor aquí DENTRO del constructor, donde los servicios ya existen.
     this.cartItemCount$ = this.orderContextService.getCartItemCount();
     this.isStaffLoggedIn$ = this.authService.isAuthenticated$;
+    this.currentUser$ = this.authService.currentUser$;
 
+    // El resto del constructor no cambia
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         this.isMobileMenuOpen = false;

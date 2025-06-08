@@ -1,3 +1,5 @@
+// FRONTEND/src/app/services/user.ts
+
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
@@ -21,7 +23,7 @@ export type UserCreatePayload = Omit<User, 'id'> & { password?: string };
   providedIn: 'root'
 })
 export class UserService {
-  private apiUrl = 'https://darcia2.pythonanywhere.com/api/v1/users/'; // O la URL de producción
+  private apiUrl = 'https://darcia2.pythonanywhere.com/api/v1/users/';
 
   constructor(private http: HttpClient) { }
 
@@ -42,16 +44,16 @@ export class UserService {
 
   // Actualizar un usuario
   updateUser(id: number, payload: Partial<UserCreatePayload>): Observable<User> {
-    return this.http.put<User>(`<span class="math-inline">\{this\.apiUrl\}</span>{id}/`, payload).pipe(catchError(this.handleError));
+    return this.http.put<User>(`${this.apiUrl}${id}/`, payload).pipe(catchError(this.handleError));
   }
 
   // Eliminar un usuario
   deleteUser(id: number): Observable<any> {
-    return this.http.delete(`<span class="math-inline">\{this\.apiUrl\}</span>{id}/`).pipe(catchError(this.handleError));
+    return this.http.delete(`${this.apiUrl}${id}/`).pipe(catchError(this.handleError));
   }
 
   private handleError(error: HttpErrorResponse) {
-    // ... (manejo de errores)
+    // Aquí puedes personalizar más el manejo de errores si lo deseas
     return throwError(() => new Error('Algo salió mal; por favor, inténtalo de nuevo más tarde.'));
   }
 }

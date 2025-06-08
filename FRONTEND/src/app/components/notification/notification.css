@@ -1,74 +1,110 @@
+/* FRONTEND/src/app/components/notification/notification.css */
+
+/* Contenedor principal de la notificación */
 .notification-container {
   position: fixed;
-  top: 20px;
-  right: 20px;
-  padding: 15px 20px;
-  border-radius: 5px;
-  color: #fff;
-  font-family: Arial, sans-serif;
-  z-index: 1050; /* Asegurar que esté por encima de otros elementos */
-  min-width: 250px;
-  max-width: 400px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  top: 80px;      /* Un poco más abajo */
+  right: 25px;    /* Un poco más separado */
+  padding: 16px;  /* Más padding */
+  border-radius: 10px; /* Bordes más redondeados */
+  color: var(--color-bone-white);
+  font-family: 'Inter', sans-serif;
+  z-index: 1050;
+  min-width: 300px;
+  max-width: 420px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.2);
   display: flex;
-  justify-content: space-between;
+  align-items: center; /* Centra verticalmente icono y texto */
+  gap: 15px; /* Espacio entre icono, cuerpo y botón de cierre */
+  
+  /* Animación de entrada por defecto */
+  animation: slideInFromRight 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* Estilo para la animación de salida */
+.notification-container.closing {
+  animation: slideOutToRight 0.4s ease-out forwards;
+}
+
+/* Contenedor del icono */
+.notification-icon {
+  font-size: 1.8em; /* Tamaño del icono */
+  display: flex;
   align-items: center;
-  opacity: 0.95;
+  justify-content: center;
+}
+
+/* Cuerpo del mensaje */
+.notification-body {
+  flex-grow: 1; /* Ocupa el espacio restante */
 }
 
 .notification-message {
-  flex-grow: 1;
-  margin-right: 15px;
+  font-weight: 500;
+  font-size: 1.05em;
 }
 
+/* Botón de cierre */
 .notification-close-btn {
   background: none;
   border: none;
-  color: inherit; /* Hereda el color del texto de la notificación */
-  font-size: 1.5em;
+  color: inherit;
+  font-size: 1.8em;
   line-height: 1;
   cursor: pointer;
-  padding: 0;
+  padding: 0 5px;
   opacity: 0.7;
+  transition: opacity 0.2s ease;
 }
 
 .notification-close-btn:hover {
   opacity: 1;
 }
 
-/* Estilos por tipo de notificación */
+/* Estilos por tipo de notificación usando tus variables de CSS */
 .notification-success {
-  background-color: #28a745; /* Verde */
+  background-color: var(--notification-success-bg, #28a745); /* Verde Olivo */
 }
 
 .notification-error {
-  background-color: #dc3545; /* Rojo */
+  background-color: var(--notification-error-bg, #dc3545); /* Vino Tinto */
 }
 
 .notification-info {
-  background-color: #17a2b8; /* Azul info */
+  background-color: var(--notification-info-bg, #17a2b8); /* Marrón Cacao */
 }
 
 .notification-warning {
-  background-color: #ffc107; /* Amarillo */
-  color: #212529; /* Texto oscuro para mejor contraste con amarillo */
+  background-color: var(--notification-warning-bg, #ffc107); /* Dorado Suave */
+  color: var(--notification-warning-text, #212529); /* Texto oscuro para contraste */
 }
 .notification-warning .notification-close-btn {
-  color: #212529; /* Asegurar que el botón de cierre también sea visible */
+  color: inherit;
 }
 
-/* Opcional: Animación de entrada/salida simple (puedes expandir esto) */
-.notification-container {
-  animation: fadeInDown 0.3s ease-out;
-}
 
-@keyframes fadeInDown {
+/* ---- ANIMACIONES ---- */
+
+/* Animación de entrada: desliza desde la derecha y aparece */
+@keyframes slideInFromRight {
   from {
     opacity: 0;
-    transform: translate3d(0, -20px, 0);
+    transform: translateX(100%);
   }
   to {
-    opacity: 0.95;
-    transform: translate3d(0, 0, 0);
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Animación de salida: desliza hacia la derecha y desaparece */
+@keyframes slideOutToRight {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(100%);
   }
 }

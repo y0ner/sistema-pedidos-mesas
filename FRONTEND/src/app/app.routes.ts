@@ -23,6 +23,7 @@ import { tableNotValidatedGuard } from './guards/table-not-validated-guard';
 import { authGuard } from './guards/auth-guard';
 
 import { UserManagementComponent } from './components/staff/user-management/user-management';
+import { adminGuard } from './guards/admin-guard';
 
 export const routes: Routes = [
   // --- Rutas Públicas y del Cliente ---
@@ -106,6 +107,7 @@ export const routes: Routes = [
       {
         path: 'users',
         component: UserManagementComponent,
+        canActivate: [adminGuard], // <-- CAMBIADO DE authGuard a adminGuard
         title: 'Gestión de Usuarios',
       },
     ],

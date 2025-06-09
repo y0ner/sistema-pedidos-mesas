@@ -10,17 +10,26 @@ html, body {
 body.no-scroll {
   overflow: hidden;
 }
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+body.no-scroll {
+  overflow: hidden;
+}
+
 
 header {
   background-color: var(--color-charcoal-gray);
   padding: 15px 25px;
   color: var(--color-bone-white);
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-  position: sticky;
+  position: sticky; /* Se mantiene pegajoso en la parte superior */
   top: 0;
-  z-index: 1000;
+  z-index: 1300; /* 2. AUMENTAMOS EL Z-INDEX para que esté por encima del panel de personal (que tiene 1200) */
   width: 100%;
-  overflow: visible; /* Asegurar que el header no recorta el menú */
 }
 
 .header-content {
@@ -30,19 +39,15 @@ header {
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
-  overflow: visible; /* IMPORTANTE: Asegurado para visibilidad del botón */
-  height: 60px; /* Establecer una altura fija para el header content para un control más predecible */
+  height: 60px;
 }
 
 .logo {
   text-decoration: none;
-  color: var(--color-soft-gold); /* Color dorado del logo */
+  color: var(--color-soft-gold);
   font-size: 1.8em;
   font-weight: 700;
   font-family: 'Playfair Display', serif;
-  line-height: 1;
-  padding: 0;
-  margin: 0;
 }
 
 header h1 {
@@ -50,21 +55,10 @@ header h1 {
   font-size: 1em;
 }
 
-/* Estilos de navegación para escritorio */
 nav.main-nav {
   display: flex;
   align-items: center;
   gap: 20px;
-  visibility: visible;
-  opacity: 1;
-  pointer-events: all;
-  transition: none;
-  position: static;
-  height: auto;
-  width: auto;
-  max-width: none;
-  padding: 0;
-  box-shadow: none;
 }
 
 .nav-link {
@@ -161,10 +155,16 @@ nav.main-nav {
 
 /* Ajustes generales */
 main {
-  padding: 25px;
-  min-height: calc(100vh - 160px);
+  flex-grow: 1; /* Hace que el contenido principal ocupe todo el espacio vertical disponible */
+   padding: 25px; /* Quitamos el padding para que el layout hijo lo controle */
   background-color: var(--color-bone-white);
-  flex-grow: 1;
+  transition: filter 0.3s ease-out;
+}
+
+main.blurred-content {
+  filter: blur(1px);
+  -webkit-filter: blur(1px);
+  pointer-events: none;
 }
 
 footer {
@@ -173,6 +173,7 @@ footer {
   background-color: var(--color-charcoal-gray);
   color: var(--color-ash-gray);
   font-size: 0.9em;
+  flex-shrink: 0; /* Evita que el footer se encoja */
 }
 
 /* Media Query para Header en pantallas pequeñas (MÓVIL) */

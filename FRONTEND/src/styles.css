@@ -54,6 +54,7 @@
   --notification-warning-text: var(--color-charcoal-gray); /* Texto oscuro sobre dorado */
 }
 
+
 /* 3. Aplicación de Tipografía Global */
 html {
   font-size: 13.5px; /* Define el tamaño de fuente base para REM. Generalmente 16px es el default del navegador. */
@@ -95,11 +96,11 @@ a:hover {
 
 /* Contenedor principal de la aplicación para centrar o limitar ancho */
 main {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-  flex-grow: 1; /* Permite que el main ocupe el espacio restante */
-  width: 100%; /* Asegura que ocupe el ancho disponible */
+  flex-grow: 1;
+  padding: 0; /* <-- Esta línea causa que todo esté pegado */
+  background-color: var(--color-bone-white);
+  transition: filter 0.3s ease-out;
+  
 }
 
 /* Estilo para los iconos de Material Design (ajustar color globalmente) */

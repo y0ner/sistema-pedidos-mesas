@@ -35,7 +35,7 @@
 }
 
 .refresh-button:hover:not(:disabled) {
-  background-color: #5A3F36;
+  background-color: #5a3f36;
   transform: translateY(-2px);
 }
 
@@ -80,7 +80,10 @@
 
 .tables-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* Tarjetas un poco más grandes */
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(180px, 1fr)
+  ); /* Tarjetas un poco más grandes */
   gap: 25px; /* Más espacio entre tarjetas */
 }
 
@@ -104,14 +107,15 @@
 }
 
 .table-number {
-  font-family: 'Playfair Display', serif;
+  font-family: "Playfair Display", serif;
   font-size: 1.8em;
   font-weight: 700;
   color: var(--color-cocoa-brown);
   margin-bottom: 10px;
 }
 
-.table-image-container { /* NUEVO: para la imagen de la mesa */
+.table-image-container {
+  /* NUEVO: para la imagen de la mesa */
   width: 100px; /* Tamaño fijo para la imagen/icono */
   height: 100px;
   display: flex;
@@ -124,16 +128,19 @@
   width: 100%;
   height: 100%;
   object-fit: contain; /* Para que la imagen se ajuste sin recortarse */
-  filter: drop-shadow(2px 2px 5px rgba(0,0,0,0.1)); /* Sombra suave para la imagen */
+  filter: drop-shadow(
+    2px 2px 5px rgba(0, 0, 0, 0.1)
+  ); /* Sombra suave para la imagen */
 }
 
-.table-icon { /* Estilo para el Material Icon como fallback */
+.table-icon {
+  /* Estilo para el Material Icon como fallback */
   font-size: 4em; /* Icono más grande */
   color: var(--color-ash-gray); /* Color neutro para el icono */
 }
 
-
-.table-status-badge { /* NUEVO: Badge para el estado */
+.table-status-badge {
+  /* NUEVO: Badge para el estado */
   display: inline-flex; /* Usar flex para alinear texto y punto */
   align-items: center;
   gap: 8px; /* Espacio entre texto y punto */
@@ -145,7 +152,8 @@
   color: var(--color-bone-white); /* Texto blanco por defecto */
 }
 
-.status-dot-indicator { /* NUEVO: El punto indicador de estado */
+.status-dot-indicator {
+  /* NUEVO: El punto indicador de estado */
   width: 10px;
   height: 10px;
   border-radius: 50%;
@@ -157,30 +165,37 @@
 .table-card.status-available .table-status-badge {
   background-color: var(--color-soft-olive-green);
 }
-.dot-available { background-color: var(--color-bone-white); } /* Punto blanco sobre verde */
+.dot-available {
+  background-color: var(--color-bone-white);
+} /* Punto blanco sobre verde */
 
 .table-card.status-occupied .table-status-badge {
   background-color: var(--color-elegant-wine);
 }
-.dot-occupied { background-color: var(--color-bone-white); }
+.dot-occupied {
+  background-color: var(--color-bone-white);
+}
 
 .table-card.status-reserved .table-status-badge {
   background-color: var(--color-soft-gold);
   color: var(--color-charcoal-gray); /* Texto oscuro sobre dorado */
 }
-.dot-reserved { background-color: var(--color-charcoal-gray); } /* Punto oscuro sobre dorado */
-
+.dot-reserved {
+  background-color: var(--color-charcoal-gray);
+} /* Punto oscuro sobre dorado */
 
 .table-card.status-unavailable .table-status-badge,
 .table-card.status-blocked .table-status-badge {
   background-color: var(--color-ash-gray);
 }
-.dot-unavailable, .dot-blocked { background-color: var(--color-bone-white); }
+.dot-unavailable,
+.dot-blocked {
+  background-color: var(--color-bone-white);
+}
 
 .status-unknown {
   background-color: var(--color-ash-gray);
 }
-
 
 .table-code {
   font-size: 1em;
@@ -194,10 +209,9 @@
 
 .table-code strong {
   color: var(--color-cocoa-brown);
-  font-family: 'Inter', sans-serif; /* Usar fuente Inter para el código */
+  font-family: "Inter", sans-serif; /* Usar fuente Inter para el código */
   font-weight: 700;
 }
-
 
 /* Media Queries para responsividad */
 @media (max-width: 992px) {

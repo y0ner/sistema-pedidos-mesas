@@ -51,7 +51,7 @@ tbody tr:hover { background-color: var(--color-latte-beige); }
 .modal-backdrop {
   position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
   background-color: rgba(0, 0, 0, 0.6);
-  z-index: 1040;
+  z-index: 1500;
   display: flex; justify-content: center; align-items: center;
   animation: fadeIn 0.3s ease-out;
 }

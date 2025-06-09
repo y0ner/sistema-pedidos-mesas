@@ -97,7 +97,8 @@ table {
   border-collapse: collapse;
 }
 
-th, td {
+th,
+td {
   padding: 12px 15px;
   text-align: left;
   border-bottom: 1px solid var(--color-ash-gray);
@@ -170,21 +171,37 @@ tbody tr:not(.details-row):hover {
   transition: all 0.2s;
 }
 
-.btn-primary { background-color: var(--color-cocoa-brown); color: white; }
-.btn-secondary { background-color: var(--color-ash-gray); color: var(--color-charcoal-gray); }
-.btn-details { background: none; border: 1px solid var(--color-cocoa-brown); color: var(--color-cocoa-brown); padding: 5px 10px; font-size: 0.85em; }
-.btn-details:hover { background-color: var(--color-latte-beige); }
+.btn-primary {
+  background-color: var(--color-cocoa-brown);
+  color: white;
+}
+.btn-secondary {
+  background-color: var(--color-ash-gray);
+  color: var(--color-charcoal-gray);
+}
+.btn-details {
+  background: none;
+  border: 1px solid var(--color-cocoa-brown);
+  color: var(--color-cocoa-brown);
+  padding: 5px 10px;
+  font-size: 0.85em;
+}
+.btn-details:hover {
+  background-color: var(--color-latte-beige);
+}
 
 /* Mensajes */
-.loading-message, .empty-message, .error-message {
+.loading-message,
+.empty-message,
+.error-message {
   text-align: center;
   padding: 40px;
   font-style: italic;
   color: var(--color-ash-gray);
 }
 .error-message {
-    background-color: var(--notification-error-bg);
-    color: var(--notification-error-text);
-    border-radius: 8px;
-    font-style: normal;
+  background-color: var(--notification-error-bg);
+  color: var(--notification-error-text);
+  border-radius: 8px;
+  font-style: normal;
 }

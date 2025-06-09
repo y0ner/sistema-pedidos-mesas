@@ -14,39 +14,41 @@
     </div>
     <div *ngIf="!isLoading && users.length === 0" class="empty-message">No hay usuarios registrados.</div>
     
-    <table *ngIf="!isLoading && users.length > 0">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Usuario</th>
-          <th>Email</th>
-          <th>Nombre</th>
-          <th>Rol</th>
-          <th *ngIf="currentUser?.is_superuser">Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let user of users">
-          <td>{{ user.id }}</td>
-          <td>{{ user.username }}</td>
-          <td>{{ user.email }}</td>
-          <td>{{ user.first_name }} {{ user.last_name }}</td>
-          <td>
-            <span class="role-badge" [class.role-admin]="user.is_superuser" [class.role-employee]="!user.is_superuser">
-              {{ user.is_superuser ? 'Admin' : 'Empleado' }}
-            </span>
-          </td>
-          <td *ngIf="currentUser?.is_superuser" class="action-buttons">
-            <button class="btn btn-edit" (click)="openEditModal(user)">Editar</button>
-            <button *ngIf="currentUser?.id !== user.id" class="btn btn-delete" (click)="deleteUser(user.id)">Eliminar</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div *ngIf="!isLoading && users.length > 0" class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th class="col-id">ID</th>
+            <th class="col-user">Usuario</th>
+            <th class="col-email">Email</th>
+            <th class="col-name">Nombre</th>
+            <th class="col-role">Rol</th>
+            <th class="col-actions" *ngIf="currentUser?.is_superuser">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of users">
+            <td>{{ user.id }}</td>
+            <td>{{ user.username }}</td>
+            <td title="{{ user.email }}">{{ user.email }}</td> <td title="{{ user.first_name }} {{ user.last_name }}">{{ user.first_name }} {{ user.last_name }}</td>
+            <td>
+              <span class="role-badge" [class.role-admin]="user.is_superuser" [class.role-employee]="!user.is_superuser">
+                {{ user.is_superuser ? 'Admin' : 'Empleado' }}
+              </span>
+            </td>
+            <td *ngIf="currentUser?.is_superuser" class="action-buttons">
+              <button class="btn btn-edit" (click)="openEditModal(user)">Editar</button>
+              <button *ngIf="currentUser?.id !== user.id" class="btn btn-delete" (click)="deleteUser(user.id)">Eliminar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 
 <div *ngIf="isModalVisible" class="modal-backdrop" (click)="closeModal()">
+
   <div class="modal-content" (click)="$event.stopPropagation()">
     <div class="modal-header">
       <h2>{{ isEditMode ? 'Editar Usuario' : 'Crear Nuevo Usuario' }}</h2>

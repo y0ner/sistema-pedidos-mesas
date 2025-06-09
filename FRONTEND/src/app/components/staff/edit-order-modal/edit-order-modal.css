@@ -11,7 +11,7 @@
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.7); /* Fondo más oscuro para el modal */
-  z-index: 1060; /* Asegura que esté por encima del modal de detalle si se abre desde allí */
+  z-index: 1500; /* Asegura que esté por encima del modal de detalle si se abre desde allí */
   display: flex;
   justify-content: center;
   align-items: center;

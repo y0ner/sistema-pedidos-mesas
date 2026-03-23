@@ -1,79 +1,71 @@
-# 🪑 Sistema de Pedidos con Validación de Mesa
+<div align="center">
 
-Este proyecto es una aplicación web que optimiza el proceso de pedidos en un local físico, permitiendo a los clientes realizar órdenes desde su mesa mediante un sistema seguro y controlado por el administrador.
+![Pedidos Mesas Banner](https://capsule-render.vercel.app/api?type=waving&color=1e293b&height=250&section=header&text=Pedidos%20Mesas&fontSize=80&fontColor=ffffff&animation=fadeIn&fontAlignY=35&desc=Optimizaci%C3%B3n%20del%20proceso%20de%20pedidos%20con%20validaci%C3%B3n%20QR.&descAlignY=55&descSize=20)
 
-## 🚀 ¿Cómo funciona?
+[![Estado del Proyecto](https://img.shields.io/badge/Estado-En_Desarrollo-orange?style=for-the-badge)](https://github.com/y0ner/sistema-pedidos-mesas)
+[![Mantenimiento](https://img.shields.io/badge/Mantenimiento-Continuo-blue?style=for-the-badge)](https://github.com/y0ner/sistema-pedidos-mesas)
+[![Licencia](https://img.shields.io/badge/Licencia-MIT-green?style=for-the-badge)](https://github.com/y0ner/sistema-pedidos-mesas)
 
-1. **Ingreso al local**  
-   El cliente se ubica en una mesa disponible (por ejemplo, la mesa 3).
+</div>
 
-2. **Escaneo del QR**  
-   En el local hay un código QR general visible que redirige al sitio web de pedidos.
-
-3. **Visualización del catálogo**  
-   Todos los usuarios pueden explorar el catálogo de productos sin iniciar sesión ni registrarse.
-
-4. **Validación de mesa mediante código único**
-   - En una pantalla (TV o monitor) se muestran códigos únicos para cada mesa, generados y controlados solo por el **administrador del sistema**.
-   - El usuario mira la pantalla, identifica el código de su mesa y lo ingresa en la app.
-   - El sistema valida:
-     - Que el código exista.
-     - Que la mesa esté disponible.
-   - Si la validación es correcta:
-     - El sistema marca la mesa como **ocupada**.
-     - El código deja de mostrarse públicamente.
-     - Se notifica al administrador que la mesa ha sido ocupada.
-
-5. **Realización del pedido**  
-   El usuario puede ahora seleccionar productos y enviar el pedido.
-
-6. **Confirmación final**  
-   Al confirmar el pedido:
-   - Se registra en el sistema como **pendiente**.
-   - El personal del local recibe la información para preparar y entregar el pedido.
-
-## 🛡️ Roles del sistema
-
-### 👤 Administrador
-- Genera y actualiza los códigos de mesa.
-- Controla el estado de las mesas (disponible/ocupada).
-- Recibe notificaciones en tiempo real cuando un cliente ocupa una mesa o realiza un pedido.
-
-### 🙋‍♂️ Cliente
-- Escanea el QR general.
-- Ingresa el código de mesa desde la pantalla.
-- Realiza y confirma pedidos desde su dispositivo móvil.
-
-## 📦 Características principales
-
-- Validación de acceso a mesas por código único.
-- Control en tiempo real del estado de cada mesa.
-- Notificaciones al administrador cuando una mesa se ocupa o se recibe un pedido.
-- Flujo de pedidos sin necesidad de que el cliente cree una cuenta.
-- Prevención de ocupación de mesas por usuarios no autorizados.
-
-## 🧩 Tecnologías sugeridas (para implementar)
-
-- **Frontend:** Angular, 
-- **Backend:** Python (Django),
-- **Base de datos:** MySQL 
-- **Comunicación en tiempo real:** WebSockets o Firebase
-- **Autenticación de administrador:** JWT o sesión protegida
-
-## 📌 Estado del proyecto
-
-> 🛠️ En desarrollo
-
-### Próximas funcionalidades:
-- Panel del administrador
-- Historial de pedidos
-- Interfaz de usuario mejorada para móviles
-- Soporte multi-local
-
-## 🤝 Contribuciones
-
-Las contribuciones son bienvenidas. Si tienes ideas para mejorar el sistema, no dudes en abrir un issue o enviar un pull request.
+Este proyecto es una aplicación web y sistema estructurado que optimiza logísticamente el proceso general de pedidos y consumo en un local o área comercial, permitiendo a sus clientes de mesas cursar peticiones con un sistema de verificación blindada implementando códigos QR desde la vista del administrador de mostrador.
 
 ---
 
-*Proyecto creado por Yoner and Dairo.*
+## 🚀 Guía Parametrizada y Ejecutoria: ¿Cómo funciona?
+
+1. **Ingreso al local:**  
+   El cliente se ubica en una mesa disponible dentro de las matrices del salón (por ejemplo, la mesa 3).
+2. **Escaneo de Código QR Referencial:**  
+   En el establecimiento se encuentra expuesto un código QR general visible que redirige de inmediato a la puerta web de consumo.
+3. **Exploración de Catálogos Frontales:**  
+   La pasarela pública le permite a la clientela consultar ítems o servicios en directo sin someter a registros forzosos.
+4. **Validación y Reclamación de Mesa Unívoca:**
+   - La red de proyección visual del local (monitor o display LCD) muestra los códigos de autorización dinámica, manejados operativamente por el administrador.
+   - El cliente reclama el dominio al introducir este código fugaz en la App de cliente.
+   - **Trazabilidad:** Inmediatamente el sistema marca la mesa como pre-ocupada para mitigar interceptes o usuarios clonados y retumba el evento a través de las notificaciones push del panel principal.
+5. **Realización de Pedidos y Finalización:**  
+   Concluido el acoplamiento visual, se despachan petitorios hacia las terminales de cocina para preparación.
+
+---
+
+## 🛡️ Arquitectura y Roles Operacionales
+
+Para asegurar la rigidez del esquema y mitigar el caos de múltiples concurrentes, el sistema está distribuido por segregación de roles de dominio:
+
+### 👤 Administrador Supervisor
+- Capacidad de mutar o expirar tokens/códigos gráficos de re-asignación para mesas libres.
+- Vista perimétrica omnidireccional en tiempo pseudo-real de los eventos y métricas de mesas llenas/ausentes.
+- Monitor de consumo notificado mediante WebSockets de toda petición proveniente del rol interno.
+
+### 🙋‍♂️ Cliente Perímetro-Interno
+- Agente pasivo logístico cuya intención es agilizar tiempos de espera mediante la lectura y pedido propio desde su dispositivo nativo.
+
+<details>
+<summary><b>🛠️ Tecnologías Sugeridas Aplicables (.Ver Desglose)</b></summary>
+
+- **Frontend del Cliente/Controlador:** Framework visual y reactivo en *Angular*.
+- **Backend API Central:** Estructura modular desarrollada sobre el entorno *Python + Django*.
+- **Subsistema Concurrente Base de Datos:** Entrelazado SQL sobre un motor persistente estructurado como *MySQL*.
+- **Conectividad Mágica Asíncrona:** Flujo constante de confirmaciones con *WebSockets* o un *BaaS Firebase*.
+- **Autenticación Central:** Flujo controlado JWT (JSON Web Tokens).
+</details>
+
+---
+
+## 📌 Progreso, Mantenimiento y Estándares
+
+> **Estado Técnico:** _En fases de construcción intensiva general_
+
+Las siguientes proyecciones funcionales de desarrollo marcarán el próximo alcance o avance productivo:
+- Tablero Administrativo completo incluyendo cuadros estadísticos y filtrado temporal.
+- Persistencia extendida sobre historial comercial integral.
+- Evolución e Internacionalización cruzando al dominio Multilocal o franquicias perimetrales adyacentes.
+
+Las contribuciones formales deben acoplarse y someterse de forma ordenada mediante Pull Requests, resguardando en todo momento el lineamiento estilístico del esquema `kebab-case`.
+
+---
+
+<div align="center">
+  <i>Proyecto creado por Yoner and Dairo. Desarrollado y mantenido con estándares de calidad técnica por <a href="https://github.com/y0ner">y0ner</a></i>
+</div>
